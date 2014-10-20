@@ -1,0 +1,53 @@
+%
+% Template Laporan Skripsi/Thesis 
+%
+% @author  Andreas Febrian, Lia Sadita 
+% @version 1.03
+%
+% Dokumen ini dibuat berdasarkan standar IEEE dalam membuat class untuk 
+% LaTeX dan konfigurasi LaTeX yang digunakan Fahrurrozi Rahman ketika 
+% membuat laporan skripsi. Konfigurasi yang lama telah disesuaikan dengan 
+% aturan penulisan thesis yang dikeluarkan UI pada tahun 2008.
+%
+
+%
+% Tipe dokumen adalah report dengan satu kolom. 
+%
+\documentclass[12pt, a4paper, onecolumn, oneside, final]{report}
+
+% Load konfigurasi LaTeX untuk tipe laporan thesis
+\usepackage{style/uithesis}
+\usepackage{natbib}
+\usepackage{import}
+% Load konfigurasi khusus untuk laporan yang sedang dibuat
+\input{99-LaporanSetting}
+% Daftar pemenggalan suku kata dan istilah dalam LaTeX
+\include{99-HypeIndonesia}
+% Daftar istilah yang mungkin perlu ditandai 
+\input{99-Istilah}
+
+%\usepackage[backend=bibtex]{biblatex}
+%\addbibresource{bib.bib}
+
+% Awal bagian penulisan laporan
+\begin{document}
+
+\include{00-Sampul}
+\pagenumbering{roman}
+\setcounter{page}{2}
+
+\singlespacing
+\include{00-Abstrak}
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+
+\pagenumbering{arabic}
+\onehalfspacing
+
+
+\bibliography{conf/bib}
+\bibliographystyle{conf/apalikerd}
+
+\end{document}
