@@ -1,0 +1,35 @@
+\begin{thebibliography}{}
+
+\bibitem[Clarke et~al., 2012]{clarke2012variability}
+Clarke, D., Muschevici, R., Proen{\c{c}}a, J., Schaefer, I., dan Schlatte, R.
+  (2012).
+\newblock Variability modelling in the abs language.
+\newblock In {\em Formal Methods for Components and Objects}, pages 204--224.
+  Springer.
+
+\bibitem[H{\"a}hnle et~al., 2013]{hahnle2013hats}
+H{\"a}hnle, R., Helvensteijn, M., Johnsen, E.~B., Lienhardt, M., Sangiorgi, D.,
+  Schaefer, I., dan Wong, P.~Y. (2013).
+\newblock Hats abstract behavioral specification: the architectural view.
+\newblock In {\em Formal Methods for Components and Objects}, pages 109--132.
+  Springer.
+
+\bibitem[Krasner dan Pope, 1988]{krasner1988desc}
+Krasner, G.~E. dan Pope, S.~T. (1988).
+\newblock A description of the model-view-controller user interface paradigm in
+  the smalltalk-80 system.
+\newblock {\em Journal of object oriented programming}, 1(3):26--49.
+
+\bibitem[Leff dan Rayfield, 2001]{leff2001web}
+Leff, A. dan Rayfield, J.~T. (2001).
+\newblock Web-application development using the model/view/controller design
+  pattern.
+\newblock In {\em Enterprise Distributed Object Computing Conference, 2001.
+  EDOC'01. Proceedings. Fifth IEEE International}, pages 118--127. IEEE.
+
+\bibitem[Pohl et~al., 2005]{pohl2005software}
+Pohl, K., B{\"o}ckle, G., dan Van Der~Linden, F. (2005).
+\newblock {\em Software product line engineering}, volume~10.
+\newblock Springer.
+
+\end{thebibliography}

@@ -1,0 +1,14 @@
+\chapter{Studi Kasus}
+
+Studi kasus yang digunakan pada penelitian ini adalah pengembangan sebuah perangkat lunak berbasis web yang bernama Payment Point Online Bank System (PPOB). Secara umum, PPOB adalah sebuah perangkat lunak yang digunakan untuk melakukan pembayaran tagihan bulanan produk pasca bayar seperti misalnya pembayaran rekening air, telepon dan listrik serta pembelian produk pra bayar seperti pulsa handphone dan token listrik. Berikut ini adalah penjelasan tentang arsitektur, \textit{requirement} dan desain dari aplikasi PPOB tersebut.
+
+%=============================
+\section{Requirement}
+%=============================
+Aplikasi PPOB merupakan sebuah aplikasi berbasis web yang bertugas untuk menerima input dari pengguna dan mengirimkan input tersebut ke sebuah server yang bernama Switcher untuk kemudian di proses lebih lanjut. Beberapa fitur yang harus dimiliki oleh aplikasi PPOB antara lain adalah:
+
+\begin{itemize}
+    \item Untuk dapat menggunakan sistem PPOB, pengguna aplikasi harus melakukan proses login terlebih dahulu.
+    \item Aplikasi PPOB dapat melakukan pengecekan tagihan air, telepon dan listrik dengan cara mengirimkan kode pelanggan, kode produk dan kode Biller ke server Switcher. Setelah mengirimkan data-data tersebut, berikutnya Switcher akan mengirimkan balasan berupa informasi tagihan berdasarkan informasi yang diberikan. Proses pengecekan tagihan pelanggan ini disebut dengan proses inquiry.
+    \item Aplikasi PPOB dapat melakukan proses pembayaran tagihan produk pasca bayar dengan cara mengirimkan inquiry terlebih dahulu untuk mendapatkan data tagihan pelanggan. Untuk melakukan pembayaran, aplikasi PPOB cukup mengembalikan kembali data tagihan tersebut ke Switcher dan menunggu balasan konfirmasi dari Switcher yang menandakan apakah pembayaran tersebut telah berhasil atau gagal dilakukan. Proses pembayaran tagihan pelanggan ini disebut dengan proses posting payment.
+\end{itemize}
