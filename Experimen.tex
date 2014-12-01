@@ -1,0 +1,98 @@
+\chapter{Eksperimen}
+Bab ini memaparkan secara kronologis tentang proses eksperimen yang telah dilakukan oleh penulis.
+
+\section{Mengintegrasikan ABS dengan JAVA}
+Berdasarkan hasil studi literatur yang telah dilakukan, penulis mengetahui bahwa salah satu fitur yang dimiliki oleh ABS adalah kemampuannya untuk dapat di\textit{compile} kedalam bahasa JAVA sehingga nantinya kode ABS tersebut dapat dijalankan di dalam JAVA Runtime Environment (JRE). Berdasarkan informasi tersebut, penulis menarik kesimpulan bahwa jika penulis membuat sebuah JAVA class yang dibuat secara \textit{native}, maka JAVA Class tersebut akan dapat memanggil class ABS yang sudah di\textit{compile} menjadi JAVA Class juga.\\
+
+Sebelum penulis mencoba untuk mengintegrasikan secara langsung ABS dengan JAVA, penulis mencoba untuk mengetahui hasil kompilasi kode ABS yang diubah kedalam JAVA. berikut adalah kode ABS sederhana yang penulis buat beserta hasil kompilasinya ke dalam kode JAVA.
+
+\begin{lstlisting}[
+caption=Kode ABS beserta Main Blocknya,
+label={lst:absSederhana},
+escapeinside={@}{@}
+]
+module UserModule;
+
+interface User
+{
+	String getUsername();
+}
+
+class UserImpl implements User
+{
+	String getUsername() @\label{lst:absString}@
+	{
+		return "salman"; @\label{lst:absString2}@
+	}
+}
+
+//ABS Main block
+{
+	User myUser = new local UserImpl(); @\label{lst:absCreateObject}@
+	String username = myUser.getUsername();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[ 
+firstnumber=64,
+caption=Hasil kompilasi ABS ke JAVA untuk method getUsername(),
+label={lst:absjavaGetUsername},
+escapeinside={@}{@},
+]
+// User.abs:10:2: 
+public final abs.backend.java.lib.types.ABSString getUsername() {
+    ...
+    return abs.backend.java.lib.types.ABSString.fromString("salman"); @\label{lst:absjavaString}@
+}
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption=Hasil kompilasi ABS ke JAVA untuk Main Block,
+label={lst:absjavaMainBlock},
+escapeinside={@}{@}
+]
+package UserModule;
+public class Main extends abs.backend.java.lib.runtime.ABSObject {
+    public static void main(java.lang.String[] args) throws Exception {
+        abs.backend.java.lib.runtime.StartUp.startup(args,Main.class);
+    }
+    public java.lang.String getClassName() { return "Main"; }
+    public java.util.List<java.lang.String> getFieldNames() { return java.util.Collections.EMPTY_LIST; }
+    public Main(abs.backend.java.lib.runtime.COG cog) { super(cog); }
+    public abs.backend.java.lib.types.ABSUnit run() {
+         {
+            ...
+            UserModule.User_i myUser = UserModule.UserImpl_c.__ABS_createNewObject(this); @\label{lst:absjavaCreateObject}@
+            
+            ...
+            abs.backend.java.lib.types.ABSString username = abs.backend.java.lib.runtime.ABSRuntime.checkForNull(myUser).getUsername();
+            if (__ABS_getRuntime().debuggingEnabled()) __ABS_getRuntime().getCurrentTask().setLocalVariable("username",username);
+        }
+        
+        return abs.backend.java.lib.types.ABSUnit.UNIT;
+    }
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjavaCreateObject}, terdapat perbedaan pada kode JAVA hasil kompilasi dari ABS dalam membuat \textit{instance} dari sebuah objek. Dalam bahasa JAVA yang standar, untuk dapat membuat \textit{instance} dari sebuah class adalah dengan menggunakan kata kunci \texttt{new} seperti misalnya \texttt{new UserImpl()}. Sedangkan pada kode JAVA hasil kompilasi ABS menggunakan kata kunci \texttt{\_\_ABS\_createNewObject(this)} yang diakses secara \textit{static}.\\
+
+Berdasarkan hasil percobaan tersebut penulis mengetahui bahwa sintaks ABS yang terdapat pada kode \ref{lst:absSederhana} baris \ref{lst:absCreateObject} adalah \textit{equivalent} dengan sintaks JAVA yang terdapat pada kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjavaCreateObject}. Dengan demikian, penulis dapat menyimpulkan bahwa ketika penulis ingin mencoba untuk memanggil class JAVA hasil kompilasi ABS dari class JAVA yang \textit{native} maka penulis harus melakukan pemanggilan fungsi seperti yang terlihat pada kode kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjavaCreateObject} tersebut.\\
+
+Selain terdapat perbedaan dalam cara membuat \textit{instance} dari sebuah class, terdapat pula perbedaan pada tipe data yang digunakan oleh JAVA hasil kompilasi dari ABS dengan JAVA yang \textit{native}. Jika kita melihat kode \ref{lst:absSederhana} baris \ref{lst:absString} dan \ref{lst:absString2} penulis menggunakan sebuah tipe data \texttt{String} seperti layaknya tipe data \texttt{String} pada JAVA. Akan tetapi ketika kode ABS tersebut di\textit{compile} kedalam bahasa JAVA, ternyata tipe data \texttt{String} tersebut diubah menjadi \texttt{ABSString} seperti yang terlihat pada kode \ref{lst:absjavaGetUsername} baris \ref{lst:absjavaString}. Berdasarkan hasil percobaan tersebut penulis berkesimpulan bahwa ketika penulis ingin mengintegrasikan ABS dengan JAVA, penulis perlu melakukan konversi tipe data dari tipe data milik JAVA ABS menjadi tipe data standar JAVA.\\
+
+Kesimpulan yang penulis dapatkan setelah melakukan percobaan ini adalah: (1) bahwa untuk dapat membuat sebuah \textit{instance} dari class JAVA hasil kompilasi ABS tidak dapat dilakukan dengan menggunakan kata kunci \texttt{new} seperti pada JAVA yang \textit{native} dan (2) terdapat perbedaan tipe data antara \textit{native} JAVA dengan JAVA hasil kompilasi ABS sehingga perlu adanya penyesuaian lebih lanjut agar penulis dapat mengintegrasikan ABS dengan \textit{native} JAVA.
+
+\section{Membuat web server sederhana}
+Bagian ini menjelaskan tentang eksperimen yang dilakukan oleh penulis dalam membuat web server sederhana dan mencoba untuk menampilkan sebuah halaman web yang sederhana.
+
+\section{Memetakan ABS kedalam komponen MVC}
+Bagian ini menjelaskan tentang proses pemetaan ABS kedalam komponen Model, View dan Controller. Pada bagian ini juga akan dijelaskan tentang keputusan penulis dalam memilih thymeleaf templating engine sebagai pengganti ABS dalam membuat komponen View pada framework ABS MVC.
+
+\section{Membuat Ant Script untuk mempermudah proses Compile dan Deployment}
+Bagian ini menjelaskan tentang proses pembuatan ant script untuk mempermudah proses compile dan deployment dari yang sebelumnya menggunakan menu di eclipse menjadi ke terminal console.
+
+\section{Menerima input POST dan GET dari web browser}
+Bagian ini menjelaskan tentang eksperimen yang dilakukan oleh penulis dalam mencari tahu metode seperti apa yang dapat digunakan dalam menerima input HTTP POST dan GET dari web browser.
+
+\section{Membuat Routing configuration}
+Bagian ini menjelaskan tentang proses pembuatan routing configuration untuk memetakan setiap url kedalam class controller dan methodnya.

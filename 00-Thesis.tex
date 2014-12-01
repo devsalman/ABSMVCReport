@@ -19,6 +19,12 @@
 \usepackage{style/uithesis}
 \usepackage{natbib}
 \usepackage{import}
+\usepackage{hyperref}
+\usepackage{listings}
+\lstset{
+     numbers=left,     
+     language=Java
+ }
 % Load konfigurasi khusus untuk laporan yang sedang dibuat
 \input{99-LaporanSetting}
 % Daftar pemenggalan suku kata dan istilah dalam LaTeX
@@ -45,12 +51,13 @@
 
 \pagenumbering{arabic}
 \onehalfspacing
+\setlength{\parindent}{0pt}
 \include{Pendahuluan}
 \include{RumusanMasalah}
 \include{LandasanTeori}
 \include{RancanganPenelitian}
+\include{Experimen}
 \include{HasilEksperimen}
-\include{StudiKasus}
 
 
 \bibliography{conf/bib}
