@@ -222,26 +222,28 @@
 \renewcommand{\ttdefault}{pcr}
 \usepackage{listings}
 \usepackage{xcolor}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
  \lstset{
-         language=C,
-         basicstyle=\footnotesize\ttfamily\bfseries,
+         language=Java,
+		 numbers=left,
+         basicstyle=\footnotesize\ttfamily,
          tabsize=2,
          extendedchars=true,
          breaklines=true,
-         keywordstyle=\color{black},
-         commentstyle=\itshape\color{green!40!black},
+         keywordstyle=\color{mymauve},
+         commentstyle=\color{mygray},
          frame=btlr,         
-         stringstyle=\color{black}\ttfamily,
+         stringstyle=\color{mygreen}\ttfamily,
          showspaces=false,
          showtabs=false,
          xleftmargin=5pt,
          framexleftmargin=5pt,
          framexrightmargin=5pt,
          framexbottommargin=0pt,
-         backgroundcolor=\color{verylightblue},
          showstringspaces=false
  }
-
 \lstdefinestyle{shell} {
          language=bash,
          basicstyle=\footnotesize\ttfamily\bfseries,

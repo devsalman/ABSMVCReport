@@ -82,8 +82,153 @@ Selain terdapat perbedaan dalam cara membuat \textit{instance} dari sebuah class
 
 Kesimpulan yang penulis dapatkan setelah melakukan percobaan ini adalah: (1) bahwa untuk dapat membuat sebuah \textit{instance} dari class JAVA hasil kompilasi ABS tidak dapat dilakukan dengan menggunakan kata kunci \texttt{new} seperti pada JAVA yang \textit{native} dan (2) terdapat perbedaan tipe data antara \textit{native} JAVA dengan JAVA hasil kompilasi ABS sehingga perlu adanya penyesuaian lebih lanjut agar penulis dapat mengintegrasikan ABS dengan \textit{native} JAVA.
 
-\section{Membuat web server sederhana}
-Bagian ini menjelaskan tentang eksperimen yang dilakukan oleh penulis dalam membuat web server sederhana dan mencoba untuk menampilkan sebuah halaman web yang sederhana.
+\section{Membuat halaman web sederhana menggunakan ABS}
+Setelah penulis melakukan percobaan sederhana untuk mengetahui cara mengintegrasikan ABS dengan JAVA, selanjutnya penulis melakukan percobaan untuk dapat membuat halaman web sederhana dengan menggunakan ABS. Seperti yang telah kita ketahui bersama, untuk dapat menampilkan sebuah halaman web pada web browser, dibutuhkan adanya sebuah web server yang nantinya akan dapat melayani permintaan dari web browser. Dalam percobaan ini penulis membuat sebuah web server sederhana dengan menggunakan \texttt{ServerSocket} pada JAVA untuk membuka \textit{port} dan menerima \textit{request} dari \textit{web browser} yang nantinya akan memanggil class JAVA hasil kompilasi ABS untuk mendapatkan halaman web yang diinginkan (lihat gambar \ref{fig:howAbsGenerateHTML}).
+
+\begin{figure}
+    \centering
+    \includegraphics[
+        width=0.8\textwidth
+    ]{img/request-webserver-abs.png}
+    \caption{Bagaimana web server menghasilkan sebuah halaman web}
+    \label{fig:howAbsGenerateHTML}
+\end{figure}
+
+Untuk dapat mensimulasikan proses seperti yang telah digambarkan pada gambar \ref{fig:howAbsGenerateHTML} di atas, pertama-tama penulis membuat sebuah ABS Module yang fungsinya adalah untuk dapat menghasilkan sebuah halaman sederhana dan memberikannya kepada \textit{web server}. berikut adalah kode ABS yang penulis buat untuk menghasilkan sebuah halaman web:
+
+\begin{lstlisting}[
+caption=Kode ABS untuk menghasilkan halaman HTML,
+label={lst:absWelcomeView},
+]
+module ABS.MVC.View.WelcomeView;
+
+interface WelcomeView
+{
+	String generateView();
+}
+
+class WelcomeViewImpl implements WelcomeView
+{
+	
+	String generateView() {		
+		String html = "<!DOCTYPE HTML>";
+		html = html + "<html>";
+		html = html + "<body>";
+		html = html + "<h1>Welcome!!</h1>";
+		html = html + "Please login <a href='/login.abs'>here</a>";
+		html = html + "<br />";
+		html = html + "<p>This page was generated from ABS Class</p>";
+		html = html + "</body>";
+		html = html + "</html>";
+		
+		return html;
+	}
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absWelcomeView} di atas, penulis menggunakan \texttt{String} berisikan kode HTML yang disambung-sambung (\textit{concatted String}) untuk menghasilkan sebuah halaman web. Rencananya adalah string yang sudah dihasilkan oleh halaman ABS Module ini nantinya akan diberikan ke \textit{web server} untuk kemudian diberikan ke \textit{web browser} dan ditampilkan ke \textit{user}. Sebagai awalan, penulis membuat sebuah class JAVA yang ditujukan untuk memanggil class JAVA hasil kompilasi ABS tersbeut untuk kemudian ditampilkan di \textit{console} dengan menggunakan \texttt{System.out.println()}. Berikut adalah kode JAVA yang dibuat oleh penulis beserta hasil pemanggilan class ABS-nya.
+
+\begin{lstlisting}[
+caption=Kode JAVA untuk memanggil ABS,
+label={lst:javaCallABS},
+escapeinside={@}{@}
+]
+package com.fmse.absserver;
+
+public class ABSMain extends ABSObject 
+{
+    ...
+       
+    public ABSUnit run() {
+        System.out.println("ABSMain running..");
+        WelcomeView_i view = WelcomeViewImpl_c.__ABS_createNewObject(this); @\label{lst:javaCreateABSObject}@
+        ABSString html = ABSRuntime.checkForNull(view).generateView(); @\label{lst:javaCallABSMethod}@
+        System.out.println(html.getString());
+        return ABSUnit.UNIT; 
+    }
+    
+    public static void main(String[] args) throws Exception {
+        StartUp.startup(new String[0], ABSMain.class);
+    }
+}
+\end{lstlisting}
+
+\begin{figure}
+    \centering
+    \includegraphics[
+        width=0.8\textwidth
+    ]{img/java-call-abs-result.png}
+    \caption{Hasil dari pemanggilan ABS yang berisikan HTML String}
+    \label{fig:javaABSCallResult}
+\end{figure}
+
+Terlihat pada kode \ref{lst:javaCallABS} baris \ref{lst:javaCreateABSObject} dan \ref{lst:javaCallABSMethod} di atas, penulis membuat sebuah \textit{instance} dari class \texttt{WelcomView} serta melakukan pemanggilan fungsi \texttt{generateView()} untuk mendapatkan \texttt{String} HTML yang telah dibuat. Hasil dari pemanggilan fungsi \texttt{generateView()} pada class \texttt{WelcomeView} tersebut adalah sebuah \texttt{String} panjang berisikan kode HTML seperti yang terlihat pada gambar \ref{fig:javaABSCallResult}.\\
+
+Setelah penulis berhasil memanggil class JAVA hasil kompilasi ABS untuk mendapatkan HTML String, langkah selanjutnya adalah memberikan HTML String tersebut kepada web browser. Untuk dapat melakukan hal tersebut, penulis akan membuat sebuah web server sederhana dengan menggunakan class \texttt{ServerSocket} pada JAVA. Berikut adalah kode JAVA yang penulis buat untuk dapat menerima request dari \textit{web browser} dan memberikan halaman web yang diinginkan kepada \textit{web browser}.
+
+\begin{lstlisting}[
+caption=Potongan kode web server yang memanggil class ABS,
+label={lst:javaSimpleWebServer},
+escapeinside={@}{@}
+]
+public class ABSHttpServer extends ABSObject {
+
+    ...
+    
+    public ABSUnit run() {
+        try {
+            ServerSocket serverSocket = new ServerSocket(8080); @\label{lst:javaCreateSocket}@
+            while(true) {
+                Socket remote = serverSocket.accept(); @\label{lst:javaCreateSocket2}@
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(remote.getInputStream()));
+                String request = in.readLine();
+                String[] protocols = request.split(" ");
+                
+                ...
+                
+                if(protocols[1].equals("/")) { @\label{lst:serverStartCallABS}@
+                	WelcomeView_i view = WelcomeViewImpl_c.__ABS_createNewObject(this); 
+                    html = ABSRuntime.checkForNull(view).generateView().getString();
+                    out.println(html);
+                } @\label{lst:serverEndCallABS}@
+                
+                out.flush();
+                remote.close();
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        return ABSUnit.UNIT;
+    }
+    
+    ...
+}
+\end{lstlisting}
+
+Pada kode \ref{lst:javaSimpleWebServer} baris \ref{lst:javaCreateSocket} dan \ref{lst:javaCreateSocket2} di atas, terlihat bahwa penulis melakukan pembuatan \texttt{ServerSocket} dan membuka \textit{port} 8080 untuk menerima \textit{request} dari \textit{web browser}. Setelah \textit{web server} menerima \textit{request} dari \textit{web browser}, berikutnya \textit{web server} akan mencocokan URL yang diberikan oleh \textit{web browser} seperti yang terlihat pada gambar \ref{fig:webBrowserRequest}. Apabila URL yang diminta cocok dengan salah satu kondisi yang ada di \textit{web server}, berikutnya \textit{web server} akan melakukan pemanggilan class ABS seperti yang terlihat pada kode \ref{lst:javaSimpleWebServer} baris \ref{lst:serverStartCallABS} - \ref{lst:serverEndCallABS}. Setelah HTML String berhasil diterima oleh \textit{web server} berikutnya akan diberikan ke \textit{web browser} melalui \texttt{OutputStream} pada \texttt{ServerSocket} untuk kemudian ditampilkan di \textit{web browser} seperti yang terlihat pada gambar di bawah ini.
+
+\begin{figure}
+    \centering
+    \includegraphics[
+        width=0.6\textwidth
+    ]{img/web-browser-request.png}
+    \caption{Contoh \textit{request} dari \textit{web browser}}
+    \label{fig:webBrowserRequest}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[
+        width=0.6\textwidth
+    ]{img/abs-welcome-view.png}
+    \caption{Halaman web yang dibuat menggunakan ABS}
+    \label{fig:javaABSCallResult}
+\end{figure}
+
+Sampai pada tahap ini penulis telah berhasil membuat sebuah halaman web sederhana dengan menggunakan ABS. Langkah berikutnya yang penulis lakukan adalah mencoba untuk memetakan ABS kedalam komponen-komponen MVC untuk membuat sebuah MVC Framework.
 
 \section{Memetakan ABS kedalam komponen MVC}
 Bagian ini menjelaskan tentang proses pemetaan ABS kedalam komponen Model, View dan Controller. Pada bagian ini juga akan dijelaskan tentang keputusan penulis dalam memilih thymeleaf templating engine sebagai pengganti ABS dalam membuat komponen View pada framework ABS MVC.
