@@ -1,4 +1,4 @@
-\chapter{Eksperimen}
+\chapter{Implementasi}
 Bab ini memaparkan secara kronologis tentang proses eksperimen yang telah dilakukan oleh penulis.
 
 \section{Mengintegrasikan ABS dengan JAVA}
@@ -126,7 +126,7 @@ class WelcomeViewImpl implements WelcomeView
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absWelcomeView} di atas, penulis menggunakan \texttt{String} berisikan kode HTML yang disambung-sambung (\textit{concatted String}) untuk menghasilkan sebuah halaman web. Rencananya adalah string yang sudah dihasilkan oleh halaman ABS Module ini nantinya akan diberikan ke \textit{web server} untuk kemudian diberikan ke \textit{web browser} dan ditampilkan ke \textit{user}. Sebagai awalan, penulis membuat sebuah class JAVA yang ditujukan untuk memanggil class JAVA hasil kompilasi ABS tersbeut untuk kemudian ditampilkan di \textit{console} dengan menggunakan \texttt{System.out.println()}. Berikut adalah kode JAVA yang dibuat oleh penulis beserta hasil pemanggilan class ABS-nya.
+Seperti yang terlihat pada kode \ref{lst:absWelcomeView} di atas, penulis menggunakan \texttt{String} berisikan kode HTML yang disambung-sambung (\textit{concatted String}) untuk menghasilkan sebuah halaman web. Rencananya adalah string yang sudah dihasilkan oleh halaman ABS Module ini nantinya akan diberikan ke \textit{web server} untuk kemudian diberikan ke \textit{web browser} dan ditampilkan ke \textit{user}. Sebagai awalan, penulis membuat sebuah class JAVA yang ditujukan untuk memanggil class JAVA hasil kompilasi ABS tersbut untuk kemudian ditampilkan di \textit{console} dengan menggunakan \texttt{System.out.println()}. Berikut adalah kode JAVA yang dibuat oleh penulis beserta hasil pemanggilan class ABS-nya.
 
 \begin{lstlisting}[
 caption=Kode JAVA untuk memanggil ABS,
@@ -231,7 +231,176 @@ Pada kode \ref{lst:javaSimpleWebServer} baris \ref{lst:javaCreateSocket} dan \re
 Sampai pada tahap ini penulis telah berhasil membuat sebuah halaman web sederhana dengan menggunakan ABS. Langkah berikutnya yang penulis lakukan adalah mencoba untuk memetakan ABS kedalam komponen-komponen MVC untuk membuat sebuah MVC Framework.
 
 \section{Memetakan ABS kedalam komponen MVC}
-Bagian ini menjelaskan tentang proses pemetaan ABS kedalam komponen Model, View dan Controller. Pada bagian ini juga akan dijelaskan tentang keputusan penulis dalam memilih thymeleaf templating engine sebagai pengganti ABS dalam membuat komponen View pada framework ABS MVC.
+Salah satu tujuan dibentuknya framework MVC untuk ABS adalah agar para pengembang perangkat lunak dapat dengan mudah memisahkan kode program yang mengandung logika bisnis, data dan presentasi dari sebuah aplikasi. Oleh karena itu, sebelum membentuk sebuah framework MVC secara utuh, penulis perlu melakukan pemetaan terhadap kode ABS kedalam setiap komponen Model, View dan Controller (MVC). Tujuan dari dilakukannya proses pemetaan ini adalah agar penulis mendapatkan gambaran bagaimana seharusnya komponen Model, View dan Controller tersebut dibuat dengan menggunakan ABS.\\
+
+Secara umum ABS memiliki sintaks yang tidak jauh berbeda dengan JAVA. Selain itu ABS juga sudah mendukung model pemrograman Object-Oriented Programming (OOP). Oleh karenanya penulis dapat menggunakan pengalaman penulis dalam menggunakan framework MVC untuk JAVA dan PHP (karena keduanya memiliki konsep OOP) beserta hasil studi literatur yang sudah penulis lakukan dalam melakukan proses pemetaan ini. Jika kita merujuk pada publikasi yang dibuat oleh \cite{krasner1988desc} dan \cite{leff2001web} tentang MVC, berikut adalah karakteristik dari masing-masing komponen MVC:
+
+\begin{itemize}
+    \item Model: merupakan bagian dari aplikasi yang merepresentasikan data pada aplikasi dan memiliki fungsi yang dapat digunakan untuk memanipulasi data sesuai dengan input yang diberikan.
+    \item View: merupakan bagian dari aplikasi yang berfungsi untuk menampilkan informasi kepada user baik dalam bentuk teks ataupun grafis.
+    \item Controller: merupakan bagian dari aplikasi yang berfungsi untuk menerima, mengintepretasikan dan memproses setiap \textit{input} yang diberikan oleh \textit{user}.
+\end{itemize}
+
+Berdasarkan karakteristik di atas apabila penulis ingin membuat sebuah halaman web yang menampilkan sebuah daftar data mahasiswa (berisikan nomor mahasiswa, nama dan alamat) dalam bentuk tabel, maka komponen-komponen aplikasi yang harus penulis buat antara lain adalah (1) sebuah ABS module yang dapat merepresentasikan data mahasiswa (Model), (2) sebuah ABS module yang dapat menampilkan data mahasiswa dalam bentuk tabel (View) dam (3) sebuah ABS module yang berfungsi untuk mengintegrasikan kedua module tersebut (Controller). Berikut ini adalah module-module ABS yang penulis buat berdasarkan rincian tersebut:
+
+\begin{lstlisting}[
+caption=Module ABS untuk merepresentasikan data mahasiswa,
+label={lst:absModuleMahasiswa}
+]
+module MMahasiswa;
+export Mahasiswa, MahasiswaImpl;
+
+interface Mahasiswa
+{
+	String getNpm();
+	String getNama();
+	String getAlamat();
+}
+
+class MahasiswaImpl(
+	String npm, String nama, String alamat) implements Mahasiswa
+{
+	String getNpm() { return this.npm; }
+	String getNama() { return this.nama; }
+	String getAlamat() { return this.alamat; }
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absModuleMahasiswa} di atas, penulis membuat sebuah module ABS yang hanya berisikan atribut npm, nama dan alamat beserta method accessor-nya (\texttt{getNpm()}, \texttt{getNama()} dan \texttt{getAlamat()}). Module ini dibuat hanya mengandung atribut dan \textit{accessor} adalah karena untuk dapat merepresentasikan data Mahasiswa, module ini harus menyimpan atribut-atribut yang berhubungan dengan Mahasiswa beserta dengan \textit{method} pembantu untuk melakukan manipulasi data sesuai dengan input yang diberikan \textit{user}.\\
+
+Setelah berhasil membuat komponen Model \texttt{Mahasiswa}, berikutnya adalah membuat komponen View yang akan menampilkan data mahasiswa dalam bentuk tabel. Berikut adalah kode ABS yang dibuat oleh penulis dalam membuat komponen View tersebut:
+
+\begin{lstlisting}[
+caption=Module ABS untuk menampilkan data Mahasiswa dalam bentuk tabel,
+label={lst:absModuleMhsView}
+]
+module MMahasiswaListView;
+export MahasiswaListView, MahasiswaListViewImpl;
+import Mahasiswa, MahasiswaImpl from MMahasiswa;
+
+interface MahasiswaListView
+{
+	String generateView();
+}
+
+class MahasiswaListViewImpl
+	(List<Mahasiswa> listMhs) implements MahasiswaListView
+{
+	String generateView()
+	{
+		String html = "<!DOCTYPE HTML>";
+		html = html + "<html>";
+		html = html + "<body>";
+		html = html + "<h1>Daftar Mahasiswa</h1>";
+		html = html + "<table>";
+		html = html + "<thead>";
+		html = html + "<tr>";
+		html = html + "<td>No.</td>";
+		html = html + "<td>NPM</td>";
+		html = html + "<td>Nama</td>";
+		html = html + "<td>Alamat</td>";
+		html = html + "</tr>";
+		html = html + "<tbody>";
+		
+		Int listLength = length(listMhs);
+		Int index = 0;
+		while(index < listLength)
+		{
+			Mahasiswa mhs = nth(listMhs, index);
+			String npm = mhs.getNpm();
+			String nama = mhs.getNama();
+			String alamat = mhs.getAlamat();
+			Int nomor = index + 1;
+			
+			html = html + "<tr>";
+			html = html + "<td>" + toString(nomor) + "</td>";
+			html = html + "<td>" + npm + "</td>";
+			html = html + "<td>" + nama + "</td>";
+			html = html + "<td>" + alamat + "</td>";
+			html = html + "</tr>";
+			index = index + 1;
+		}
+		
+		html = html + "</tbody>";
+		html = html + "</table>";
+		
+		return html;
+	}
+}
+\end{lstlisting}
+
+Kode \ref{lst:absModuleMhsView} di atas merupakan module ABS yang dibuat berdasarkan kriteria komponen View pada MVC yang sudah penulis bahas sebelumnya. Dikarenakan komponen View hanya berfungsi untuk menampilkan data yang diberikan, maka module ABS ini hanya berisi sebuah \textit{method} untuk menghasilkan sebuah halaman HTML yang akan menampilkan daftar mahasiswa.\\
+
+Sampai tahap ini penulis sudah membuat module ABS yang merepresentasikan data Mahasiswa (kode \ref{lst:absModuleMahasiswa}), selain itu penulis juga sudah membuat sebuah module ABS yang dapat menghasilkan sebuah halaman HTML untuk menampilkan data-data mahasiswa dalam bentuk tabel (kode \ref{lst:absModuleMhsView}). Selanjutnya, penulis akan membuat satu buah module lagi yang tersisa yaitu module ABS yang bertugas untuk mengintegrasikan kedua buah module yang sudah dibuat sebelumnya. Berikut adalah kode ABS yang penulis buat untuk merealisasikan hal tersebut:
+
+\begin{lstlisting}[
+caption=Module ABS untuk mengintegrasikan antara data dan presentasi,
+label={lst:absModuleMhsController},
+escapeinside={@}{@}
+]
+module MMahasiswaController;
+import MahasiswaListView, MahasiswaListViewImpl from MMahasiswaListView;
+import Mahasiswa, MahasiswaImpl from MMahasiswa;
+
+interface MahasiswaController
+{
+	String showMahasiswaList();
+}
+
+class MahasiswaControllerImpl 
+	implements MahasiswaController
+{
+	String showMahasiswaList()
+	{
+		List<Mahasiswa> listMhs = Nil; @\label{lst:absStartCreateMhsList}@
+		Mahasiswa andi = new local MahasiswaImpl(
+		"1306001", "Andi", "Jl. Depok Baru");
+		
+		Mahasiswa budi = new local MahasiswaImpl(
+		"1306002", "Budi", "Jl. Mampang Raya");
+		
+		Mahasiswa cita = new local MahasiswaImpl(
+		"1306003", "Cita", "Jl. Irian Jaya");
+		
+		listMhs = appendright(listMhs, andi);
+		listMhs = appendright(listMhs, budi);
+		listMhs = appendright(listMhs, cita); @\label{lst:absEndCreateMhsList}@
+		
+		MahasiswaListView view = 
+			new local MahasiswaListViewImpl(listMhs); @\label{lst:absGenerateMhsView}@
+		
+		String html = view.generateView(); @\label{lst:absGenerateMhsView2}@
+		
+		return html;
+	}
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absModuleMhsController} di atas, module tersebut berperan dalam mengintegrasikan modul \texttt{Mahasiswa} dengan modul \texttt{MahasiswaListView} untuk menghasilkan sebuah halaman web yang berisi daftar mahasiswa dalam bentuk tabel. Pada kode \ref{lst:absModuleMhsController} baris \ref{lst:absStartCreateMhsList} - \ref{lst:absEndCreateMhsList} penulis membuat tiga buah objek \texttt{Mahasiswa} yang kemudian penulis masukan kedalam sebuah \texttt{List} yang merupakan representasi dari data-data Mahasiswa. Selanjutnya penulis memberikan data tersebut ke dalam objek \texttt{MahasiswaListView} untuk kemudian ditampilkan dalam bentuk HTML seperti yang tertera pada kode \ref{lst:absModuleMhsController} baris \ref{lst:absGenerateMhsView} dan \ref{lst:absGenerateMhsView2}.\\
+
+Setelah berhasil membuat tiga buah modul yang dibutuhkan, berikutnya penulis akan memanggil modul \texttt{MahasiswaController} untuk melihat hasil dari halaman web yang dibuat. Oleh karena itu penulis menambahkan sedikit kode pada web server yang penulis buat (lihat kode \ref{lst:javaSimpleWebServer}) untuk memanggil module \texttt{MahasiswaController} tersebut. berikut adalah tambahan kode yang telah penulis buat beserta halaman web yang telah berhasil dibuat dengan menggunakan ABS.
+
+\begin{lstlisting}[
+caption=Tambahan kode pada web server untuk memanggil modul \texttt{MahasiswaController},
+label={lst:javaCallMahasiswaController}
+else if(protocols[1].equals("/listMahasiswa"))
+{
+    MahasiswaController_i controller = MahasiswaControllerImpl_c.__ABS_createNewObject(this);
+    html = ABSRuntime.checkForNull(controller).showMahasiswaList().getString();
+    out.println(html);
+}
+\end{lstlisting}
+
+\begin{figure}
+    \centering
+    \includegraphics[
+        width=0.6\textwidth
+    ]{img/hasil-list-mhs.png}
+    \caption{Halaman daftar mahasiswa yang dibuat menggunakan ABS}
+    \label{fig:htmlDaftarMhs}
+\end{figure}
+
+Sampai pada tahap ini, penulis telah berhasil memetakan modul-modul ABS yang dibuat kedalam komponen MVC untuk menghasilkan sebuah halaman web. Namun penulis masih menemukan banyak kekurangan dalam pembuatan komponen MVC ini yang salah satu diantaranya adalah ketika kita membuat komponen view (modul \texttt{MahasiswaListView}). Jika melihat kode \ref{lst:absModuleMhsView} di atas, kode HTML yang dibuat oleh penulis masih berupa \texttt{String} yang disambung-sambung. Hal ini tentunya sangat tidak efektif terlebih lagi jika penulis ingin membuat sebuah halaman web yang lebih kompleks. Oleh karena itu, dibutuhkan adanya solusi lain untuk dapat membuat komponen view ini menjadi lebih mudah dibuat dan dikelola.
 
 \section{Membuat Ant Script untuk mempermudah proses Compile dan Deployment}
 Bagian ini menjelaskan tentang proses pembuatan ant script untuk mempermudah proses compile dan deployment dari yang sebelumnya menggunakan menu di eclipse menjadi ke terminal console.
