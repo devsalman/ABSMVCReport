@@ -439,10 +439,10 @@ escapeinside={@}{@}
 		</thead>
 		<tbody>
 			<tr th:each="mahasiswa: ${mahasiswaList}">
-				<td><p th:text="${#ids.seq('')}"></p></td>
-				<td><p th:text="${mahasiswa.npm}"></p></td>
-				<td><p th:text="${mahasiswa.nama}"></p></td>
-				<td><p th:text="${mahasiswa.alamat}"></p></td>
+				<td th:text="${#ids.seq('')}"></td>
+				<td th:text="${mahasiswa.npm}"></td>
+				<td th:text="${mahasiswa.nama}"></td>
+				<td th:text="${mahasiswa.alamat}"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -459,7 +459,7 @@ Sampai pada tahap ini penulis telah berhasil memperbaiki komponen view dari yang
 Walaupum ABS dapat dikompilasi kedalam bentuk JAVA dan Thymeleaf juga merupakan komponen perangkat lunak yang berbasis JAVA, penulis tidak dapat mengintegrasikan dua hal tersebut secara langsung di dalam Class JAVA hasi kompilasi ABS. Hal ini terjadi karena penulis tidak ingin melakukan modifikasi terhadap Class JAVA tersebut dikarenakan Class JAVA ini merupakan \textit{auto generated file} sehingga kodenya akan selalu berubah. Oleh karena itu, penulis memutuskan untuk mengintegrasikan Thymeleaf dengan komponen MVC ABS di tingkat \textit{web server}. berikut adalah langkah-langkah yang penulis ambil dalam proses integrasinya:
 
 \begin{enumerate}
-    \item Pada saat \textit{web server} menerima \textit{request} dari \textit{web browser}, \textit{web server} akan memanggil komponen Controller ABS (yang sudah dikompilasi menjadi JAVA) yang diinginkan.
+    \item Pada saat \textit{web server} menerima \textit{request} dari \textit{web browser}, \textit{web server} akan memanggil komponen Controller ABS (yang sudah dikompilasi menjadi JAVA).
     \item Komponen Controller tersebut nantinya akan memberikan data (komponen Model) dan lokasi berkas HTML yang menjadi komponen View-nya.
     \item Setelah \textit{web server} menerima data dan lokasi berkas HTML dari komponen Controller, selanjutnya \textit{web server} akan mencari berkas HTML tersebut dan membuat sebuah \texttt{Context} untuk kemudian digabungkan dengan data yang diberikan.
     \item Setelah proses penggabungan selesai dan halaman web yang diinginkan sudah terbentuk, selanjutnya \textit{web server} akan memberikan halaman web tersebut kepada web browser.
@@ -491,13 +491,14 @@ class MahasiswaControllerImpl implements MahasiswaController
 }
 \end{lstlisting}
 
-Terlihat pada kode \ref{lst:absMhsControllerNew} baris \ref{lst:absReturnViewAndModel}, penulis tidak lagi membuat \textit{instance} dari \texttt{MahasiswaListView} melainkan hanya mengembalikan lokasi berkas HTML yang menjadi komponen View-nya berserta dengan data Mahasiswa yang akan ditampilkan kedalam halaman web. Selain itu, pada bari \ref{lst:absReturnType} dan \ref{lst:absReturnType2} juga terdapat perubahan kode yaitu dari yang sebelumya \textit{method} \texttt{showMahasiswaList} hanya mengembalikan nilai \texttt{String} berubah menjadi \texttt{Pair(String, List<Mahasiswa>)}.
+Terlihat pada kode \ref{lst:absMhsControllerNew} baris \ref{lst:absReturnViewAndModel}, penulis tidak lagi membuat \textit{instance} dari \texttt{MahasiswaListView} melainkan hanya mengembalikan lokasi berkas HTML yang menjadi komponen View-nya berserta dengan data Mahasiswa yang akan ditampilkan kedalam halaman web. Selain itu, pada baris \ref{lst:absReturnType} dan \ref{lst:absReturnType2} juga terdapat perubahan kode yaitu dari yang sebelumya \textit{method} \texttt{showMahasiswaList} hanya mengembalikan nilai \texttt{String} berubah menjadi \texttt{Pair(String, List<Mahasiswa>)}.
 
 Setelah melakukan perubahan pada komponen Controller, berikutnya adalah melakukan perubahan pada \textit{web server}. Berikut adalah perubahan-perubahan pada web server yang penulis lakukan untuk mengintegrasikan thymeleaf dengan ABS:
 
 \begin{lstlisting}[
 caption=Perubahan pada kode \textit{web server},
-label={lst:javaNewWebServer}
+label={lst:javaNewWebServer},
+escapeinside={@}{@}
 ]
 ...
 
@@ -509,33 +510,37 @@ else if(protocols[1].equals("/listMahasiswa")) {
    	ABS.StdLib.List<Mahasiswa_i> absData = (ABS.StdLib.List<Mahasiswa_i>) pair.getArg(1);
    	ArrayList<Object> data = new ArrayList<Object>();
            		
-	do
+	do @\label{lst:javaStartConvertABSList}@
 	{
 		ABSObject head = (ABSObject) ABS.StdLib.head_f.apply(absData);
 		data.add(head);
 		
 		absData = ABS.StdLib.tail_f.apply(absData);
 	}
-	while(!(absData instanceof ABS.StdLib.List_Nil));
+	while(!(absData instanceof ABS.StdLib.List_Nil)); @\label{lst:javaEndConvertABSList}@
 	
-	TemplateResolver templateResolver = new TemplateResolver();
+	TemplateResolver templateResolver = new TemplateResolver(); @\label{lst:javaStartThymeleaf}@
     templateResolver.setTemplateMode("XHTML");
     templateResolver.setSuffix(".html");
-    templateResolver.setResourceResolver(new ResourceResolver());
+    templateResolver.setResourceResolver(new ResourceResolver()); @\label{lst:javaCallResourceResolver}@
                 
     TemplateEngine templateEngine = new TemplateEngine();
     templateEngine.setTemplateResolver(templateResolver);
                 
-	Context ctx = new Context();
+	Context ctx = new Context(); @\label{lst:javaCreateContext}@
 	StringWriter writer = new StringWriter();
-	ctx.setVariable("mahasiswaList", data);
-	templateEngine.process(view, ctx, writer);
+	ctx.setVariable("mahasiswaList", data); @\label{lst:javaThymeSetData}@
+	templateEngine.process(view, ctx, writer); @\label{lst:javaThymeProcess}@
 	
-	out.println(writer);
+	out.println(writer); @\label{lst:javaEndThymeleaf}@
 }
 
 ...
 \end{lstlisting}
+
+Jika kita membandingkan kode \ref{lst:javaNewWebServer} di atas dengan kode \ref{lst:javaCallMahasiswaController} yang telah dibuat sebelumnya, terdapat banyak perubahan pada cara web server membuat sebuah halaman web. Pada kode \ref{lst:javaCallMahasiswaController} \textit{web server} langsung mendapatkan halaman web pada saat melakukan pemanggilan \texttt{MahasiswaController} Sedangkan pada kode \ref{lst:javaNewWebServer} proses pembuatan halaman web dilakukan \textit{web server}. Seperti yang terlihat pada kode \ref{lst:javaNewWebServer} baris \ref{lst:javaStartConvertABSList} sampai \ref{lst:javaEndConvertABSList}, \textit{web server} melakukan proses konversi data dari \texttt{ABSList} menjadi \texttt{List}. Hal ini dilakukan karena Thymeleaf hanya mengenali \textit{JAVA Collection} bawaan dari JAVA API sedangkan \texttt{ABSList} bukan merupakan bawaan dari JAVA API.\\
+
+Setelah \textit{web server} selesai melakukan konversi data, berikutnya adalah memasukan data tersebut ke dalam komponen View yang sudah dibuat. Proses ini dilakukan dengan cara me-\textit{load} berkas HTML yang dilakukan oleh sebuah Class khusus yang bernama \texttt{ResourceResolver} (lihat kode \ref{lst:javaResourceResolver}) dan menggabungkan berkas tersebut dengan data yang ada kedalam sebuah \texttt{Context} untuk kemudian diproses menjadi sebuah halaman web (lihat kode \ref{lst:javaNewWebServer} baris \ref{lst:javaCreateContext} sampai \ref{lst:javaThymeProcess}).
 
 \begin{lstlisting}[
 caption=Class \texttt{ResourceResolver} sebagai tambahan pada \textit{web server},
@@ -543,16 +548,8 @@ label={lst:javaResourceResolver}
 ]
 public class ResourceResolver implements IResourceResolver
 {
-	private static final String NAME = "ABSResourceResolver";
+	...
 	
-	@Override
-	public String getName() 
-	{
-		// TODO Auto-generated method stub
-		return NAME;
-	}
-
-	@Override
 	public InputStream getResourceAsStream(TemplateProcessingParameters templateProcessingParameter,
 			String resourceName) 
 	{
@@ -563,6 +560,15 @@ public class ResourceResolver implements IResourceResolver
 
 }
 \end{lstlisting}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/hasil-list-mhs_new.png}
+    \caption{Halaman Web yang dihasilkan oleh ABS dan Thymeleaf}
+    \label{fig:listMhsThymeleaf}
+\end{figure}
+
+Sampai pada tahap ini, penulis telah berhasil mengintegrasikan komponen View yang menggunakan HTML dengan komponen Controller dan Model yang dibuat dengan menggunakan ABS (lihat hasilnya pada gambar \ref{fig:listMhsThymeleaf} di atas). langkah selanjutnya adalah menyempurnakan menggabungkan seluruh hasil eksperimen yang sudah dilakukan menjadi sebuah \textit{framework} MVC ABS.
 
 \section{Membuat Ant Script untuk mempermudah proses Compile dan Deployment}
 Bagian ini menjelaskan tentang proses pembuatan ant script untuk mempermudah proses compile dan deployment dari yang sebelumnya menggunakan menu di eclipse menjadi ke terminal console.
