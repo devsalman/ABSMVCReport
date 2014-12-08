@@ -78,7 +78,7 @@ Seperti yang terlihat pada kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjav
 
 Berdasarkan hasil percobaan tersebut penulis mengetahui bahwa sintaks ABS yang terdapat pada kode \ref{lst:absSederhana} baris \ref{lst:absCreateObject} adalah \textit{equivalent} dengan sintaks JAVA yang terdapat pada kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjavaCreateObject}. Dengan demikian, penulis dapat menyimpulkan bahwa ketika penulis ingin mencoba untuk memanggil class JAVA hasil kompilasi ABS dari class JAVA yang \textit{native} maka penulis harus melakukan pemanggilan fungsi seperti yang terlihat pada kode kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjavaCreateObject} tersebut.\\
 
-Selain terdapat perbedaan dalam cara membuat \textit{instance} dari sebuah class, terdapat pula perbedaan pada tipe data yang digunakan oleh JAVA hasil kompilasi dari ABS dengan JAVA yang \textit{native}. Jika kita melihat kode \ref{lst:absSederhana} baris \ref{lst:absString} dan \ref{lst:absString2} penulis menggunakan sebuah tipe data \texttt{String} seperti layaknya tipe data \texttt{String} pada JAVA. Akan tetapi ketika kode ABS tersebut di\textit{compile} kedalam bahasa JAVA, ternyata tipe data \texttt{String} tersebut diubah menjadi \texttt{ABSString} seperti yang terlihat pada kode \ref{lst:absjavaGetUsername} baris \ref{lst:absjavaString}. Berdasarkan hasil percobaan tersebut penulis berkesimpulan bahwa ketika penulis ingin mengintegrasikan ABS dengan JAVA, penulis perlu melakukan konversi tipe data dari tipe data milik JAVA ABS menjadi tipe data standar JAVA.\\
+%Selain terdapat perbedaan dalam cara membuat \textit{instance} dari sebuah class, terdapat pula perbedaan pada tipe data yang digunakan oleh JAVA hasil kompilasi dari ABS dengan JAVA yang \textit{native}. Jika kita melihat kode \ref{lst:absSederhana} baris \ref{lst:absString} dan \ref{lst:absString2} penulis menggunakan sebuah tipe data \texttt{String} seperti layaknya tipe data \texttt{String} pada JAVA. Akan tetapi ketika kode ABS tersebut di\textit{compile} kedalam bahasa JAVA, ternyata tipe data \texttt{String} tersebut diubah menjadi \texttt{ABSString} seperti yang terlihat pada kode \ref{lst:absjavaGetUsername} baris \ref{lst:absjavaString}. Berdasarkan hasil percobaan tersebut penulis berkesimpulan bahwa ketika penulis ingin mengintegrasikan ABS dengan JAVA, penulis perlu melakukan konversi tipe data dari tipe data milik JAVA ABS menjadi tipe data standar JAVA.\\
 
 Kesimpulan yang penulis dapatkan setelah melakukan percobaan ini adalah: (1) bahwa untuk dapat membuat sebuah \textit{instance} dari class JAVA hasil kompilasi ABS tidak dapat dilakukan dengan menggunakan kata kunci \texttt{new} seperti pada JAVA yang \textit{native} dan (2) terdapat perbedaan tipe data antara \textit{native} JAVA dengan JAVA hasil kompilasi ABS sehingga perlu adanya penyesuaian lebih lanjut agar penulis dapat mengintegrasikan ABS dengan \textit{native} JAVA.
 
@@ -407,7 +407,7 @@ Sampai pada tahap ini, penulis telah berhasil memetakan modul-modul ABS yang dib
 
 Berdasarkan hasil evaluasi pada percobaan sebelumnya, penulis merasa perlu untuk mengganti metode yang penulis lakukan dalam membuat komponen view dengan menggunakan ABS. Setelah dikaji lebih jauh lagi, penulis menyadari bahwa standar yang berlaku dalam membuat sebuah halaman web adalah dengan menggunakan HTML. Pada saat penulis membuat komponen view dengan menggunakan ABS untuk menghasilkan HTML, proses pembuatan komponen view menjadi lebih rumit dan kurang fleksibel. Oleh karena itu, penulis membuat keputusan untuk meninggalkan ABS dan beralih ke kode HTML murni ketika membuat komponen view aplikasi.\\
 
-Salah satu pendekatan yang dapat dilakukan utuk mengintegrasikan ABS dengan HTML adalah dengan menggunakan HTML \textit{template engine}. Secara singkat HTML \textit{template engine} adalah sebuah perangkat lunak yang dapat digunakan para pengembang perangkat lunak untuk dapat menyematkan objek ke dalam sebuah HTML dengan menggunakan sintaks tambahan. Dengan menggunakan perangkat lunak ini, penulis dapat langsung menyematkan modul \texttt{Mahasiswa} yang telah penulis buat kedalam sebuah halaman HTML. Dalam penelitian ini, penulis menggunakan HTML \textit{template engine} berbasis JAVA yaitu Thymeleaf (http://thymeleaf.org).
+Salah satu pendekatan yang dapat dilakukan utuk mengintegrasikan ABS dengan HTML adalah dengan menggunakan HTML \textit{template engine}. Secara singkat HTML \textit{template engine} adalah sebuah perangkat lunak yang dapat digunakan para pengembang perangkat lunak untuk dapat menyematkan objek ke dalam sebuah HTML dengan menggunakan sintaks tambahan. Dengan menggunakan perangkat lunak ini, penulis dapat langsung menyematkan modul \texttt{Mahasiswa} yang telah penulis buat kedalam sebuah halaman HTML. Dalam penelitian ini, penulis menggunakan HTML \textit{template engine} berbasis JAVA yaitu Thymeleaf \footnote{http://thymeleaf.org}.
 
 \begin{figure}
     \centering
@@ -605,7 +605,7 @@ Sampai sejauh ini penulis telah berhasil melakukan penyusunan direktori untuk \t
 
 \subsection{Membuat Ant Script untuk proses kompilasi dan \textit{deployment}}
 
-Untuk mempermudah pengembang perangkat lunak dalam melakukan proses kompilasi dan \textit{deployment}, penulis membuat sebuah \textit{build script} dengan menggunakan Apache Ant. Tujuan dari dibuatnya \textit{build script} ini adalah agar para pengembang dapat menjalankan keseluruhan proses tersebut dengan hanya mengetikkan satu buah perintah pada \textit{terminal console}. Sebagian besar \textit{script} yang digunakan untuk proses kompilasi dan \textit{deployment} ini diadaptasi dari Ant Script yang telah dibuat oleh tim HATS. berikut adalah \textit{build script} yang penulis buat untuk framework MVC ABS:
+Untuk mempermudah pengembang perangkat lunak dalam melakukan proses kompilasi dan \textit{deployment}, penulis membuat sebuah \textit{build script} dengan menggunakan Apache Ant \footnote{http://ant.apache.org/}. Tujuan dari dibuatnya \textit{build script} ini adalah agar para pengembang dapat menjalankan keseluruhan proses tersebut dengan hanya mengetikkan satu buah perintah pada \textit{terminal console}. Sebagian besar \textit{script} yang digunakan untuk proses kompilasi dan \textit{deployment} ini diadaptasi dari Ant Script yang telah dibuat oleh tim HATS \footnote{http://tools.hats-project.eu/core/anttasks.html}. berikut adalah \textit{build script} yang penulis buat untuk framework MVC ABS:
 
 \begin{lstlisting}[
 caption=Build script untuk framework MVC ABS berbasis Apache Ant,
@@ -724,6 +724,66 @@ Dengan menggunakan \textit{build script} yang sudah dibuat, para pengguna \texti
 
 Sampai pada tahap ini penulis telah berhasil menyusun direktori dan membuat \textit{build script} dengan menggunakan Apache Ant untuk mempermudah proses kompilasi dan \textit{deployment} pada \textit{framework} MVC ABS. langkah selanjutnya adalah menambahkan mekanisme konfigurasi URL \textit{routing} dan mengatasi HTTP POST dan GET data untuk lebih menyempurnakan lagi \textit{framework} MVC ABS yang dibuat.
 
-\subsection{Penambahan mekanisme konfigurasi URL \textit{routing}}
+\subsection{Penambahan mekanisme konfigurasi pemetaan URL}
 
-\subsection{Penambahan mekanisme untuk mengatasi HTTP POST dan GET \textit{input}}
+Jika kita melihat kembali kode \ref{lst:javaNewWebServer} \textit{web server} di atas, dapat terlihat bahwa penulis masih menggunakan \texttt{if - else - elseif} dalam melakukan pemetaan antara URL dengan komponen Controller yang akan dipanggil. Tentunya hal ini sangat tidak efektif karena ketika terjadi penambahan komponen Controller, tentunya penulis harus menambahkan kembali blok \texttt{elsif} di dalam kode \textit{web server} untuk menambahkan pemetaan baru terhadap komponen Controller tersebut. Untuk membuat \textit{framework} ABS MVC lebih fleksibel terhadap perubahan, maka penulis membuat sebuah mekanisme di dalam \textit{framework} agar pengguna \textit{framework} MVC ABS dapat mendefinisikan pemetaannya sendiri langsung dari \textit{framework}.\\
+
+Pendekatan yang penulis lakukan untuk dapat menyediakan fitur konfigurasi pemetaan URL tersebut adalah dengan membuat sebuah modul ABS khusus yang bernama \texttt{RouteConfig}. modul ini berisikan daftar URL beserta nama komponen Controller dan \textit{method} yang akan dicocokan dengan menggunakan mekanisme \textit{pattern matching}. Modul ini nantinya akan dipanggil secara otomatis oleh \textit{web server} pada saat menerima \textit{request} dari \textit{web browser}. Tujuan dari pemanggilan modul ini oleh \textit{web server} adalah untuk mengetahui komponen Controller dan \textit{method} mana yang harus dipanggil oleh \textit{web server} untuk dapat menghasilkan halaman web yang diinginkan. berikut adalah modul \texttt{RouteConfig} yang penulis sediakan untuk membantu para pengguna \textit{framework} dalam memetakan URL dengan Controller yang dibuat.
+
+\begin{lstlisting}[
+caption=Modul \texttt{RouteConfig} untuk pemetaan URL,
+label={lst:absRouteConfig},
+escapeinside={!}{!}
+]
+module ABS.Framework.Route;
+
+interface RouteConfig
+{
+	String route(String url);
+}
+
+class RouteConfigImpl implements RouteConfig
+{
+	String route(String url)
+	{
+		String result = case url !\label{lst:startPatternMatching}!
+		{
+			"/product/index.abs" => "Controller.Product.ProductControllerImpl@index";
+			"/product/add.abs" => "Controller.Product.ProductControllerImpl@addProduct"; !\label{lst:contohRouteConfig}!
+			"/product/details.abs" => "Controller.Product.ProductControllerImpl@productDetails";
+			"/product/list.abs" => "Controller.Product.ProductControllerImpl@productList";
+			_ => ""; //default pattern
+		}; !\label{lst:endPatternMatching}!
+		
+		return result;
+	}
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absRouteConfig} baris \ref{lst:startPatternMatching} sampai \ref{lst:endPatternMatching} di atas, penulis mendefinisikan 4 (empat) buah pemetaan URL dengan komponen Controller dan \textit{method}nya. Konvensi yang digunakan dalam mendefinisikan pemetaan URL tersebut adalah \texttt{[nama modul].[nama class]@[nama method]}. Sebagai contoh, pada kode \ref{lst:absRouteConfig} baris \ref{lst:contohRouteConfig} di atas terlihat penulis memetakan sebuah URL \texttt{/product/add.abs} dengan sebuah komponen Controller bernama \texttt{ProductControllerImpl} yang berada di dalam modul \texttt{Controller.Product} dan memanggil \textit{method} \texttt{addProduct}. Dengan menggunakan mekanisme seperti ini, pengguna framework dapat langsung memetakan URL dengan komponen Controller yang dibuat tanpa harus mengubah kode sumber dari \textit{web server}.\\
+
+Berikut ini adalah diagram alur pemanggilan modul \texttt{RouteConfig} oleh \textit{web server} dalam menghasilkan sebuah halaman web beserta penjelasannya.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/absmvc_flow.png}
+    \caption{Diagram alur pemanggilan Controller melalui \texttt{RouteConfig}}
+    \label{fig:diagramABSMVCRouteConfig}
+\end{figure}
+
+Penjelasan:
+\begin{enumerate}
+    \item \textit{Web browser} mengirimkan HTTP \textit{request} kepada \textit{web browser} seperti misalnya \texttt{GET /product/add.abs HTTP/1.1}.
+    \item \textit{Web server} akan mengambil segmen yang berisi \textit{path} \texttt{/product/add.abs} kepada modul \texttt{RouteConfig}.
+    \item Modul \textit{RouteConfig} akan mencocokan \textit{path} yang diberikan dengan menggunakan \textit{pattern matching} untuk kemudian memberikan hasilnya berupa nama Controller dan \textit{method} yang harus dipanggil (misal: \texttt{Controller.Product.ProductControllerImpl@addProduct})kepada \textit{web server}.
+    \item \textit{Web server} memanggil controller dan \textit{method} sesuai yang diberikan oleh modul \texttt{RouteConfig}.
+    \item Controller menyiapkan data-data yang akan ditampilkan di halaman web.
+    \item Controller memberikan data (Model) dan nama berkas HTML (View) untuk kemudian diproses oleh \textit{web server}.
+    \item \textit{Web server} akan mencari dan memproses berkas HTML sesuai dengan nama yang diberikan oleh Controller.
+    \item \textit{Web server} mengintegrasikan berkas HTML tersebut dengan data yang diberikan untuk menghasilkan sebuah halaman web.
+    \item \textit{Web server} memberikan halaman web yang telah berhasil dibuat kepada \textit{web browser}.
+\end{enumerate}
+
+Sampai pada tahap ini penulis telah berhasil membuat modul ABS yang dapat digunakan untuk mengkonfigurasi pemetaan URL yang diberikan oleh \textit{web server} dengan komponen Controller yang dibuat. Dengan menggunakan cara ini, pengguna \textit{framework} tidak perlu mengubah kode sumber dari \textit{web browser} untuk melakukan proses pemetaan tersebut. Hal yang akan dilakukan selanjutnya oleh penulis adalah menambahkan mekanisme untuk menangani HTTP POST dan GET \textit{input} dari \textit{web browser}.
+
+\subsection{Penambahan mekanisme untuk menangani HTTP POST dan GET \textit{input}}
