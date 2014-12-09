@@ -1,0 +1,267 @@
+\chapter{Penyusunan Framework MVC ABS}
+Setelah melakukan banyak eksperimen untuk memetakan ABS kedalam komponen-komponen MVC dan mengintegrasikannya dengan \textit{web server} sederhana, selanjutnya adalah menyusun hasil eksperimen-eksperimen tersebut agar menjadi satu kesatuan framework MVC ABS yang utuh. Ada beberapa poin yang akan disusun terkait pembuatan framework MVC ABS yang diantaranya adalah:
+
+\begin{enumerate}
+    \item Pengaturan struktur direktori.
+    \item Menambahkan Ant Script untuk mempermudah proses kompilasi dan \textit{deployment}.
+    \item Penambahan mekanisme konfigurasi URL \textit{routing}.
+    \item Penambahan mekanisme untuk menangani HTTP POST dan GET data.
+\end{enumerate}
+
+\section{Pengaturan struktur direktori}
+
+Struktur direkretori dalam sebuah framework MVC berperan dalam membantu para pengguna framework untuk mengatur peletakan setiap kode program yang mereka hasilkan sesuai dengan kategori / jenis dari kode program tersebut. Dengan adanya struktur direktori yang baik, akan membantu para pengembang perangkat lunak untuk dapat konsisten dalam meletakkan setiap kode program yang mereka hasilkan. berikut ini adalah struktur direktori dari framework MVC ABS:
+
+\begin{itemize}
+    \item \textbf{dist}: folder ini digunakan untuk menyimpan \textit{binary} dari aplikasi web yang sudah di compile.
+    \item \textbf{src}: folder ini digunakan untuk menyimpan file ABS yang dibuat oleh para pengembang perangkat lunak. folder ini memiliki sub folder "Model", "View" dan "Controller" yang digunakan untuk meletakkan komponen MVC yang dibuat. Selain itu, di dalam folder ini juga terdapat sebuah folder bernama "Framework" yang berisi berkas kode program ABS yang digunakan untuk keperluan internal framework.
+    \item \textbf{lib}: folder ini berisi library yang dibutuhkan oleh framework MVC ABS untuk dapat meng-compile kode ABS dan mengubahnya ke dalam kode JAVA.
+    \item \textbf{target}: folder ini digunakan sebagai tempat penampungan sementara ketika framework sedang melakukan proses kompilasi kode ABS.
+\end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]
+        {img/struktur-direktori.png}
+    \caption{Struktur Direktori ABS MVC Framework}
+    \label{fig:strukturDirektori}
+\end{figure}
+
+Berdasarkan susunan direktori seperti yang terlihat pada gambar \ref{fig:struktrDirektori} di atas, seluruh komponen MVC yang dibuat (misal: modul MMahasiswa, MMahasiswaController dan berkas HTML) akan diletakkan di dalam direktori \texttt{src/abs/(model, view, controller)}. Setelah seluruh komponen MVC diletakkan di dalam direktorinya masing-masing, nantinya framework MVC ini akan meng\textit{compile} seluruh kode ABS yang ada serta membungkusnya kedalam berkas JAVA \textit{archive} (jar) dan meletakannya di dalam direktori \texttt{dist}.\\
+
+Sampai sejauh ini penulis telah berhasil melakukan penyusunan direktori untuk \textit{framework} MVC ABS. Hal berikutnya yang penulis lakukan adalah membuat sebuah \textit{script} yang akan digunakan untuk melakukan proses kompilasi dan \textit{deployment} secara otomatis.
+
+\section{Pembuatan Ant Script Untuk Proses Kompilasi dan \textit{Deployment}}
+
+Untuk mempermudah pengembang perangkat lunak dalam melakukan proses kompilasi dan \textit{deployment}, penulis membuat sebuah \textit{build script} dengan menggunakan Apache Ant \footnote{http://ant.apache.org/}. Tujuan dari dibuatnya \textit{build script} ini adalah agar para pengembang dapat menjalankan keseluruhan proses tersebut dengan hanya mengetikkan satu buah perintah pada \textit{terminal console}. Sebagian besar \textit{script} yang digunakan untuk proses kompilasi dan \textit{deployment} ini diadaptasi dari Ant Script yang telah dibuat oleh tim HATS \footnote{http://tools.hats-project.eu/core/anttasks.html}. berikut adalah \textit{build script} yang penulis buat untuk framework MVC ABS:
+
+\begin{lstlisting}[
+caption=Build script untuk framework MVC ABS berbasis Apache Ant,
+label={lst:antBuildScript},
+escapeinside={@}{@}
+]
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ABS MVC" default="abs.compile.java" basedir="."
+	xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+	<property name="lib" location="lib" />
+	<property name="src" location="src" />
+	<property name="target" location="target" />
+	<property name="dist" location="dist" />
+
+	<property name="src.abs" location="${src}/abs" />
+	
+	<property name="target.java.src" location="${target}/java/src" />
+	<property name="target.java.bin" location="${target}/java/bin" />
+
+	<property name="lib.abs" location="${lib}/absfrontend.jar" />
+	
+	<property name="server" location="../ABSServer" />
+	<property name="server.web" location="${server}/web" />
+
+	<path id="build.abs.classpath">
+		<pathelement location="${lib.abs}" />
+	</path>
+
+	<fileset dir="${src.abs}" id="src.abs.files">
+		<include name="**/*.abs" />
+	</fileset>
+	
+	<pathconvert property="src.abs.fileargs" refid="src.abs.files"
+		pathsep=" " />
+	
+	<target name="clean" description="Removes all generated files"> @\label{lst:targetClean}@
+		<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${target}" />
+		</delete>
+	</target>
+
+	<target name="prepare" depends="clean"> @\label{lst:targetPrepare}@
+		<mkdir dir="${target.java.src}" />
+		<mkdir dir="${target.java.bin}" />
+	</target>
+
+	<target name="abs.typecheck" depends="prepare"> @\label{lst:targetTypeCheck}@
+		<java classname="abs.frontend.parser.Main" fork="true"
+			failonerror="true" classpathref="build.abs.classpath">
+			<arg line="${src.abs.fileargs}" />
+		</java>
+	</target>
+
+	<target name="abs.generate.java" description="Generates Java code" @\label{lst:targetABSGenerateJava}@
+		depends="clean,prepare">
+		<echo>FILE: ${src.abs.fileargs}</echo>
+		<java classname="abs.backend.java.JavaBackend" fork="true"
+			failonerror="true" classpathref="build.abs.classpath">
+			<arg line="${src.abs.fileargs}" />
+			<arg value="-sourceonly" />
+			<arg value="-d" />
+			<arg value="${target.java.src}" />
+		</java>
+	</target>
+
+	<target name="abs.compile.java" depends="abs.generate.java"> @\label{lst:targetABSCompileJava}@
+		<javac classpathref="build.abs.classpath" srcdir="${target.java.src}"
+			destdir="${target.java.bin}" />
+			
+		<copy todir="${target.java.bin}/View">
+			<fileset dir="${src.abs}/view" />
+		</copy>
+	</target>
+	
+	<target name="abs.build.jar" depends="abs.compile.java"> @\label{lst:targetABSBuildJar}@
+		<jar 
+			destfile="${dist}/app.jar"
+			basedir="${target.java.bin}" />
+	</target>
+	<target name="abs.deploy" depends="abs.build.jar"> @\label{lst:targetABSDeploy}@
+		<copy todir="${server.lib}">
+			<file file="${dist}/app.jar" />
+		</copy>
+	</target>
+</project>
+\end{lstlisting}
+
+Pada dasarnya \textit{build script} yang penulis buat merupakan kumpulan perintah-perintah yang mendefinisikan alur dari proses kompilasi sampai \textit{deployment} seperti yang terlihat pada kode \ref{lst:antBuildScript} baris \ref{lst:targetClean}, \ref{lst:targetPrepare}, \ref{lst:targetTypeCheck}, \ref{lst:targetABSGenerateJava}, \ref{lst:targetABSCompileJava}, \ref{lst:targetABSBuildJar} dan \ref{lst:targetABSDeploy}. Berdasarkan kode-kode tersebut, terlihat bahwa ada 7 (tujuh) buah perintah yang masing-masing saling memiliki ketergantungan sehingga membentuk sebuah rangkaian alur seperti yang terlihat pada gambar \ref{fig:buildScriptFlow}. Berikut adalah rangkaian alur yang penulis definisikan pada \textit{build script} tersebut:
+
+\begin{enumerate}
+    \item \textbf{clean:} Perintah ini digunakan untuk membersihkan seluruh berkas-berkas hasil \textit{auto-generated}.
+    \item \textbf{prepare:} Perintah ini digunakan untuk membuat direktori-direktori tambahan yang dibutuhkan pada saat proses kompilasi.
+    \item \textbf{abs.typecheck:} Perintah ini digunakan untuk memvalidasi kode ABS yang akan di\textit{compile}.
+    \item \textbf{abs.generate.java:} Perintah ini digunakan untuk menghasilkan kode JAVA dari kode ABS yang dibuat.
+    \item \textbf{abs.compile.java:} Perintah ini digunakan untuk meng\textit{compile} seluruh kode JAVA hasi kompilasi dari kode ABS yang dibuat.
+    \item \textbf{abs.build.jar:} Perintah ini digunakan untuk membungkus seluruh berkas hasil kompilasi ke dalam sebuah berkas JAVA Archive.
+    \item \textbf{abs.deploy:} Perintah ini digunakan untuk meletakan berkas .jar yang telah dihasilkan kedalam \textit{web server}.
+\end{enumerate}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/build-script-flow.png}
+    \caption{Alur dalam proses kompilasi dan \textit{deployment}}
+    \label{fig:buildScriptFlow}
+\end{figure}
+
+Dengan menggunakan \textit{build script} yang sudah dibuat, para pengguna \textit{framework} hanya perlu mengetikkan perintah \texttt{ant abs.deploy} dari dalam direktori framework untuk menjalankan keseluruhan proses kompilasi dan \textit{deployment} seperti yang terlihat pada gambar \ref{fig:antABSDeploy}di bawah ini.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/ant-abs-deploy.png}
+    \caption{Contoh hasil eksekusi perintah \texttt{ant abs.deploy}}
+    \label{fig:antABSDeploy}
+\end{figure}
+
+Sampai pada tahap ini penulis telah berhasil menyusun direktori dan membuat \textit{build script} dengan menggunakan Apache Ant untuk mempermudah proses kompilasi dan \textit{deployment} pada \textit{framework} MVC ABS. langkah selanjutnya adalah menambahkan mekanisme konfigurasi URL \textit{routing} dan mengatasi HTTP POST dan GET data untuk lebih menyempurnakan lagi \textit{framework} MVC ABS yang dibuat.
+
+\section{Penambahan Mekanisme Konfigurasi Pemetaan URL}
+
+Jika kita melihat kembali kode \ref{lst:javaNewWebServer} \textit{web server} di atas, dapat terlihat bahwa penulis masih menggunakan \texttt{if - else - elseif} dalam melakukan pemetaan antara URL dengan komponen Controller yang akan dipanggil. Tentunya hal ini sangat tidak efektif karena ketika terjadi penambahan komponen Controller, tentunya penulis harus menambahkan kembali blok \texttt{elsif} di dalam kode \textit{web server} untuk menambahkan pemetaan baru terhadap komponen Controller tersebut. Untuk membuat \textit{framework} ABS MVC lebih fleksibel terhadap perubahan, maka penulis membuat sebuah mekanisme di dalam \textit{framework} agar pengguna \textit{framework} MVC ABS dapat mendefinisikan pemetaannya sendiri langsung dari \textit{framework}.\\
+
+Pendekatan yang penulis lakukan untuk dapat menyediakan fitur konfigurasi pemetaan URL tersebut adalah dengan membuat sebuah modul ABS khusus yang bernama \texttt{RouteConfig}. modul ini berisikan daftar URL beserta nama komponen Controller dan \textit{method} yang akan dicocokan dengan menggunakan mekanisme \textit{pattern matching}. Modul ini nantinya akan dipanggil secara otomatis oleh \textit{web server} pada saat menerima \textit{request} dari \textit{web browser}. Tujuan dari pemanggilan modul ini oleh \textit{web server} adalah untuk mengetahui komponen Controller dan \textit{method} mana yang harus dipanggil oleh \textit{web server} untuk dapat menghasilkan halaman web yang diinginkan. berikut adalah modul \texttt{RouteConfig} yang penulis sediakan untuk membantu para pengguna \textit{framework} dalam memetakan URL dengan Controller yang dibuat.
+
+\begin{lstlisting}[
+caption=Modul \texttt{RouteConfig} untuk pemetaan URL,
+label={lst:absRouteConfig},
+escapeinside={!}{!}
+]
+module ABS.Framework.Route;
+
+interface RouteConfig
+{
+	String route(String url);
+}
+
+class RouteConfigImpl implements RouteConfig
+{
+	String route(String url)
+	{
+		String result = case url !\label{lst:startPatternMatching}!
+		{
+			"/product/index.abs" => "Controller.Product.ProductControllerImpl@index";
+			"/product/add.abs" => "Controller.Product.ProductControllerImpl@addProduct"; !\label{lst:contohRouteConfig}!
+			"/product/details.abs" => "Controller.Product.ProductControllerImpl@productDetails";
+			"/product/list.abs" => "Controller.Product.ProductControllerImpl@productList";
+			_ => ""; //default pattern
+		}; !\label{lst:endPatternMatching}!
+		
+		return result;
+	}
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absRouteConfig} baris \ref{lst:startPatternMatching} sampai \ref{lst:endPatternMatching} di atas, penulis mendefinisikan 4 (empat) buah pemetaan URL dengan komponen Controller dan \textit{method}nya. Konvensi yang digunakan dalam mendefinisikan pemetaan URL tersebut adalah \texttt{[nama modul].[nama class]@[nama method]}. Sebagai contoh, pada kode \ref{lst:absRouteConfig} baris \ref{lst:contohRouteConfig} di atas terlihat penulis memetakan sebuah URL \texttt{/product/add.abs} dengan sebuah komponen Controller bernama \texttt{ProductControllerImpl} yang berada di dalam modul \texttt{Controller.Product} dan memanggil \textit{method} \texttt{addProduct}. Dengan menggunakan mekanisme seperti ini, pengguna framework dapat langsung memetakan URL dengan komponen Controller yang dibuat tanpa harus mengubah kode sumber dari \textit{web server}.\\
+
+Berikut ini adalah diagram alur pemanggilan modul \texttt{RouteConfig} oleh \textit{web server} dalam menghasilkan sebuah halaman web beserta penjelasannya.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/absmvc_flow.png}
+    \caption{Diagram alur pemanggilan Controller melalui \texttt{RouteConfig}}
+    \label{fig:diagramABSMVCRouteConfig}
+\end{figure}
+
+Penjelasan:
+\begin{enumerate}
+    \item \textit{Web browser} mengirimkan HTTP \textit{request} kepada \textit{web browser} seperti misalnya \texttt{GET /product/add.abs HTTP/1.1}.
+    \item \textit{Web server} akan mengambil segmen yang berisi \textit{path} \texttt{/product/add.abs} kepada modul \texttt{RouteConfig}.
+    \item Modul \textit{RouteConfig} akan mencocokan \textit{path} yang diberikan dengan menggunakan \textit{pattern matching} untuk kemudian memberikan hasilnya berupa nama Controller dan \textit{method} yang harus dipanggil (misal: \texttt{Controller.Product.ProductControllerImpl@addProduct})kepada \textit{web server}.
+    \item \textit{Web server} memanggil controller dan \textit{method} sesuai yang diberikan oleh modul \texttt{RouteConfig}.
+    \item Controller menyiapkan data-data yang akan ditampilkan di halaman web.
+    \item Controller memberikan data (Model) dan nama berkas HTML (View) untuk kemudian diproses oleh \textit{web server}.
+    \item \textit{Web server} akan mencari dan memproses berkas HTML sesuai dengan nama yang diberikan oleh Controller.
+    \item \textit{Web server} mengintegrasikan berkas HTML tersebut dengan data yang diberikan untuk menghasilkan sebuah halaman web.
+    \item \textit{Web server} memberikan halaman web yang telah berhasil dibuat kepada \textit{web browser}.
+\end{enumerate}
+
+Sampai pada tahap ini penulis telah berhasil membuat modul ABS yang dapat digunakan untuk mengkonfigurasi pemetaan URL yang diberikan oleh \textit{web server} dengan komponen Controller yang dibuat. Dengan menggunakan cara ini, pengguna \textit{framework} tidak perlu mengubah kode sumber dari \textit{web browser} untuk melakukan proses pemetaan tersebut. Hal yang akan dilakukan selanjutnya oleh penulis adalah menambahkan mekanisme untuk menangani HTTP POST dan GET \textit{input} dari \textit{web browser}.
+
+\section{Penambahan Mekanisme Penanganan HTTP POST dan GET Data}
+
+Menangani HTTP POST dan GET data merupakan salah satu fitur yang sangat penting dalam membangun sebuah aplikasi berbasis web. Melalui mekanisme ini, para pengguna dapat berinteraksi dengan aplikasi web yang dibuat sehingga membuat konten aplikasi tersebut menjadi lebih dinamis. Untuk dapat menghasilkan sebuah \textit{framework} MVC yang utuh, tentunya fitur ini harus disediakan untuk mempermudah pengembang aplikasi web dalam menerima dan memproses data yang diberikan oleh para pengguna. Pendekatan yang dapat dilakukan untuk dapat mengimplementasikan fitur ini kedalam \textit{framework} MVC ABS adalah dengan cara memberikan HTTP POST dan GET data tersebut secara langsung dari \textit{web server} kepada \textit{framework} dalam bentuk objek.
+
+Berikut ini adalah langkah-langkah yang penulis lakukan dalam memberikan HTTP POST dan GET data yang diterima dari \textit{web browser} kepada \textit{framework} MVC ABS:
+
+\begin{enumerate}
+    \item \textit{Web browser} memberikan data kepada \textit{web server} dengan menggunakan protokol HTTP GET atau POST (seperti yang terlihat pada kode \ref{lst:httpGETInput} dan \ref{lst:httpPOSTInput}).
+    \item \textit{Web server} mengurai protokol HTTP tersebut untuk mendapatkan data-data yang diberikan dan membungkusnya kedalam sebuah objek.
+    \item \textit{Web server} memberikan objek yang berisi data-data tersebut kepada \textit{framework} MVC ABS bersamaan dengan pemanggilan komponen Controller.
+    \item Komponen Controller menerima data yang diberikan dan memproses POST atau GET data tersebut untuk menghasilkan data model yang dibutuhkan.
+\end{enumerate}
+
+\begin{lstlisting}[
+language=TeX,
+caption=Contoh \textit{request} HTTP GET beserta datanya,
+label={lst:httpGETInput}
+]
+GET /product/details.abs?product_sku=00188&product_name=FMSE+Dining+Set&description=Beautiful+and+Cute+Dining+Set&price=250000 HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36
+Referer: http://localhost:8080/product/add.abs
+Accept-Encoding: gzip, deflate, sdch
+Accept-Language: en-US,en;q=0.8,id;q=0.6
+\end{lstlisting}
+
+\begin{lstlisting}[
+language=TeX,
+caption=Contoh \textit{request} HTTP POST beserta datanya,
+label={lst:httpPOSTInput}
+]
+POST /product/details.abs HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+Content-Length: 101
+Cache-Control: max-age=0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Origin: http://localhost:8080
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Referer: http://localhost:8080/product/add.abs
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8,id;q=0.6
+
+product_sku=00188&product_name=FMSE+Dining+Set&description=Beautiful+and+Cute+Dining+Set&price=250000
+\end{lstlisting}
+
+
+ 
