@@ -1,4 +1,5 @@
 \chapter{Penyusunan Framework MVC ABS}
+
 Setelah melakukan banyak eksperimen untuk memetakan ABS kedalam komponen-komponen MVC dan mengintegrasikannya dengan \textit{web server} sederhana, selanjutnya adalah menyusun hasil eksperimen-eksperimen tersebut agar menjadi satu kesatuan framework MVC ABS yang utuh. Ada beberapa poin yang akan disusun terkait pembuatan framework MVC ABS yang diantaranya adalah:
 
 \begin{enumerate}
@@ -229,10 +230,11 @@ Berikut ini adalah langkah-langkah yang penulis lakukan dalam memberikan HTTP PO
 
 \begin{lstlisting}[
 language=TeX,
-caption=Contoh \textit{request} HTTP GET beserta datanya,
-label={lst:httpGETInput}
+caption=Contoh HTTP GET \textit{header} beserta datanya,
+label={lst:httpGETInput},
+escapeinside={@}{@}
 ]
-GET /product/details.abs?product_sku=00188&product_name=FMSE+Dining+Set&description=Beautiful+and+Cute+Dining+Set&price=250000 HTTP/1.1
+GET /product/details.abs?product_sku=00188&product_name=FMSE+Dining+Set&description=Beautiful+and+Cute+Dining+Set&price=250000 HTTP/1.1 @\label{lst:httpGETData}@
 Host: localhost:8080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
@@ -244,13 +246,14 @@ Accept-Language: en-US,en;q=0.8,id;q=0.6
 
 \begin{lstlisting}[
 language=TeX,
-caption=Contoh \textit{request} HTTP POST beserta datanya,
-label={lst:httpPOSTInput}
+caption=Contoh HTTP POST \textit{header} beserta datanya,
+label={lst:httpPOSTInput},
+escapeinside={@}{@}
 ]
 POST /product/details.abs HTTP/1.1
 Host: localhost:8080
 Connection: keep-alive
-Content-Length: 101
+Content-Length: 101 @\label{lst:contentLength}@
 Cache-Control: max-age=0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Origin: http://localhost:8080
@@ -260,8 +263,228 @@ Referer: http://localhost:8080/product/add.abs
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.8,id;q=0.6
 
-product_sku=00188&product_name=FMSE+Dining+Set&description=Beautiful+and+Cute+Dining+Set&price=250000
+product_sku=00188&product_name=FMSE+Dining+Set&description=Beautiful+and+Cute+Dining+Set&price=250000 @\label{lst:httpPOSTData}@
 \end{lstlisting}
 
+Seperti yang terlihat pada kode \ref{lst:httpGETInput} dan \ref{lst:httpPOSTInput} di atas, terdapat sedikit perbedaan pada protokol HTTP GET dan POST dalam memberikan data. Pada protokol HTTP GET data langsung diberikan pada URL seperti yang terlihat pada kode \ref{lst:httpGETInput} baris \ref{lst:httpGETData} sedangkan protokol HTTP POST data diberikan secara terpisah dari bagian HTTP \textit{header} dengan memberikan tambahan informasi \texttt{Content-Length} untuk mengetahui panjang data yang diberikan dalam bentuk \texttt{byte} (lihat kode \ref{lst:httpPOSTInput} baris \ref{lst:contentLength} dan \ref{lst:httpPOSTData}). Dikarenakan letak data pada kedua protokol tersebut berbeda, dibutuhkan adanya dua buah implementasi kode pada \textit{web server} seperti yang ditunjukan pada kode \ref{lst:javaParseHTTPData} di bawah ini:
 
- 
+\begin{lstlisting}[
+firstnumber=81,
+caption=Implementasi penguraian protokol POST dan GET pada \textit{web server},
+label={lst:javaParseHTTPData},
+escapeinside={@}{@}
+]
+...
+
+if(requestMethod.equals("POST"))
+{
+   	HashMap<String, String> requestHeaders = request.getHeaders();
+   	Integer contentLength = Integer.parseInt(requestHeaders.get("Content-Length"));
+   	char[] buffer = new char[contentLength];
+   	in.read(buffer);
+   	
+   	String inputString = URLDecoder.decode(new String(buffer), "UTF-8");
+   	String[] inputs = inputString.split("&");
+   	
+   	HashMap<String, String> requestInputs = new HashMap<String, String>();
+   	for (String input : inputs) 
+   	{
+		String key = input.split("=")[0];
+		String value = input.split("=")[1];
+		requestInputs.put(key, value);
+	}
+            	
+    request.setRequestInputs(requestInputs);
+}
+else if(requestMethod.equals("GET"))
+{
+   	String uri = request.getRequestUri();
+   	String[] splittedUri = uri.split("\\?");
+   	
+   	if(splittedUri.length > 1)
+   	{
+   		String requestSegment = splittedUri[0];
+   		String inputSegment = splittedUri[1];
+   		
+   		request.setRequestUri(requestSegment);
+   		String[] inputData = inputSegment.split("&");
+
+   		HashMap<String, String> requestInputs = new HashMap<String, String>();
+   		for (String input : inputData) 
+   		{
+   			String key = URLDecoder.decode(input.split("=")[0], "UTF-8");
+   			String value = URLDecoder.decode(input.split("=")[1], "UTF-8");
+   			
+   			requestInputs.put(key, value);
+		}
+            		
+   		request.setRequestInputs(requestInputs);
+   	}
+}
+
+...
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:javaParseHTTPData} baris diatas, pada saat penulis menguraikan data pada protokol HTTP POST dan GET, penulis mengumpulkan data-data tersebut kedalam sebuah \texttt{HashMap<String, String>}. Tujuan dari pembuatan \texttt{HashMap} tersebut adalah untuk mengumpulkan seluruh data yang dikirimkan oleh \textit{web browser} untuk kemudian diberikan kepada \textit{framework} MVC ABS. Mekanisme yang digunakan dalam mengirimkan HTTP POST dan GET data tersebut adalah dengan membuat sebuah modul baru pada \textit{framework} MVC ABS yang bernama \texttt{HTTPRequest}. berikut adalah modul ABS \texttt{HTTPRequest} telah penulis buat dalam mengimplementasikan hal tersebut.
+
+\begin{lstlisting}[
+caption=Modul \texttt{ABSHttpRequest},
+label={lst:absHttpRequest}
+]
+interface ABSHttpRequest
+{
+	String getInput(String key);
+}
+
+class ABSHttpRequestImpl(Map<String, String> requestInput) implements ABSHttpRequest
+{
+	String getInput(String key)
+	{
+		String value = fromJust(lookup(requestInput, key));
+		return value;
+	}
+}
+\end{lstlisting}
+
+Dengan adanya tambahan modul \texttt{ABSHttpRequest}, para pengguna \textit{framework} MVC ABS dapat dengan mudah untuk menerima dan memproses setiap \textit{input} yang diberikan oleh pengguna aplikasi. Untuk dapat memproses \textit{input} yang diberikan, diperlukan adanya sedikit perubahan terkait cara mendefinisikan sebuah \textit{method} pada komponen Controller yang dibuat. Perubahhan yang harus dilakukan adalah menyertakan modul \texttt{ABSHttpRequest} tersebut sebagai parameter dalam setiap \textit{method} yang dibuat. Berikut adalah contoh \textit{method} pada komponen Controller yang sudah mengimplementasikan modul \texttt{ABSHttpRequest}.
+
+\begin{lstlisting}[
+firstnumber=24,
+caption=Contoh \textit{method} yang sudah mengimplementasikan \texttt{ABSHttpRequest},
+label={lst:absGetHTTPInput},
+escapeinside={@}{@}
+]
+...
+
+Pair<String, List<Product>> productDetails(ABSHttpRequest request)
+{
+	String sku = request.getInput("product_sku"); @\label{lst:absGetInputParam}@
+	String name = request.getInput("product_name");
+	String description = request.getInput("description");
+	String price = request.getInput("price"); @\label{lst:absGetInputParam2}@
+	
+	Product myProduct = new local ProductImpl(sku, name, description, price);
+	List<Product> dataList = Nil;
+	dataList = appendright(dataList, myProduct);
+	
+	return Pair("product/details", dataList);
+}
+
+...
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absGetHTTPInput} baris \ref{lst:absGetInputParam} sampai \ref{lst:absGetInputParam2}, penulis dapat mengambil \textit{input} data yang diberikan oleh pengguna dengan cara memanggil \textit{method} \texttt{getInput(namaParameter)} yang sudah disediakan oleh modul \texttt{ABSHttpRequest}. Adapun nama parameter yang menjadi kunci dalam mengambil \textit{input} data yang diinginkan adalah dari atribute \texttt{name} pada tag \texttt{<input>} yang disediakan oleh HTML (lihat kode \ref{lst:viewWithForm} dan \ref{lst:absGetHTTPInput}). Berikut ini adalah contoh halaman HTML yang ditujukan untuk mengirimkan HTTP POST data untuk kemudian di proses oleh Controller pada kode \ref{lst:absGetHTTPInput} diatas.
+
+\begin{lstlisting}[
+caption=Contoh halaman HTML yang mengandung \texttt{<form>},
+label={lst:viewWithForm}
+]
+<form method="POST" action="/product/details.abs">
+<table>
+	<tbody>
+		<tr>
+			<td>Product SKU</td>
+			<td>:</td>
+			<td><input type="text" name="product_sku" /></td>
+		</tr>
+		<tr>
+			<td>Product Name</td>
+			<td>:</td>
+			<td><input type="text" name="product_name" /></td>
+		</tr>
+		<tr>
+			<td>Description</td>
+			<td>:</td>
+			<td><input type="text" name="description" /></td>
+		</tr>
+		<tr>
+			<td>Price</td>
+			<td>:</td>
+			<td><input type="text" name="price" /></td>
+		</tr>
+	</tbody>
+</table>
+<input type="submit" value="Submit" />
+</form>
+\end{lstlisting}
+
+Sampai pada tahap ini penulis telah berhasil menambahkan fitur untuk penanganan HTTP POST dan GET data yang diberikan oleh \textit{web browser}. Dengan demikian, \textit{framework} MVC ABS yang dibuat saat ini sudah berhasil menjadi sebuah \textit{famework} yang utuh dan dapat digunakan untuk membuat sebuah aplikasi berbasis web. 
+
+\section{Hasil Akhir}
+
+Setelah melakukan banyak perubahan pada \textit{framework} dan kode \textit{web server}, diperoleh dua buah hasil akhir dari proses eksperimen yang penulis lakukan. Adapun hasil akhir dari proses eksperimen ini adalah dua buah produk yang bernama ABS Server dan ABS MVC Framework. Berikut adalah detail kedua buah produk tersebut:
+
+\subsection{ABS MVC Framework}
+
+ABS MVC Framework merupakan sebuah \textit{framework} yang ditujukan untuk membantu para pengembang perangkat lunak dalam membangun sebuah aplikasi web berbasis ABS dengan pola Model-View-Controller (MVC). Konten dari \textit{framework} ini adalah berupa kumpulan direktori, dua buah modul ABS dan sebuah \textit{build script} yang dapat membantu para pengembang perangkat lunak dalam membangun aplikasi web yang diinginkan. Adapun detail konten dari ABS MVC Framework adalah sebagai berikut:
+
+Direktori:
+\begin{itemize}
+    \item \texttt{src/abs/controller}: merupakan direktori yang digunakan untuk meletakan modul Controller ABS yang dibuat.
+    \item \texttt{src/abs/view}: merupakan direktori yang digunakan untuk menyimpan halaman HTML yang dibuat.
+    \item \texttt{src/abs/model}: merupakan direktori yang digunakan untuk meletakan setiap modul model yang dibuat.
+    \item \texttt{src/abs/framewok}: merupakan direktori yang digunakan untuk meletakan modul internal \textit{framework} yang dibuat oleh penulis seperti modul \texttt{ABSHttpRequest} dan \texttt{RouteConfig}.
+\end{itemize}
+
+Modul ABS:
+\begin{itemize}
+    \item \texttt{ABSHttpRequest}: modul ini digunakan untuk mengambil HTTP POST dan GET data yang diterima oleh \textit{web server}.
+    \item \texttt{RouteConfig}: modul ini digunakan untuk melakukan pemetaan URL dengan Controller dan \textit{method} yang dibuat.
+\end{itemize}
+
+Lain-lain:
+\begin{itemize}
+    \item \texttt{build.xml}: merupakan \textit{build script} yang dibuat dengan menggunakan Apache Ant dengan tujuan untuk memudahkan pengguna dalam proses kompilasi dan \textit{deployment}.
+\end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/abs-mvc-framework.png}
+    \caption{Hasil akhir dari ABS MVC Framework}
+    \label{fig:absMVCFramework}
+\end{figure}
+
+\subsection{ABS Server}
+
+ABS Server merupakan sebuah \textit{web server} sederhana dibuat dengan tujuan untuk mencoba aplikasi web yang dibuat dengan menggunakan ABS MVC Framework. Fitur yang dimiliki oleh ABS Server ini antara lain adalah:
+
+\begin{itemize}
+    \item Menerima HTTP \textit{request} dari \textit{web browser} dan memprosesnya bersama dengan ABS MVC Framework untuk menghasilkan sebuah halaman web.
+    \item Menerima HTTP POST dan GET data yang dikirim oleh \textit{web browser} dan meneruskannya ke ABS MVC Framework.
+    \item Melakukan konversi tipe data \texttt{ABSString} kedalam JAVA String termasuk membersihkan tanda kutip "'" yang melekat pada setiap data bertipe \texttt{ABSString}.
+    \item Melakukan konversi tipe data \texttt{ABS.StdLib.List} kedalam JAVA \texttt{ArrayList}.
+\end{itemize}
+
+Berikut ini adalah penjelas dari masing-masing \textit{source code} yang ada di dalam ABS Server:
+
+\begin{itemize}
+    \item \texttt{HttpRequest.java}: Class JAVA ini merupakan Class pembantu yang digunakan untuk menyimpan seluruh informasi \textit{request} dari \textit{web browser} termasuk HTTP POST dan GET data untuk kemudian diberikan kepada ABS Framework.
+    \item \texttt{HttpServer.java}: Class JAVA ini merupakan Class utama pada ABS Server. Melalui Class inilah aplikasi ABS Server berjalan.
+    \item \texttt{RequestHandler.java}: Class JAVA ini berfungsi untuk memproses setiap \textit{request} yang diberikan oleh \textit{web browser} dan menyampaikannya kedapa ABS MVC Framework untuk dapat menghasilkan sebuah halaman web.
+    \item \texttt{ResourceResolver.java}: Class JAVA ini berfungsi untuk mengambil berkas HTML sesuai dengan lokasi berkas yang diberikan oleh modul \texttt{RouteConfig} dan mengubahnya menjadi JAVA \texttt{InputStream} untuk kemudian diproses oleh Thymeleaf.
+    \item \texttt{DataTransformer.java}: Class JAVA ini berfungsi untuk melakukan konversi tipe data ABS kedalam tipe data JAVA. Untuk saat ini, tipe data yang sudah dikonversi adalah \texttt{ABSString} dan \texttt{ABS.StdLib.List}
+\end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/abs-server-source.png}
+    \caption{Hasil akhir dari ABS Server}
+    \label{fig:absServer}
+\end{figure}
+
+Dalam penggunaanya, ABS Server ini telah penulis \textit{compile} dan diarsipkan kedalam berkas JAVA Archive (.jar) bernama \texttt{absserver.jar} sehingga pengguna ABS MVC Framework hanya perlu mengetikan perintah \texttt{java -jar absserver.jar} untuk dapat menjalankan ABS Server tersebut. Adapun konten dari ABS Server yang sudah diarsipkan kedalam \texttt{.jar} ini antara lain adalah:
+
+\begin{itemize}
+    \item direktori \texttt{web}: Merupakan direktori dimana aplikasi web yang dibuat dengan menggunakan ABS MVC Framework akan di \textit{deploy}.
+    \item direktoru \texttt{lib}: Merupaka direktori yang berisikan \texttt{library} tambahan yang dibutuhkan oleh \textit{web server} (misal: Thymeleaf).
+    \item \texttt{absserver.jar}: Merupakan aplikasi utama dari ABS Server yang harus dijalankan oleh pengguna dengan menggunakan perintah \texttt{java -jar absserver.jar}.
+\end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/abs-server.png}
+    \caption{ABS Server yang sudah diarsipkan kedalam \texttt{.jar}}
+    \label{fig:absServerJar}
+\end{figure}
+
+Sampai pada tahap ini penulis telah berhasil menghasilkan ABS MVC Framework yang dapat digunakan untuk membuat sebuah aplikasi web berbasis WEB beserta dengan ABS Server yang dapat digunakan untuk mencoba menjalankan aplikasi web yang telah dihasilkan.
