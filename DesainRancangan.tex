@@ -1,6 +1,6 @@
 \chapter{Perancangan ABS MVC Framework}
 
-Bab ini berisi rancangan ABS MVC Framework yang penulis buat sebelum melakukan tahap implementasi kode.
+Bab ini membahas tentang rancangan ABS MVC Framework yang penulis buat sebelum melakukan tahap implementasi kode.
 
 \section{Gambaran Umum}
 
@@ -61,3 +61,17 @@ Seperti yang sudah penulis sebutkan pada rincian fitur ABS MVC Framework, salah 
 \end{figure}
 
 Terlihat pada gambar \ref{fig:mvcHttpInputMechanism} di atas, setiap HTTP \textit{request} yang diterima oleh \textit{web server} akan dibuat menjadi sebuah objek JAVA. Objek yang berisikan HTTP POST atau GET data ini nantinya akan dikonversi menjadi sebuah Objek ABS dan diberikan kepada ABS MVC Framework untuk kemudian digunakan oleh komponen Controller. Dengan menggunakan cara ini, pengguna ABS MVC Framework dapat menerima dan memproses \textit{input} yang diberikan oleh \textit{web server} melalui komponen Controller yang dibuat.
+
+\subsection{Karakteristik komponen MVC pada ABS MVC Framework}
+
+Salah satu tujuan dari penggunaan MVC Framework dalam proses pengembangan perangkat lunak adalah untuk membantu para pengembang dalam memecah kode program yang dibuat kedalam komponen Model, View dan Controller. Untuk dapat memecah kode program kedalam tiga buah komponen tersebut, perlu adanya karakteristik yang jelas yang dapat membedakan ketiga buah komponen tersebut. Oleh karena itu, penulis pelu mendefinisikan karakteristik dari setiap komponen MVC yang ada di dalam ABS MVC Framework untuk mempermudah para pengembang dalam mengelompokan kode program yang mereka buat.
+
+Berikut ini adalah karakteristik yang sudah penulis rancang untuk setiap komponen MVC pada ABS MVC Framework:
+
+\begin{itemize}
+    \item \textbf{Model}: Komponen ini merupakan komponen yang merepresentasikan data pada aplikasi yang dibuat. Dalam membuat komponen Model ini, diharapkan komponen ini dibentuk sesederhana mungkin dengan hanya berisikan atribut-atribut yang berkaitan dengan data beserta \textit{method} aksesor dan mutatornya.Setiap kode yang mengandung proses bisnis aplikasi tidak boleh diletakan di dalam komponen ini.
+    \item \textbf{View}: Komponen ini berperan dalam mempresentasikan data yang berasa dari komponen Model kepada pengguna aplikasi dalam bentuk halaman web. Dalam konteks pengembangan aplikasi web, diharapkan komponen ini dapat didefinisikan dengan menggunakan sintaks HTML untuk memudahkan para pengembang dalam proses pembuatannya. Selain itu, dikarenakan komponen ini ditujukan untuk menampilkan komponen Model yang diberikan, maka komponen ini harus bisa mengakses komponen Model secara langsung.
+    \item \textbf{Controller}: Komponen ini merupakan komponen yang berisikan proses bisnis dari aplikasi web yang dibuat. Pada komponen inilah pengembang perangkat lunak akan memproses setiap \textit{input} yang diberikan oleh pengguna aplikasi dan mengintegrasikannya dengan komponen Model dan View dalam menghasilkan sebuah halaman web yang utuh. Komponen ini merupakan komponen utama dalam sebuah aplikasi web berbasis MVC dan oleh karenanya, keberadaan komponen ini tidak dapat dihilangkan dari dalam aplikasi web yang dibuat.
+\end{itemize}
+
+Sampai pada tahap ini, penulis telah berhasil membuat rancangan untuk ABS MVC Framework. Langkah berikutnya adalah melakukan proses implementasi (\textit{coding}) untuk dapat merealisasikan rancangan yan dibuat.
