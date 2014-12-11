@@ -1,4 +1,4 @@
-\chapter{Percobaan Pembuatan Halaman Web Menggunakan ABS}
+\chapter{Pembuatan Halaman Web Menggunakan ABS}
 
 Bab ini memaparkan secara kronologis tentang proses eksperimen yang telah dilakukan oleh penulis untuk mencoba menghasilkan sebuah halaman web dengan menggunakan bahasa pemodelan ABS.
 
@@ -439,12 +439,12 @@ escapeinside={@}{@}
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="mahasiswa: ${mahasiswaList}">
+			<tr th:each="mahasiswa: ${mahasiswaList}"> @\label{lst:thymeStartLoop}@
 				<td th:text="${#ids.seq('')}"></td>
 				<td th:text="${mahasiswa.npm}"></td>
 				<td th:text="${mahasiswa.nama}"></td>
 				<td th:text="${mahasiswa.alamat}"></td>
-			</tr>
+			</tr> @\label{lst:thymeEndLoop}@
 		</tbody>
 	</table>
 </body>
