@@ -1,7 +1,340 @@
 \chapter{Penerapan ABS MVC Framework}
 
-Pada bab ini penulis akan memberikan contoh membuat sebuah aplikasi web sederhana dengan menggunakan ABS MVC Framework.
+Bab ini membahas tentang penerapan ABS MVC Framework dalam pengembangan perangkat lunak berbasis web.
+
+\section{Gambaran Umum Aplikasi Web}
+Aplikasi web yang akan dibuat pada bab ini adalah aplikasi katalog produk yang fungsinya adalah untuk menyimpan dan menampilkan data tentang produk yang akan dijual di pasaran. Aplikasi web ini dibuat dengan tujuan untuk mendemonstrasikan tentang bagaimana membuat operasi \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete} (CRUD) dengan menggunakan ABS MVC Framework. Selain itu, penulis juga akan mendemonstrasikan bagaimana mengelola \textit{variability} degan pendekatan \textit{delta modelling} menggunakan ABS MVC Framework.\\
+
+Berikut ini adalah fitur dari aplikasi web yang akan dibuat dengan menggunakan ABS MVC Framework:
+
+\begin{enumerate}
+    \item Menyimpan data produk (sku\footnote{\textit{stock keeping unit}, merupakan kode unik yang diberikan kepada setiap item sebagai bentuk identifikasi barang}, nama produk, deskripsi, harga).
+    \item Menampilkan daftar produk.
+    \item Mengubah data produk.
+    \item Menghapus data produk.
+\end{enumerate}
 
 \section{Pembuatan Komponen Model}
+
+Seperti yang sudah dibahas pada bab sebelumnya, komponen Model merupakan representasi dari data yang ada di dalam aplikasi. Dalam konteks aplikasi web yang akan dibuat, komponen Model ini akan merepresentasikan data produk yang yang akan disimpan oleh sistem dan ditampilkan kepada pengguna aplikasi. Pada tahap ini, penulis membuat sebuah modul ABS barus bernama \texttt{Product} dan menyimpan modul tersebut dengan nama \textit{Product.abs} di dalam direktori \texttt{src/abs/model} milik ABS MVC Framework.\\
+
+Setelah selesai membuat modul baru, berikutnya adalah menuliskan kode ABS untuk mendefinisikan modul \texttt{Product} tersebut. Berikut ini adalah kode yang harus ditulis di dalam modul \texttt{Product}:
+
+\begin{lstlisting}[
+caption=Kode ABS untuk mendefinisikan komponen Model \texttt{Product},
+label={lst:absProductModel},
+escapeinside={@}{@}
+]
+module Model.Product;
+export *;
+
+interface Product
+{
+	String getSku(); @\label{lst:modelAccessor}@
+	String getName();
+	String getDescription();
+	String getPrice();
+	Unit setSku(String sku); @\label{lst:modelMutator}@
+	Unit setName(String name);
+	Unit setDescription(String description);
+	Unit setPrice(String price);
+}
+
+class ProductImpl 
+	(String sku, String name, String description, String price) implements Product
+{
+	String getSku() { return this.sku; }
+	String getName() { return this.name; }
+	String getDescription() { return this.description; }
+	String getPrice() { return this.price; }
+	Unit setSku(String sku) { this.sku = sku; }
+	Unit setName(String name) { this.name = name; }
+	Unit setDescription(String description) { this.description = description; }
+	Unit setPrice(String price) { this.price = price; }
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absProductModel} di atas, konten dari \texttt{Product} hanya berisi atribut-atribut data seperti "sku", "name", "description", dan "price" beserta \textit{method} aksesor (\texttt{getSku()}) dan mutatornya (\texttt{setSku()}). Satu hal yang harus diperhatikan dalam mendefinisikan komponen Model ini adalah konvensi penamaan untuk \textit{method} aksesor dan mutatornya. Konvensi penamaan yang digunakan pada \textit{framework} ini adalah dengan memberikan prefix \texttt{set} untuk mutator dan \texttt{get} untuk aksesor yang kemudian diikuti dengan nama atribut dengan menggunakan format \textit{camel case} (lihat baris \ref{lst:modelAccessor} dan \ref{lst:modelMutator}). Konvensi ini ditujukan agar komponen Model yang dibuat dapat dikenali oleh Thymeleaf.\\
+
+Setelah selesai membuat komponen Model, selanjutnya adalah membuat modul bantuan yang akan digunakan untuk mensimulasikan basis data pada aplikasi. Hal ini dilakukan karena ABS MVC Framework yang digunakan belum dapat mengakses basis data secara langsung seperti yang sudah disebutkan pada bagian batasan penelitian. Operasi-operasi yang dimiliki oleh modul ini antara lain adalah:
+
+\begin{enumerate}
+    \item \texttt{save}: operasi ini digunakan untuk menyimpan data produk yang diberikan.
+    \item \texttt{delete}: operasi ini digunakan untuk menghapus data produk tertentu.
+    \item \texttt{findAll}: operasi ini digunakan untuk mendapatkan seluruh data produk yang tersimpan.
+    \item \texttt{findBySku}: operasi ini digunakan untuk mendapatkan data produk sesuai dengan kode SKU yang diberikan.
+\end{enumerate}
+
+Pada tahap ini penulis membuat sebuah modul baru yang bernama \texttt{ProductDB} yang kemudian disimpan ke dalam direktori \texttt{src/abs/model} dengan nama \texttt{ProductDB.abs}. Berikut ini adalah konten dari module \texttt{ProductDB.abs}:
+
+\begin{lstlisting}[
+caption=Kode ABS untuk modul \texttt{ProductDB},
+label={lst:absProductDB},
+escapeinside={@}{@}
+]
+module Model.ProductDB;
+export *;
+import Product, ProductImpl from Model.Product;
+
+interface ProductDB
+{
+	Unit init();
+	List<Product> findAll();
+	Product findBySku(String sku);
+	Unit save(Product obj);
+	List<Product> delete(Product obj);
+}
+
+class ProductDBImpl implements ProductDB
+{
+	List<Product> db = Nil; @\label{lst:absProductList}@
+	
+	Unit init() @\label{lst:absProductDBInit}@
+	{
+		Product p1 = new local ProductImpl(
+			"WH001", "LED TV 24' ", "FMSE LED TV 24 inch with 2 HDMI", "2.500.000");
+			
+		Product p2 = new local ProductImpl(
+			"WH002", "LED TV 24' ", "FMSE LED TV 24 inch with 2 HDMI", "4.500.000");
+			
+		Product p3 = new local ProductImpl(
+			"WH003", "Rice Cooker", "FMSE Electric Rice Cooker 5 litre", "1.500.000");
+			
+		db = appendright(db, p1);
+		db = appendright(db, p2);
+		db = appendright(db, p3);
+	}
+	
+	List<Product> findAll()
+	{
+		return db;
+	}
+	
+	Product findBySku(String sku)
+	{
+		Product result = null;
+		Int index = 0;
+		
+		while(index < length(db))
+		{
+			Product current = nth(db, index);
+			String currentSku = current.getSku();
+			
+			if(currentSku == sku)
+			{
+				result = current;
+			}
+			
+			index = index + 1;	
+		}
+		
+		return result;
+	}
+	
+	Unit save(Product obj)
+	{
+		db = appendright(db, obj);
+	}
+	
+	List<Product> delete(Product obj)
+	{
+		db = without(db, obj);
+		
+		return db;
+	}
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:absProductDB} baris \ref{lst:absProductList} diatas, penulis membuat sebuah \texttt{List<Product>} yang digunakan untuk menyimpan seluruh data produk. Setiap operasi-operasi yang ada di dalam modul \texttt{ProductDB} ini nantinya akan menggunakan \texttt{List<Product>} tersebut sebagai sumber datanya.\\
+
+Untuk keperluan pengembangan aplikasi web yang dibuat, penulis membuat tiga buah data \textit{dummy} sebagai data awalan yang kemudian dimasukan kedalam \texttt{List<Product>} yang telah dibuat. Data awalan tersebut dibuat di dalam sebuah \textit{method} khusus bernama \textit{init} (lihat kode \ref{lst:absProductDB} baris \ref{lst:absProductDBInit}) yang akan dipanggil setiap kali melakukan inisialisasi modul ini. Dengan menggunakan pendekatan ini, penulis dapat mensimulasikan proses \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete} pada aplikasi web yang dibuat.
+
 \section{Pembuatan Komponen View}
+
+Setelah selesai membuat komponen Model, langkah berikutnya adalah membuat komponen View. Pada pengembangan aplikasi web ini, terdapat empat buah halaman HTML yang menjadi komponen View-nya. Keempat halaman tersebut harus disimpan kedalam folder \texttt{src/abs/view/product} agar dapat dikenali oleh ABS MVC Framework. Berikut ini adalah daftar berkas HTML yang harus dibuat berikut dengan kodenya:
+
+\begin{enumerate}
+    \item \texttt{index.html}: merupakan halaman web utama aplikasi yang berisi informasi tentang penggunaan sistem.
+    \item \texttt{form.html}: merupakan halaman web yang digunakan untuk membuat produk baru.
+    \item \texttt{update.html}: merupakan halaman web yang digunakan untuk mengubah data produk.
+    \item \texttt{list.html}: merupakan halaman web yang berisi daftar produk dalam bentuk tabel.
+\end{enumerate}
+
+\subsection{Komponen View \texttt{index.html}}
+Halaman HTML ini berfungsi sebagai halaman depan aplikasi yang berisikan informasi gambaran umum sistem dan cara penggunaannya. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{index.html}:
+
+\begin{lstlisting}[
+caption=Kode HTML untuk halaman \texttt{index.html},
+label={lst:htmlIndex}
+]
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Aplikasi Katalog Produk</title>
+	</head>
+<body>
+	<div>
+		<a href="/product/index.abs">Home</a> |
+		<a href="/product/add.abs">Add Product</a> |
+		<a href="/product/list.abs">Product List</a> |
+	</div>
+	<h4>Selamat Datang di Aplikasi Katalog Produk</h4>
+	<p>Berikut ini adala fitur yang dapat digunakan:</p>
+	<ul>
+		<li>Untuk menambahkan data produk, silahkan klik menu "Add Product"</li>
+		<li>Untuk Melihat daftar produk, silahkan klik menu "Product List"</li>
+	</ul>
+</body>
+</html>
+\end{lstlisting}
+
+\subsection{Komponen View \texttt{form.html}}
+Halaman HTML ini berisikan \texttt{HTML Form} yang digunakan untuk memasukan data produk baru kedalam sistem. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{form.html}:
+
+\begin{lstlisting}[
+caption=Kode HTML untuk halaman \texttt{form.html},
+label={lst:htmlProductForm},
+]
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Add Product</title>
+	</head>
+<body>
+	<div>
+		<a href="/product/index.abs">Home</a> |
+		<a href="/product/add.abs">Add Product</a> |
+		<a href="/product/list.abs">Product List</a> |
+	</div>
+	<h3>Product Details</h3>
+	<form method="POST" action="/product/saveData.abs">
+	<table>
+		<tbody>
+			<tr>
+				<td>Product SKU</td>
+				<td>:</td>
+				<td><input type="text" name="product_sku"/></td>
+			</tr>
+			<tr>
+				<td>Product Name</td>
+				<td>:</td>
+				<td><input type="text" name="product_name"/></td>
+			</tr>
+			<tr>
+				<td>Description</td>
+				<td>:</td>
+				<td><input type="text" name="description" /></td>
+			</tr>
+			<tr>
+				<td>Price</td>
+				<td>:</td>
+				<td><input type="text" name="price" /></td>
+			</tr>
+		</tbody>
+	</table>
+	<input type="submit" value="Submit" />
+	</form>
+</body>
+</html>
+\end{lstlisting}
+
+\subsection{Komponen View \texttt{update.html}}
+
+HTML ini berfungsi untuk menampilkan data produk sesuai dengan \textit{input} (nomor SKU) yang diberikan. Melalui halaman ini juga, pengguna aplikasi dapat mengubah data produk tersebut sesuai dan kembali menyimpannya kedalam sistem. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{update.html}:
+
+\begin{lstlisting}[
+caption=Kode HTML untuk halaman \texttt{update.html},
+label={lst:htmlUpdateProduct}
+]
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Edit Product</title>
+	</head>
+<body>
+	<div>
+		<a href="/product/index.abs">Home</a> |
+		<a href="/product/add.abs">Add Product</a> |
+		<a href="/product/list.abs">Product List</a> |
+	</div>
+	<h3>Product Details: <span th:text="${data.sku}"></span></h3>
+	<form method="POST" action="/product/saveUpdate.abs">
+	<input type="hidden" name="product_sku" th:value="${data.sku}"/>
+	<table>
+		<tbody>
+			<tr>
+				<td>Product Name</td>
+				<td>:</td>
+				<td><input type="text" name="product_name" th:value="${data.name}"/></td>
+			</tr>
+			<tr>
+				<td>Description</td>
+				<td>:</td>
+				<td><input type="text" name="description" th:value="${data.description}"/></td>
+			</tr>
+			<tr>
+				<td>Price</td>
+				<td>:</td>
+				<td><input type="text" name="price" th:value="${data.price}"/></td>
+			</tr>
+		</tbody>
+	</table>
+	<input type="submit" value="Submit" />
+	</form>
+</body>
+</html>
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:htmlUpdateProduct} di atas, penulis menambahkan sintaks Thymeleaf pada halaman ini agar halaman HTML ini dapat menampilkan data produk yang diberikan. Pada halaman ini, penulis menggunakan dua jenis sintaks Thymeleaf yaitu \texttt{th:text} dan \texttt{th:value}. sintaks \texttt{th:text} digunakan untuk menampilkan data dalam bentuk teks, sedangkan \texttt{th:value} adalah untuk menampilkan data kedalam bentuk atribut \texttt{value=""} di dalam tag \texttt{<input>}. Dengan menggunakan dua buah sintaks tersebut penulis sudah dapat menampilkan data produk pada halaman \texttt{update.html}.
+
+\subsection{Komponen View \texttt{list.html}}
+
+Halaman web ini dibuat dengan tujuan untuk menampilkan daftar seluruh produk yang disimpan di simpan oleh aplikasi dalam bentuk \texttt{HTML Table}. Berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{list.html}
+
+\begin{lstlisting}[
+caption=Kode HTML untuk halaman \texttt{list.html},
+label={lst:htmlListProduct},
+escapeinside={+}{+}
+]
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Product List</title>
+	</head>
+<body>
+	<div>
+		<a href="/product/index.abs">Home</a> |
+		<a href="/product/add.abs">Add Product</a> |
+		<a href="/product/list.abs">Product List</a> |
+	</div>
+	<h3>Product List</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th>SKU</th>
+				<th>Product Name</th>
+				<th>Price</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="product: ${dataList}">
+				<td th:text="${#ids.seq('')}"></td> +\label{lst:thymeSequence}+
+				<td th:text="${product.sku}"></td>
+				<td th:text="${product.name}"></td>
+				<td th:text="${product.price}"></td>
+				<td>
+					<a th:href="@{http://localhost:8080/product/update.abs(sku=${product.sku})}">update</a>&nbsp;&nbsp; +\label{lst:thymeUrl}+
+					<a th:href="@{http://localhost:8080/product/delete.abs(sku=${product.sku})}">delete</a> +\label{lst:thymeUrl2}+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:htmlListProduct} diatas, penulis juga menambahkan sintaks Thymeleaf untuk dapat menampilkan data produk kedalam halaman web. Berbeda dengan kode \ref{lst:htmlUpdateProduct} (halaman \texttt{update.html}) yang telah dibuat sebelumnya, pada halaman ini penulis menggunakan dua buah sintaks Thymeleaf yang lain yaitu \texttt{\$\{\#ids.seq()\}} (baris \ref{lst:thymeSequence}) dan \texttt{@\{url(param)\}} (baris \ref{lst:thymeUrl} dan \ref{lst:thymeUrl2}). Sintaks \texttt{\$\{\#ids.seq()\}} digunakan untuk menampilkan \textit{sequence id} seperti 1,2,3 dan seterusnya. Sedangkan sintaks \texttt{@\{url(param)\}} digunakan untuk menghasilkan dengan parameter seperti (\texttt{update.abs?sku=WH001}).
+
 \section{Pembuatan Komponen Controller}

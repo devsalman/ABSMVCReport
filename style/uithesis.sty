@@ -213,6 +213,13 @@
 
 \pagestyle{fancy}
 
+%-----------------------------------------------------------------------------%
+% Konfigurasi untuk footnote
+%-----------------------------------------------------------------------------%
+
+% continuous footnote numbering
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
 
 %-----------------------------------------------------------------------------%
 % Konfigurasi untuk menampilkan Source Code
@@ -226,6 +233,7 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
  \lstset{
+		 float,
          language=Java,
 		 numbers=left,
          basicstyle=\footnotesize\ttfamily,
