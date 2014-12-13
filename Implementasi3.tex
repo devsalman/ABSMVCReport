@@ -164,7 +164,7 @@ Untuk keperluan pengembangan aplikasi web yang dibuat, penulis membuat tiga buah
 Setelah selesai membuat komponen Model, langkah berikutnya adalah membuat komponen View. Pada pengembangan aplikasi web ini, terdapat empat buah halaman HTML yang menjadi komponen View-nya. Keempat halaman tersebut harus disimpan kedalam folder \texttt{src/abs/view/product} agar dapat dikenali oleh ABS MVC Framework. Berikut ini adalah daftar berkas HTML yang harus dibuat berikut dengan kodenya:
 
 \subsection{Komponen View \texttt{index.html}}
-Halaman HTML ini berfungsi sebagai halaman depan aplikasi yang berisikan informasi gambaran umum sistem dan cara penggunaannya. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{index.html}:
+Halaman HTML ini berfungsi sebagai halaman depan aplikasi yang berisikan informasi gambaran umum sistem dan cara penggunaannya. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{index.html} beserta gambar halaman web yang akan ditampilkan:
 
 \begin{lstlisting}[
 caption=Kode HTML untuk halaman \texttt{index.html},
@@ -191,8 +191,15 @@ label={lst:htmlIndex}
 </html>
 \end{lstlisting}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/hasil-index.png}
+    \caption{Halaman web \texttt{index.html} yang dihasilkan}
+    \label{fig:htmlIndex}
+\end{figure}
+
 \subsection{Komponen View \texttt{form.html}}
-Halaman HTML ini berisikan \texttt{HTML Form} yang digunakan untuk memasukan data produk baru kedalam sistem. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{form.html}:
+Halaman HTML ini berisikan \texttt{HTML Form} yang digunakan untuk memasukan data produk baru kedalam sistem. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{form.html} beserta gambar halaman web yang akan ditampilkan:
 
 \begin{lstlisting}[
 caption=Kode HTML untuk halaman \texttt{form.html},
@@ -241,9 +248,16 @@ label={lst:htmlProductForm},
 </html>
 \end{lstlisting}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/hasil-add.png}
+    \caption{Halaman web \texttt{form.html} yang dihasilkan}
+    \label{fig:htmlForm}
+\end{figure}
+
 \subsection{Komponen View \texttt{update.html}}
 
-HTML ini berfungsi untuk menampilkan data produk sesuai dengan \textit{input} (nomor SKU) yang diberikan. Melalui halaman ini juga, pengguna aplikasi dapat mengubah data produk tersebut sesuai dan kembali menyimpannya kedalam sistem. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{update.html}:
+HTML ini berfungsi untuk menampilkan data produk sesuai dengan \textit{input} (nomor SKU) yang diberikan. Melalui halaman ini juga, pengguna aplikasi dapat mengubah data produk tersebut sesuai dan kembali menyimpannya kedalam sistem. berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{update.html} beserta gambar halaman web yang akan ditampilkan:
 
 \begin{lstlisting}[
 caption=Kode HTML untuk halaman \texttt{update.html},
@@ -288,11 +302,18 @@ label={lst:htmlUpdateProduct}
 </html>
 \end{lstlisting}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/hasil-update.png}
+    \caption{Halaman web \texttt{update.html} yang dihasilkan}
+    \label{fig:htmlUpdate}
+\end{figure}
+
 Seperti yang terlihat pada kode \ref{lst:htmlUpdateProduct} di atas, penulis menambahkan sintaks Thymeleaf pada halaman ini agar halaman HTML ini dapat menampilkan data produk yang diberikan. Pada halaman ini, penulis menggunakan dua jenis sintaks Thymeleaf yaitu \texttt{th:text} dan \texttt{th:value}. sintaks \texttt{th:text} digunakan untuk menampilkan data dalam bentuk teks, sedangkan \texttt{th:value} adalah untuk menampilkan data kedalam bentuk atribut \texttt{value=""} di dalam tag \texttt{<input>}. Dengan menggunakan dua buah sintaks tersebut penulis sudah dapat menampilkan data produk pada halaman \texttt{update.html}.
 
 \subsection{Komponen View \texttt{list.html}}
 
-Halaman web ini dibuat dengan tujuan untuk menampilkan daftar seluruh produk yang disimpan di simpan oleh aplikasi dalam bentuk \texttt{HTML Table}. Berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{list.html}
+Halaman web ini dibuat dengan tujuan untuk menampilkan daftar seluruh produk yang disimpan di simpan oleh aplikasi dalam bentuk \texttt{HTML Table}. Berikut ini adalah kode HTML yang harus dimasukan kedalam berkas \texttt{list.html} beserta gambar halaman web yang akan ditampilkan:
 
 \begin{lstlisting}[
 caption=Kode HTML untuk halaman \texttt{list.html},
@@ -337,6 +358,13 @@ escapeinside={+}{+}
 </body>
 </html>
 \end{lstlisting}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/hasil-list.png}
+    \caption{Halaman web \texttt{list.html} yang dihasilkan}
+    \label{fig:htmlList}
+\end{figure}
 
 Seperti yang terlihat pada kode \ref{lst:htmlListProduct} diatas, penulis juga menambahkan sintaks Thymeleaf untuk dapat menampilkan data produk kedalam halaman web. Berbeda dengan kode \ref{lst:htmlUpdateProduct} (halaman \texttt{update.html}) yang telah dibuat sebelumnya, pada halaman ini penulis menggunakan dua buah sintaks Thymeleaf yang lain yaitu \texttt{\$\{\#ids.seq()\}} (baris \ref{lst:thymeSequence}) dan \texttt{@\{url(param)\}} (baris \ref{lst:thymeUrl} dan \ref{lst:thymeUrl2}). Sintaks \texttt{\$\{\#ids.seq()\}} digunakan untuk menampilkan \textit{sequence id} seperti 1,2,3 dan seterusnya. Sedangkan sintaks \texttt{@\{url(param)\}} digunakan untuk menghasilkan URL dengan parameter seperti misalnya \texttt{http://localhost:8080/product/update.abs?sku=WH001}.
 
@@ -579,6 +607,6 @@ class RouteConfigImpl implements RouteConfig
 
 Sampai pada tahap ini, penulis telah membuat komponen Model, View dan Controller beserta pemetaan URLnya. Hal yang dilakukan selanjutnya adalah melakukan proses kompilasi dan \textit{deployment} dengan menggunakan \textit{build script} yang sudah tersedia. Untuk dapat menjalankan kedua proses tersebut, penulis terlebih dahulu membuka Terminal Console (misal: Command Prompt pada Windows) yang ada di dalam komputer milik penulis dan kemudian masuk kedalam direktori ABS MVC Framework. Setelah masuk kedalam direktori ABS MVC Framework selanjutnya penulis menjalankan \textit{build script} (\texttt{build.xml}) yang tersedia di dalam direktori tersebut dengan mengetikan perintah \texttt{ant abs.deploy}.\\
 
-Setelah aplikasi web yang dibuat berhasil di\textit{compile} dan di\textit{deploy} kedalam ABS Server, berikutnya adalah menjalankan ABS Server yang sudah tersebut melalui Terminal Console dengan cara masuk kedalam direktori ABS Server dan menjalankan perintah \texttt{java -jar absserver.jar}. Setelah ABS Server-nya berhasil dijalankan, aplikasi web yang telah dibuat sebelumnya dapat diakses dengan mengetikan alamat \texttt{http://localhost:8080/product/index.abs}. Berikut adalah hasil dari setiap halaman yang dibuat:
+Setelah aplikasi web yang dibuat berhasil di\textit{compile} dan di\textit{deploy} kedalam ABS Server, berikutnya adalah menjalankan ABS Server yang sudah tersebut melalui Terminal Console dengan cara masuk kedalam direktori ABS Server dan menjalankan perintah \texttt{java -jar absserver.jar}. Setelah ABS Server-nya berhasil dijalankan, aplikasi web yang telah dibuat sebelumnya dapat diakses dengan mengetikan alamat \texttt{http://localhost:8080/product/index.abs}.
 
 

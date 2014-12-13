@@ -1,4 +1,4 @@
-\chapter{Pembuatan Halaman Web Menggunakan ABS}
+\chapter{Pembuatan Halaman Web Berbasis ABS}
 
 Bab ini memaparkan secara kronologis tentang proses eksperimen yang telah dilakukan oleh penulis untuk mencoba menghasilkan sebuah halaman web dengan menggunakan bahasa pemodelan ABS.
 
@@ -30,9 +30,11 @@ class UserImpl implements User
 //ABS Main block
 {
 	User myUser = new local UserImpl(); @\label{lst:absCreateObject}@
-	String username = myUser.getUsername();
+	String username = myUser.getUsername(); @\label{lst:absCallMethod}@
 }
 \end{lstlisting}
+
+Kode \ref{lst:absSederhana} di atas merupakan kode ABS sederhana yang penulis buat untuk mengetahui hasil konversi kode ABS menjadi kode JAVA dalam hal pembuatan objek baru (baris \ref{lst:absCreateObject}), pemanggilan \textit{method} (baris \ref{lst:absCallMethod}) dan konversi data ABS kedalam kode JAVA (baris \ref{lst:absString2}). Kode ini dibuat sebagai langkah awal penulis dalam mempelajari hasil konversi kode ABS kedalam JAVA untuk keperluan integrasi kedua bahasa tersebut.
 
 \begin{lstlisting}[ 
 firstnumber=64,
@@ -46,6 +48,8 @@ public final abs.backend.java.lib.types.ABSString getUsername() {
     return abs.backend.java.lib.types.ABSString.fromString("salman"); @\label{lst:absjavaString}@
 }
 \end{lstlisting}
+
+Kode \ref{lst:absjavaGetUsername} diatas merupakan hasil konversi kode ABS ke dalam JAVA untuk kode \ref{lst:absSederhana} baris \ref{lst:absString2} yang telah dibuat sebelumnya. Seperti yang terlihat pada kode tersebut, tipe data \texttt{String} yang digunakan oleh ABS bukanlah tipe data \texttt{String} standar JAVA API melainkan menggunakan \texttt{ABSString}. Berdasarkan kode JAVA di atas, dapat disimpulkan bahwa terdapat perbedaan tipe data yang digunakna oleh ABS dengan standar JAVA API.
 
 \begin{lstlisting}[
 caption=Hasil kompilasi ABS ke JAVA untuk Main Block,

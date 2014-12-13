@@ -28,6 +28,42 @@ Adapun manfaat dari penelitian yang dilakukan antara lain adalah:
 \end{enumerate}
 
 %---------------------------------------------------------
+\section{Rumusan Masalah}
+%---------------------------------------------------------
+\noindent
+Berikut ini adalah rumusan masalah dari penelitian yang penulis lakukan:
+
+\begin{enumerate}
+    \item Bagaimana strategi yang tepat dalam melakukan pemetaan bahasa pemodelan ABS ke dalam pola Model, View dan Controller dengan tetap mempertahankan kaidah-kaidah yang ada sesuai dengan studi literatur yang telah dilakukan.
+    \item Arsitektur perangkat lunak seperti apakah yang cocok untuk pengembangan SPL berbasis dengan menggunakan bahasa pemodelan ABS.
+    \item Bagaimana strategi implementasi yang dapat dilakukan agar \textit{framework} ABS yang dibuat dapat mendukung fitur \textit{delta modelling} yang dimiliki oleh ABS. 
+\end{enumerate}
+
+%---------------------------------------------------------
+\section{Ruang Lingkup Penelitian}
+%---------------------------------------------------------
+\noindent
+Adapun ruang lingkup dari penelitian ini adalah tentang perancangan dan perumusan strategi pengembangan \textit{framework} MVC SPL berbasis web dengan menggunakan bahasa pemodelan ABS. Harapannya, melalui penelitian ini penulis dapat menghasilkan sebuah \textit{framework} ABS yang dapat digunakan untuk melakukan pengembangan SPL berbasis web dengan menggunakan bahasa pemodelan ABS. Berdasarkan ruang lingkup tersebut, maka poin-poin pengerjaan yang akan dilakukan oleh penulis dalam penelitian ini antara lain adalah:
+
+\begin{enumerate}
+    \item Melakukan analisa terhadap sintaks dan aturan-aturan yang berlaku pada bahasa pemodelan ABS untuk kemudian dapat dirumuskan strategi dalam melakukan pemetaan bahasa pemodelan ABS kedalam komponen-komponen \textit{Model, View} dan \textit{Controller}.
+    \item Merancang arsitektur dan strategi pengembangan \textit{framewok} ABS agar dapat mendukung fitur \textit{delta modelling} yang dimiliki oleh ABS.
+    \item Membuat framework ABS berdasarkan strategi dan rancangan yang telah dilakukan sebelumnya.
+\end{enumerate}
+
+%---------------------------------------------------------
+\section{Batasan Penelitian}
+%---------------------------------------------------------
+
+Dikarenakan adanya keterbatasan dalam hal pengetahuan, waktu pengerjaan dan fokus pengerjaan maka penulis menentukan batasan-batasan penelitian untuk penelitian kali ini yang diantaranya adalah:
+
+\begin{enumerate}
+    \item \textit{Framework} yang dibuat belum mendukung akses database karena untuk masalah akses \textit{database} pada ABS sudah menjadi topik penelitian tersendiri.
+    \item \textit{Web Server} yang dibuat hanya berupa \textit{web server} sederhana dengan fungsionalitas terbatas pada menerima \textit{HTTP Request}, meneruskan \textit{request} tersebut ke ABS, serta mengirimkan \textit{HTTP Response} yang diberikan oleh ABS ke web browser. Oleh karena itu, penulis tidak akan mempertimbangkan masalah keamanan data, efisiensi dari \textit{web server} ataupun masalah \textit{concurency access} pada \textit{web server}.
+    \item Penulis tidak melakukan komparasi antara \textit{framework} MVC yang dibuat dengan \textit{framework} MVC sejenis dikarenakan masih minimnya literatur yang membahas tentang pengembangan \textit{framework} MVC SPL berbasis web untuk bahasa pemodelan ABS.
+\end{enumerate}
+
+%---------------------------------------------------------
 \section{Kerangka Berpikir}
 %---------------------------------------------------------
 \noindent
@@ -57,6 +93,14 @@ berikut adalah sistematika penulisan dari proposal ini:
     Bab ini berisi tentang hasil studi literatur yang dilakukan oleh penulis baik terkait teori-teori dasar yang mendukung penelitian ini ataupun peneletian lain yang masih berkaitan dengan penelitian yang akan dilakukan.
     \item Bab 3 Rumusan Masalah \\
     Bab ini berisi tentang rumusan masalah dari penelitian yang akan dilakukan, ruang lingkup penelitian, serta batasan penelitian.
-    \item Bab 4 Rancangan Penelitian \\
-    Bab ini berisi tentang rancangan penelitian yang akan dilakukan oleh penulis dan penjelasan dari setiap tahapan-tahapan yang akan dilakukan.
+    \item Bab 4 Perancangan ABS MVC Framework \\
+    Bab ini berisi tentang detail rancangan \textit{framework} yang telah penulis buat. Rancangan ini penulis jadikan sebagai landasan dalam melakukan proses pengembangan \textit{framework}.
+    \item Bab 5 Pembuatan Halaman Web Menggunakan ABS \\
+    Bab ini memaparkan secara kronologis tentang proses eksperimen yang telah dilakukan oleh penulis untuk mencoba sebuah halaman web dengan menggunakan bahasa pemodelan ABS.
+    \item Bab 6 Penyusunan ABS MVC Framework \\
+    Bab ini memaparkan tentang proses eksperiemen yang penulis lakukan dalam menyusun ABS MVC Framework berdasarkan hasil eksperimen sebelumnya.
+    \item Bab 7 Penerapan ABS MVC Framework \\
+    Bab ini memaparkan tentang contoh pengembangna perangkat lunak berbasis web dengan menggunakan ABS MVC Framework yang telah dibuat.
+    \item Bab 8 Evaluasi \\
+    Bab ini memaparkan tentang evaluasi yang penulis lakukan terhadap ABS MVC Framework yang dibuat.
 \end{itemize}
