@@ -89,9 +89,9 @@ interface ProductDB
 
 class ProductDBImpl implements ProductDB
 {
-	List<Product> db = Nil;
+	List<Product> db = Nil; @\label{lst:absProductList}@
 	
-	Unit init()
+	Unit init() @\label{lst:absProductDBInit}@
 	{
 		Product p1 = new local ProductImpl(
 			"WH001", "LED TV 24' ", "FMSE LED TV 24 inch with 2 HDMI", "2.500.000");
