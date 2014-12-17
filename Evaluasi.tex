@@ -1,5 +1,193 @@
-\chapter{Evaluasi}
+\chapter{Evaluasi dan Analisa ABS MVC Framework}
 
-%=============================
-\section{To be defined}
-%=============================
+Bab ini berisi tentang hasil analisis dan evaluasi dari MVC Framework yang telah dibuat. Dalam melakukan proses evaluasi, penulis membandingkan proses yang dilakukan dalam membuat perangkat lunak berbasis web antara menggunakan ABS MVC Framework dengan menggunakan framework lain. Adapun aplikasi web yang digunakan dalam proses evaluasi ini adalah aplikasi web yang telah penulis buat pada bagian penerapan ABS MVC Framwork (aplikasi katalog produk). Framework lain yang penulis gunakan dalam proses evaluasi ini adalah Play Framework (JAVA MVC Framework) versi 2.3 \footnote{https://playframework.com/download}. Berikut ini adalah poin-poin yang akan dievaluasi pada bab ini:
+
+\begin{enumerate}
+    \item Evaluasi proses penerapan Model-View-Controller.
+    \item Evaluasi proses penanganan perubahan \textit{requirement}.
+    \item Evaluasi penerapan SPL dengan menggunakan ABS MVC Framework.
+\end{enumerate}
+
+\section{Evaluasi Penerapan Model-View-Controller}
+
+Dalam proses pengembangan apalikasi web dengan menggunakan MVC \textit{framework}, setiap kode yang dibuat akan dikelompokan kedalam komponen Model-View-Controller. Oleh karena itu, untuk mengevalusi framework ABS MVC yang dibuat penulis membandingan proses pembuatan komponen-komponen MVC tersebut antara Play Framework dengan ABS MVC Framework. Berikut adalah hasil evaluasi dan analisa ABS MVC Framework dari poin penerapan MVC-nya.
+
+\subsection{Proses Pembuatan Komponen Model}
+
+Komponen model merupakan komponen yang merepresentasikan entitas data pada aplikasi. Dalam banyak MVC Framework, komponen model dapat diintegrasikan dengan peragkat lunak basis data sehingga setiap komponen model yang dibuat akan merepresentasikan setiap tabel yang ada di dalam basis data. Dalam konteks ABS MVC Framework, proses integrasi komponen model dengan perangkat lunak basis data belum dapat dilakukan seperti yang sudah dibahas pada bagian batasan penelitian. Berikut ini adalah perbandingan antara komponen Model yang dibuat dengan menggunakan ABS MVC Framework dengan Play Framework.
+
+\begin{lstlisting}[
+caption=Komponen Model menggunakan ABS,
+label={lst:modelUsingABS}
+]
+interface Product
+{
+    ...
+}
+
+class ProductImpl 
+	(String sku, String name, String description, String price) implements Product
+{
+	String getSku() { return this.sku; }
+	String getName() { return this.name; }
+	String getDescription() { return this.description; }
+	String getPrice() { return this.price; }
+	Unit setSku(String sku) { this.sku = sku; }
+	Unit setName(String name) { this.name = name; }
+	Unit setDescription(String description) { this.description = description; }
+	Unit setPrice(String price) { this.price = price; }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption=Komponen Model menggunakan Play Framework,
+label={lst:modelUsingPlay},
+escapeinside={!}{!}
+]
+@Entity !\label{lst:modelAnotasi}!
+public class Product extends Model
+{
+	@Id !\label{lst:modelAnotasi2}!
+	public Long id;
+	public String sku;
+	public String name;
+	public String description;
+	public Long price;
+
+	public Product(String sku, String name,
+		String description, Long price)
+	{
+		this.sku = sku;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+	}
+
+	public static Finder<Long,Product> find = new Finder<Long,Product>( !\label{lst:modelPlayFinder}!
+    Long.class, Product.class); 
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:modelUsingABS} dan \ref{lst:modelUsingPlay} diatas, kedua buah komponen Model tersebut tidak memiliki perbedaan yang signifikan. keduanya hanya berisikan atribut-atribut yang merepresentasikan data produk pada aplikasi web yang dibuat. Hanya saja, pada komponen model yang dibuat dengan menggunakan Play Framework memiliki tambahan anotasi (bari \ref{lst:modelAnotasi} dan \ref{lst:modelAnotasi2}) serta tambahan \textit{method} (baris \ref{lst:modelPlayFinder}) yang digunakan oleh Play Framework untuk mengintegrasikan komponen tersebut dengan perangkat lunak basis data.\\
+
+Walaupun terdapat beberapa perbedaan antara komponen model yang dibuat dengan ABS Framework dengan Play Framework, akan tetapi kedua komponen tersebut masih memiliki karakteristik yang sama yaitu hanya terdiri dari atribut data dan tidak mengandung proses bisnis aplikasi. Hal ini sejalan dengan definisi komponen Model yang dipaparkan oleh \cite{krasner1988desc} dan \cite{leff2001web} pada publikasi penelitiannya. Dengan demikian, penulis berkesimpulan bahwa metode yang digunakan pada ABS MVC Framework sudah sesuai dengan karakteristik komponen model pada \textit{framework} yang umum digunakan dan juga sudah sesuai dengan landasan teori yang ada.
+
+\subsection{Proses Pembuatan Komponen View}
+
+Dalam banyak \textit{framework} MVC, pembuatan komponen View umumnya menggunakan sintaks HTML dengan tambahan sintaks \textit{template engine} untuk dapat mengintegrasikan antara komponen View tersebut dengan komponen Model yang dibuat. Dalam konteks ABS MVC Framework, komponen View yang dibuat sudah menggunakan sintaks HTML dan \textit{template engine} Thymeleaf sedangkan Play Framewerk juga sudah menggunakan HTML dan \textit{template engine} Twirl. Berikut ini adalah perbandingan komponen View yang dibuat dengan menggunakan ABS MVC Framework dan Play Framework.
+
+\begin{lstlisting}[
+caption=Halaman \texttt{list.html} yang dibuat menggunakan Thymeleaf,
+label={lst:viewThymeleaf},
+escapeinside={!}{!}
+]
+...
+<tbody>
+	<tr th:each="product: ${dataList}"> !\label{lst:thymeDataList}!
+		<td th:text="${#ids.seq('')}"></td>
+		<td th:text="${product.sku}"></td>
+		<td th:text="${product.name}"></td>
+		<td th:text="${product.price}"></td>
+		<td>
+			<a th:href="@{http://localhost:8080/product/update.abs(sku=${product.sku})}">update</a>&nbsp;&nbsp;
+			<a th:href="@{http://localhost:8080/product/delete.abs(sku=${product.sku})}">delete</a>
+		</td>
+	</tr>
+</tbody>
+...
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption=Halaman \texttt{list.html} yang dibuat menggunakan Twirl,
+label={lst:viewTwirl},
+escapeinside={!}{!}
+]
+@(products: List[Product]) !\label{lst:twirlDefineVariable}!
+...
+<tbody>
+	@for((product, index) <- products.zipWithIndex){
+		<tr>
+			<td>@{index+1}</td>
+			<td>@product.sku</td>
+			<td>@product.name</td>
+			<td>@product.price</td>
+			<td>
+				<a href="/product/update/@product.sku">update</a>&nbsp;&nbsp;
+				<a href="/product/delete/@product.sku">delete</a>
+			</td>
+		</tr>
+	}
+</tbody>
+...
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:viewThymeleaf} dan \ref{lst:viewTwirl}, kedua komponen View tersebut tidak jauh berbeda dikarenakan keduanya dibuat dengan menggunakan sintaks HTML. Hal yang membedakan dari kedua komponen tersebut terletak pada sintaks \textit{template engine} yang digunakan seperti misalnya pada ABS MVC Framework menggunakan \texttt{\$\{data.sku\}} untuk mendapatkan nomor sku dari objek model yang diberikan, sedangkan Play Framework menggunakan sintaks \texttt{@product.sku}. Perbedaan sintaks ini adalah wajar dikarenakan \textit{template engine} yang digunakan oleh kedua \textit{framework} tersebut adalah berbeda.\\
+
+Walaupun kedua komponen di atas hampir sama, namum komponen View yang dibuat oleh komponen ABS MVC Framework banyak memiliki keterbatasan jika dibandingkan dengan komponen View yang dibuat dengan menggunakan Play Framework. berikut adalah beberapa keterbatasan yang dimiliki oleh ABS MVC Framework:
+
+\begin{itemize}
+    \item Memerlukan konvensi khusus untuk dapat memanggil komponen model yang diberikan seperti misalnya penggunaan variable \texttt{dataList} (kode \ref{lst:viewThymeleaf} barsi \ref{lst:thymeDataList}) untuk objek model berbentuk list dan \texttt{data} (kode \ref{lst:htmlUpdateProduct}) untuk objek model yang berdiri sendiri. Hal ini berbeda dengan komponen View pada Play Framework yang dapat didefinisikan sendiri oleh pengembang (kode \ref{lst:viewTwirl} baris \ref{lst:twirlDefineVariable}).
+    \item Komponen View pada ABS MVC Framework belum dapat menangani banyak komponen Model yang artinya ketika pengembang membuatuhkan Model Product dan Customer untuk ditampilkan di halaman web,  hal ini belum dapat dilakukan. Berbeda dengan komponen View pada Play Framework yang dapat menerima banyak model dengan menggunakan \texttt{@\(product: Product, customer: Customer\)}.
+\end{itemize}
+
+Berdasarkan hasil evaluasi diatas, penulis menyimpulkan bahwa untuk komponen View yang dibuat menggunakan ABS MVC Framework, sudah memiliki karakteristik yang sama dengan komponen yang dibuat menggunakan Play Framework. Akan tetapi, masih terdapat beberapa keterbatasan yang dimiliki sehingga tingkat fleksibilitasnya masih rendah dibandingkan dengan komponen View yang dibuat dengan menggunakan Play Framework.
+
+\subsection{Proses Pembuatan Komponen Controller}
+
+Secara umum fungsi dari komponen Controller adalah mengintegrasikan komponen Model dan View agar dapat dihasilkan sebuah halaman web yang dapat ditampilkan ke pengguna aplikasi. Dalam implementasinya, komponen Controller berisi bisnis proses aplikasi yang didalamnya melakukan pemrosesan \textit{input} yang diberikan oleh pengguna aplikasi. Dalam konteks ABS MVC Framework, kedua hal tersebut sudah dapat dilakukan walaupun dengan mekanisme yang sedikit berbeda dengan komponen Controller yang dibuat dengan menggunakan Play Framework. Berikut ini adalah cuplikan \textit{method} \texttt{saveUpdateProduct} yang ada di dalam Controller ABS MVC Framework dan Play Framework:
+
+\begin{lstlisting}[
+caption=Method \texttt{saveUpdateProduct} menggunakan ABS MVC Framework,
+label={lst:saveUpdateABS}
+]
+...
+Pair<String, List<Product>> saveUpdateProduct(ABSHttpRequest request)
+{
+	ProductDB db = new local ProductDBImpl();
+	db.init();
+	
+	String sku = request.getInput("product_sku");
+	String name = request.getInput("product_name");
+	String description = request.getInput("description");
+	String price = request.getInput("price");
+	
+	Product p = db.findBySku(sku);
+	p.setName(name);
+	p.setDescription(description);
+	p.setPrice(price);
+	db.update(p);
+	
+	List<Product> products = db.findAll();
+	return Pair("product/list", products);
+}
+...
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption=Method \texttt{saveUpdateProduct} menggunakan Play Framework,
+label={lst:saveUpdatePlay}
+]
+public static Result saveUpdateProduct()
+{
+    DynamicForm requestData = Form.form().bindFromRequest();
+    String sku = requestData.get("product_sku");
+    String name = requestData.get("product_name");
+    String description = requestData.get("description");
+    Long price = Long.parseLong(requestData.get("price"));
+
+    List<Product> products = Product.find.where().eq("sku", sku).findList();
+    Product product = products.get(0);
+    product.name = name;
+    product.description = description;
+    product.price = price;
+    product.update();
+
+    return ok(list.render(Product.find.all()));
+}
+\end{lstlisting}
+
+Seperti yang terlihat pada kode \ref{lst:saveUpdateABS} dan \ref{lst:saveUpdatePlay} diatas, secara umum apa yang dilakukan oleh kedua buah \textit{method} tersebut adalah sama yaitu (1) menerima input dari pengguna aplikasi, (2) melakukan pencarian kedalam basis data untuk mendapatkan produk dengan nomor sku yang sesuai, (3) Mengubah data produk tersebut dengan data yang diberikan oleh pengguna aplikasi dan (4) menampilkan seluruh data produk kedalam halaman \texttt{list.html}. Satu hal yang membedakan kedua komponen Controller diatas adalah pada ABS MVC Framework basis data yang digunakan masih merupakan basis data \textit{dummy} sedangkan pada Play Framework, penulis sudah menggunakan MySQL sebagai basis datanya. Hal ini terjadi karena saat ini, ABS masih belum dapat melakukan akses kedalam basis data sungguhan seperti yang sudah dipaparkan pada bagian batasan penelitian.\\
+
+Selain batasan terkait akses basis data tersebut, terdapat pula keterbatasan lainya yang dimiliki oleh ABS MVC Framework dalam membuat komponen Controller yaitu adalah belum adanya mekanisme yang dapat digunakan oleh ABS MVC Framework untuk memberikan banyak model kedalam komponen View. Hal ini menyebabkan adanya keterbatasan pada komponen View seperti yang dibahas pada bagian evaluasi pembuatan komponen View. Adanya keterbatasan pada komponen Controller dalam memberikan banyak model adalah karena penulis belum menemukan pengganti tipe data \texttt{Generic} yang dimiliki oleh JAVA untuk ABS.\\
+
+Walaupun terdapat beberapa keterbatasan fitur pada komponen Controller ABS MVC Framework, akan tetapi secara karakteristik antara komponen Controller ABS MVC Framework dengan Play Framework tidak jauh berbeda. Sehingga dapat disimpulkan bahwa komponen Controller yang dibentuk dengan menggunakan ABS MVC Framework masih sesuai dengan karakteristik yang dipaparkan oleh \cite{krasner1988desc} dan \cite{leff2001web} serta \textit{framework} MVC lain yang biasa digunakan.
