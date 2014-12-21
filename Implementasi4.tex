@@ -261,4 +261,169 @@ modifies Pair<String, List<Product>> saveDataProduct(ABSHttpRequest request)
 
 Kode \ref{lst:deltaSaveDataProduct} diatas merupakan kode delta yang dibuat dengan tujuan untuk melakukan modifikasi pada \textit{method} \texttt{saveDataProduct}. Secara umum kode delta tersebut mirip dengan kode delta untuk \textit{method} \texttt{saveUpdateProduct} (kode \ref{lst:deltaSaveUpdateProduct}) yaitu melakukan implementasi ulang \textit{method} aslinya. Hal ini dilaukan karena selain mengubah halaman HTMLnya, penulis juga melakukan penambahan baris kode seperti yang penulis lakukan pada kode delta \ref{lst:deltaSaveUpdateProduct} yang sudah dipaparkan sebelumnya.
 
+\subsection{Pembuatan halaman web baru}
+
+Berbeda dengan komponen Model dan Controller, komponen View tidak dapat dibuatkan kode deltanya pada saat terdapat perubahan \textit{requirement} yang membuatuhkan perubahan tampilan halaman web. Hal ini terjadi dikarenakan komponen View pada ABS MVC Framework tidak dibuat dengan menggunakan kode ABS melainkan hanya menggunakan HTML dan Thymeleaf. Oleh karena itu untuk dapat memenuhi perubahan \textit{requirement} yang ada, penulis harus membuat sebuah halaman HTML baru yang sesuai dengan \textit{requirement} tersebut. Berikut ini adalah beberapa perubahan pada halaman HTML yang dibuat.
+
+\begin{lstlisting}[
+caption=Perubahan pada halaman \texttt{list.html},
+label={lst:viewListHTML2},
+escapeinside={!}{!}
+]
+...
+<table>
+	<thead>
+		<tr>
+			<th>No.</th>
+			<th>SKU</th>
+			<th>Product Name</th>
+			<th>Price</th>
+			<th>Category</th> !\label{lst:addCategoryColumn}!
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="product: ${dataList}">
+			<td th:text="${#ids.seq('')}"></td>
+			<td th:text="${product.sku}"></td>
+			<td th:text="${product.name}"></td>
+			<td th:text="${product.price}"></td>
+			<td th:text="${product.category}"></td>  !\label{lst:addCategoryColumn2}!
+			<td>
+				<a th:href="@{http://localhost:8080/product/update.abs(sku=${product.sku})}">update</a>&nbsp;&nbsp;
+				<a th:href="@{http://localhost:8080/product/delete.abs(sku=${product.sku})}">delete</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+...
+\end{lstlisting}
+
+Kode \ref{lst:viewListHTML2} diatas, merupakan kode HTML untuk \texttt{list.html} yang baru. Terlihat pada baris \ref{lst:addCategoryColumn} dan \ref{lst:addCategoryColumn2} diatas, penulis melakukan penambahan kolom kategori pada tabel sesuai dengan perubahan \textit{requirement} yang diminta. Kode HTML diatas dibuat dengan tujuan untuk menampilkan seluruh data produk (nomor, sku, nama, harga dan kategori) yang tersimpan di dalam aplikasi dalam bentuk tabel. Setelah penulis membuat halaman HTML tersebut, selanjutnya penulis menyimpan halaman tersebut kedalam direktori \texttt{src/abs/view/withCategory} dengan nama berkas \texttt{list.html} untuk membedakan halaman tersebut dengan halaman \texttt{list.html} yang pernah dibuat sebelumnya.
+
+\begin{lstlisting}[
+caption=Perubahan pada halaman \texttt{form.html},
+label={lst:viewFormHTML2},
+escapeinside={@}{@}
+]
+...
+<table>
+	<tbody>
+        ...
+		<tr>
+			<td>Product Name</td>
+			<td>:</td>
+			<td><input type="text" name="product_name"/></td>
+		</tr>
+		<tr>
+			<td>Category</td> @\label{lst:htmlCategoryDropdown}@
+			<td>:</td>
+			<td>
+				<select name="category">
+					<option value="Electronic">Electronic</option>
+					<option value="Furniture">Furniture</option>
+					<option value="Cookware">Cookware</option>
+				</select>
+			</td>
+		</tr>
+        ...
+	</tbody>
+</table>
+...
+\end{lstlisting}
+
+Kode \ref{lst:viewFormHTML2} diatas merupakan kode HTML untuk halaman web \texttt{form.html} yang digunakan untuk membuat data produk baru. Seperti yang terlihat pada baris \ref{lst:htmlCategoryDropdown}, penulis membuat sebuah \textit{drop down} berisi kategori produk "Electronic", "Furniture" dan "Cookware" yang nantinya dapat dipilih oleh pengguna aplikasi pada saat membuat data produk baru. Perubahan tersebut dibuat untuk memenuhi perubahan \textit{requirement} yang telah penulis bahas di awal bab ini. Selanjutnya, penulis menyimpan kode HTML tersebut kedalam direktori \texttt{src/abs/view/withCategory} dengan nama \texttt{form.html} untuk membedakannya dengan kode HTML \texttt{form.html} versi aslinya yang berada di dalam direktori \texttt{src/abs/view}.
+
+\begin{lstlisting}[
+caption=Perubahan pada halaman \texttt{update.html},
+label={lst:viewUpdateHTML2},
+escapeinside={@}{@}
+]
+...
+<form method="POST" action="/product/saveUpdate.abs">
+<input type="hidden" name="product_sku" th:value="${data.sku}"/>
+<table>
+	<tbody>
+		<tr>
+			<td>Product Name</td>
+			<td>:</td>
+			<td><input type="text" name="product_name" th:value="${data.name}"/></td>
+		</tr>
+		<tr>
+			<td>Category</td> @\label{lst:htmlUpdateCategory}@
+			<td>:</td>
+			<td>
+				<select name="category">
+					<option value="Electronic">Electronic</option>
+					<option value="Furniture">Furniture</option>
+					<option value="Cookware">Cookware</option>
+				</select>
+			</td>
+		</tr>
+        ...
+	</tbody>
+</table>
+<input type="submit" value="Submit" />
+</form> 
+... 
+\end{lstlisting}
+
+Kode \ref{lst:viewUpdateHTML2} diatas merupakan modifikasi kode HTML untuk halaman \texttt{update.html} yang digunakan dalam proses pemutakhiran data produk. Seperti yang terlihat pada baris \ref{lst:htmlUpdateCategory}, penulis menambahkan sebuah \textit{drop down} yang digunakan untuk mengubah data kategori dari sebuah produk. Kode perubahan halaman web ini selanjutnya penulis simpan kedalam direktori \texttt{src/abs/view/withCategory} dengan nama \texttt{update.html} untuk membedakannya dengan halaman \texttt{update.html} aslinya yang disimpan di dalam direktori \texttt{src/abs/view}.
+
 \section{Kompilasi dan \textit{deployment} varian produk}
+
+Setelah penulis berhasil membuat kode delta untuk kompoenen Model dan Controller beserta kode HTML baru yang digunakan untuk memenuhi \textit{requirement} yang baru, selanjutnya penulis akan mengintegrasikan kode-kode tersebut kedalam aplikasi web katalog produk yang telah penulis buat sebelumnya untuk menghasilkan sebuah aplikasi baru. Sebelum melakukan proses kompilasi dan \textit{deployment}, penulis perlu mendefinisikan konfigurasi produk agar kode delta yang sudah dibuat dapat diikutsertakan dalam proses kompilasi produk.\\
+
+Untuk dapat membuat konfigurasi produk baru, penulis perlu mengubah dua buah berkas di dalam ABS MVC Framework yang diantaranya adalah berkas \texttt{Products.abs} dan \texttt{ProductConfig.abs} yang berada di dalam direktroi \texttt{src/abs/framework}. Berikut ini adalah perubahan yang harus dilakukan untuk kedua berkas tersebut.
+
+\begin{lstlisting}[
+caption=Mendefinisikan nama produk pada \texttt{Products.abs},
+label={lst:defineProduct}
+]
+product Default();
+product ProductCatalogWithCategory(WithCategory);
+\end{lstlisting}
+
+Kode \ref{lst:defineProduct} diatas merupaka kode ABS yang dibuat untuk mendefinisikan nama produk yang dibuat. Nama produk ini nantinya akan digunakan pada saat melakukan proses kompilasi produk. Seperti yang terlihat pada kode diatas, terdapat dua buah nama produk yang telah didefinisikan dengan menggunakan sintaks \texttt{product namaProduk}. Produk pertama bernama \texttt{Default} yang merupakan nama produk \textit{default} yang sudah disediakan oleh ABS MVC Framework sedangkan produk kedua adalah \texttt{ProductCatalogWithCategory} yang merupakan nama produk baru yang penulis buat.\\
+
+Pada kode \ref{lst:defineProduct} diatas terlihat bahwa produk \texttt{ProductCatalogWithCategory} memiliki sebuah parameter yang bernama \texttt{WithCategory}. Parameter pada nama produk tersebut merupakan nama fitur yang akan diimplementasikan oleh produk yang dibuat. Nama fitur tersebut nantinya akan digunakan untuk menentuk kode delta manasajakah yang akan digunakan oleh produk tersebut. Proses pendefinisian fitur tersebut dapat dilukan dengna menambahkan definisi fitur pada berkas \texttt{ProductConfig.abs}. Berikut ini adalah kode ABS yang penulis buat untuk mendefinisikan fitur \texttt{WithCategory}.
+
+\begin{lstlisting}[
+caption=Pendefinisian fitur \texttt{WithCategory},
+label={lst:defineFeature}
+]
+productline ABSWebApp;
+	features WithCategory;
+	delta DProductModel when WithCategory;
+	delta DProductDB after DProductModel when WithCategory;
+	delta DProductController after DProductDB when WithCategory;
+\end{lstlisting}
+
+Kode \ref{lst:defineFeature} diatas merupakan konfigurasi produk yang penulis buat untuk mendefinisikan fitur \texttt{WithCategory} yang menerapkan kode-kode delta yang telah penulis buat sebelumnya. Seperti yang terlihat pada kode tersebut, penulis mendefinisikan fitur \texttt{WithCategory} dengan menggunakan sintakas \texttt{features WithCategory}. Pada kode tersebut juga terlihat bahwa fitur \texttt{WithCategory} menggunakan kode delta \texttt{DProductModel}, \texttt{DProductDB} dan \texttt{DProductController}. Dengan menggunakan cara ini, penuli akan mengikutsertakan kode delta yang penulis buat pada saat proses kompilasi sehingga kode delta tersebut akan mengubah kode ABS yang asli untuk menciptakan sebuah apllikasi baru yaitu aplikasi katalog produk dengan tambahan kategori.\\
+
+Setelah mendefinisikan produk dan membuat konfigurasi produk, langkah selanjutnya adalah melakukan proses kompilasi dan \texttt{deployment}. Seperti yang sudah dibahas pada bab penerapan ABS MVC Framework sebelumnya, proses kompilasi yang dilakukan menggunakan \textit{build script} Apache Ant. Untuk dapat melakukan proses kompilasi dan \texttt{deployment}, penulis cukup mengetikkan perintah \texttt{ant -Dabsproduct=ProductCatalogWithCategory abs.deploy} untuk menghasilkan produk baru. Seperti yang terlihat pada perintah tersebut, penulis mengubah parameter \texttt{-Dabsproduct} dari yang sebelumnya bernilai \texttt{Default} menjadi \texttt{ProductCatalogWithCategory}.\\
+
+Setelah melakukan proses kompilasi dan \textit{deployment}, berikutnya penulis tinggal menjalankan ABS Server dengan mengetikkan perintah \texttt{java -jar absserver.jar} untuk menjalankan aplikasi web yang baru dibuat. Berikut ini adalah halaman web yang dihasilkan dari kode-kode delta yang penulis buat.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/add-product-withCategory}
+    \caption{Halaman tambah produk dengan pilihan kategori},
+    \label{fig:addProductWithCategory}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/update-product-withCategory}
+    \caption{Halaman ubah produk dengan pilihan kategori},
+    \label{fig:updateProductWithCategory}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/list-product-withCategory}
+    \caption{Halaman daftar produk dengan kolom kategori},
+    \label{fig:deleteProductWithCategory}
+\end{figure}
+
+Sampai pada tahap ini, penulis telah berhasil menerapkan \textit{delta modelling} di dalam ABS MVC Framework yang dapat digunakan untuk menangani perubahan \textit{requirement} pada aplikasi.
