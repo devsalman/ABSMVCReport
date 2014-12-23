@@ -13,6 +13,16 @@ Konsep MVC diterapkan pertama kalinya oleh Alan Kay, Dan Ingalls, dan Adele Gold
 \noindent
 Belajar dari pengalamannya dalam mengembangkan smalltalk-76, para pengembang smalltalk-80 menemukan bahwa untuk mencapai sebuah modularitas yang tinggi diperlukan adanya tiga buah pemisahan fokus dalam pengembangan aplikasi. Tiga buah pemisahan fokus tersebut antara lain adalah (1) memisahkan setiap komponen yang merepresentasikan model domain aplikasi dengan (2) cara yang digunakan untuk merepresentasikan model tersebut ke pengguna aplikasi dan (3) cara yang digunakan oleh pengguna dalam berinteraksi dengan model tersebut. Tiga buah pemisahan tersebut dapat terangkum dalam sebuah konsep yang disebut dengan \textit{Model-View-Controller} (MVC).
 
+\subsection{Karakteristik Komponen MVC}
+
+Penggunaan pola MVC dalam pengembangan perangkat lunak ditujukan untuk memisahkan fokus pengemabangan kedalam tiga buah komponen aplikasi yaitu data, presentasi dan proses bisnis. Dalam proses pengembangan perangkat lunak, setiap kode yang dibuat memiliki karakteristik khusus yang dapat dibedakan berdasarkan fungsinya apakah kode tersebut sebagai data, presentasi atau proses bisnis. Berdasarkan pemaparan yang diberikan oleh \cite{krasner1988desc}, \cite{leff2001web} dan \cite{burbeck1992applications}, terdapat beberapa karakteristik yang dapat digunakan untuk membedakan komponen-komponen MVC tersebut sesuai dengan fungsinya. Karakteristik-karakteristik tersebut antara lain adalah:
+
+\begin{itemize}
+    \item \textbf{Model} merupakan komponen aplikasi yang mengandung implementasi dari \textit{domain-spesific entity} dari aplikasi yang dibuat. komponen ini dapat hanya berupa sebuah integer untuk menghitung \textit{counter} atau berupa objek yang kompleks dengan banyak atribut didalamnya. Selain itu, komponen ini harus dapat mengelola  \textit{behaviour} dari data dengan cara menyediakan mekanisme yang dapat digunakan untuk mengetahui dan mengubah \textit{state} dari data tersebut.
+    \item \textbf{View} merupakan komponen yang menangani seluruh permasalahan yang berkaitan dengan grafis. Secara umum, komponen ini merupakan komponen yang bertanggung jawab dalam menampilkan data sesuai dengan keinginan pengguna aplikasi baik dalam bentuk grafis ataupun tekstual.
+    \item \textbf{Controller} merupakan komponen aplikasi yang bertanggung jawab dalam menjembatani komponen Model dan View. Secara umum, komponen ini memiliki kemampuan untuk menerima \textit{input} dari pengguna aplikasi dan memprosesnya sesuai dengan proses bisnis yang telah dibuat.
+\end{itemize}
+
 \subsection{Penerapan MVC dalam Pengembangan Aplikasi Web}
 Aplikasi web merupakan aplikasi yang tergolong interaktif karena aplikasi jenis ini banyak memiliki elemen-elemen yang dapat digunakan untuk berinteraksi dengan penggunannya. Sebagai contoh, dalam sebuah halaman situs web tentunya kita akan menemukan banyak tombol, gambar, tautan, dan kotak isian yang dapat kita gunakan untuk berinteraksi dengan situs web tersebut. Untuk sebuah aplikasi yang tergolong interaktif, adanya pemisahan antara logika aplikasi, data, dan presentasi tentunya akan dapat meningkatkan fleksibilitas aplikasi tersebut dari segi pengembangan. \\
 
