@@ -1,6 +1,6 @@
-\chapter{Penerapan ABS MVC Framework}
+\chapter{Penggunaan ABS MVC Framework}
 
-Bab ini membahas tentang penerapan ABS MVC Framework dalam pengembangan perangkat lunak berbasis web.
+Bab ini membahas tentang penggunaan ABS MVC Framework dalam pengembangan perangkat lunak berbasis web.
 
 \section{Gambaran Umum Aplikasi Web}
 Aplikasi web yang akan dibuat pada bab ini adalah aplikasi katalog produk yang fungsinya adalah untuk menyimpan dan menampilkan data tentang produk yang akan dijual di pasaran. Aplikasi web ini dibuat dengan tujuan untuk mendemonstrasikan tentang bagaimana membuat operasi \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete} (CRUD) dengan menggunakan ABS MVC Framework. Selain itu, penulis juga akan mendemonstrasikan bagaimana mengelola \textit{variability} degan pendekatan \textit{delta modelling} menggunakan ABS MVC Framework.\\
@@ -400,7 +400,7 @@ class ProductControllerImpl implements ProductController
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada Kode \ref{lst:layoutProductController} diatas, terdapat tujuan buah operasi / \textit{method} yang akan didefinisikan di dalam modul ini. Secara umum, ketujuh buah \textit{method} tersebut merupakan \textit{method} yang akan digunakan dalam proses \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete} produk pada aplikasi web yang dibuat. Berikut ini ada detail dari setiap \textit{method} yang ada di dalam modul \texttt{ProductController}:
+Seperti yang terlihat pada Kode \ref{lst:layoutProductController} diatas, terdapat tujuan buah \textit{method} yang akan didefinisikan di dalam modul ini. Secara umum, ketujuh buah \textit{method} tersebut merupakan \textit{method} yang akan digunakan dalam proses \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete} produk pada aplikasi web yang dibuat. Berikut ini ada detail dari setiap \textit{method} yang ada di dalam modul \texttt{ProductController}:
 
 \subsection{Method \texttt{index}}
 Method ini digunakan untuk menampilkan halaman utama yang berisikan informasi singkat tentang aplikasi. Berikut ini adalah detail kode yang harus dibuat di dalam modul \texttt{ProductController}:
@@ -416,7 +416,7 @@ Pair<String, List<Product>> index(ABSHttpRequest request)
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada Kode \ref{lst:absProductIndex} diatas, detail \textit{method} yang dibuat sangatlah sederhana yaitu hanya mengembalikan lokasi berkas HTML yang digunakan dengan tanpa adanya data yang  diberikan. Hal ini dilakukan karena karena halaman ini hanya merupakan halaman statis yang tidak membutuhkan data dari komponen Model untuk ditampilkan.
+Seperti yang terlihat pada Kode \ref{lst:absProductIndex} diatas, detail \textit{method} yang dibuat sangatlah sederhana yaitu hanya mengembalikan lokasi berkas HTML yang digunakan dengan tanpa adanya data yang  diberikan. Hal ini dilakukan karena halaman ini hanya merupakan halaman statis yang tidak membutuhkan data dari komponen Model untuk ditampilkan.
 
 \subsection{Method \texttt{addProduct}}
 Method ini digunakan untuk menampilkan halaman \texttt{form.html} berisikan \texttt{HTML Form} yang digunakan untuk mengirim data produk baru kepada aplikasi web. berikut ini adalah detail kode yang harus dibuat di dalam modul \texttt{ProductController}:

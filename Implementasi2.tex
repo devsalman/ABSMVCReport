@@ -1,6 +1,6 @@
 \chapter{Proses Penyusunan ABS MVC Framework}
 
-Setelah melakukan banyak eksperimen untuk memetakan ABS kedalam komponen-komponen MVC dan mengintegrasikannya dengan \textit{web server} sederhana, selanjutnya adalah menyusun hasil eksperimen-eksperimen tersebut agar menjadi satu kesatuan framework MVC ABS yang utuh. Ada beberapa poin yang akan disusun terkait pembuatan framework MVC ABS yang diantaranya adalah:
+Setelah melakukan berbagai eksperimen untuk memetakan ABS kedalam komponen-komponen MVC dan mengintegrasikannya dengan \textit{web server} sederhana, selanjutnya adalah menyusun hasil eksperimen-eksperimen tersebut agar menjadi satu kesatuan framework MVC ABS yang utuh. Ada beberapa poin yang akan disusun terkait pembuatan framework MVC ABS yang diantaranya adalah:
 
 \begin{enumerate}
     \item Pengaturan struktur direktori.
@@ -15,7 +15,7 @@ Struktur direkretori dalam sebuah framework MVC berperan dalam membantu para pen
 
 \begin{itemize}
     \item \textbf{dist}: folder ini digunakan untuk menyimpan \textit{binary} dari aplikasi web yang sudah di compile.
-    \item \textbf{src}: folder ini digunakan untuk menyimpan file ABS yang dibuat oleh para pengembang perangkat lunak. folder ini memiliki sub folder "Model", "View" dan "Controller" yang digunakan untuk meletakkan komponen MVC yang dibuat. Selain itu, di dalam folder ini juga terdapat sebuah folder bernama "Framework" yang berisi berkas kode program ABS yang digunakan untuk keperluan internal framework.
+    \item \textbf{src}: folder ini digunakan untuk menyimpan file ABS yang dibuat oleh para pengembang perangkat lunak. folder ini memiliki sub direktori "model", "view" dan "controller" yang digunakan untuk meletakkan komponen MVC yang dibuat. Selain itu, di dalam direktori ini juga terdapat sebuah direktori bernama "framework" yang berisi berkas kode program ABS yang digunakan untuk keperluan internal framework dan direktori "delta" yang digunakan untuk meletakan kode delta dalam proses penerapan \textit{delta modelling}.
     \item \textbf{lib}: folder ini berisi library yang dibutuhkan oleh framework MVC ABS untuk dapat meng-compile kode ABS dan mengubahnya ke dalam kode JAVA.
     \item \textbf{target}: folder ini digunakan sebagai tempat penampungan sementara ketika framework sedang melakukan proses kompilasi kode ABS.
 \end{itemize}
@@ -142,14 +142,7 @@ Pada dasarnya \textit{build script} yang penulis buat merupakan kumpulan perinta
     \label{fig:buildScriptFlow}
 \end{figure}
 
-Dengan menggunakan \textit{build script} yang sudah dibuat, para pengguna \textit{framework} hanya perlu mengetikkan perintah \texttt{ant abs.deploy} dari dalam direktori framework untuk menjalankan keseluruhan proses kompilasi dan \textit{deployment} seperti yang terlihat pada Gambar \ref{fig:antABSDeploy}di bawah ini.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{img/ant-abs-deploy.png}
-    \caption{Contoh hasil eksekusi perintah \texttt{ant abs.deploy}}
-    \label{fig:antABSDeploy}
-\end{figure}
+Dengan menggunakan \textit{build script} yang sudah dibuat, para pengguna \textit{framework} hanya perlu mengetikkan perintah \texttt{ant -Dabsproduct=Default abs.deploy} dari dalam direktori framework untuk menjalankan keseluruhan proses kompilasi dan \textit{deployment} ABS MVC Framework.
 
 Sampai pada tahap ini penulis telah berhasil menyusun direktori dan membuat \textit{build script} dengan menggunakan Apache Ant untuk mempermudah proses kompilasi dan \textit{deployment} pada \textit{framework} MVC ABS. langkah selanjutnya adalah menambahkan mekanisme konfigurasi URL \textit{routing} dan mengatasi HTTP POST dan GET data untuk lebih menyempurnakan lagi \textit{framework} MVC ABS yang dibuat.
 
@@ -157,7 +150,7 @@ Sampai pada tahap ini penulis telah berhasil menyusun direktori dan membuat \tex
 
 Jika kita melihat kembali Kode \ref{lst:javaNewWebServer} \textit{web server} di atas, dapat terlihat bahwa penulis masih menggunakan \texttt{if - else - elseif} dalam melakukan pemetaan antara URL dengan komponen Controller yang akan dipanggil. Tentunya hal ini sangat tidak efektif karena ketika terjadi penambahan komponen Controller, tentunya penulis harus menambahkan kembali blok \texttt{elsif} di dalam kode \textit{web server} untuk menambahkan pemetaan baru terhadap komponen Controller tersebut. Untuk membuat \textit{framework} ABS MVC lebih fleksibel terhadap perubahan, maka penulis membuat sebuah mekanisme di dalam \textit{framework} agar pengguna \textit{framework} MVC ABS dapat mendefinisikan pemetaannya sendiri langsung dari \textit{framework}.\\
 
-Pendekatan yang penulis lakukan untuk dapat menyediakan fitur konfigurasi pemetaan URL tersebut adalah dengan membuat sebuah modul ABS khusus yang bernama \texttt{RouteConfig}. modul ini berisikan daftar URL beserta nama komponen Controller dan \textit{method} yang akan dicocokan dengan menggunakan mekanisme \textit{pattern matching}. Modul ini nantinya akan dipanggil secara otomatis oleh \textit{web server} pada saat menerima \textit{request} dari \textit{web browser}. Tujuan dari pemanggilan modul ini oleh \textit{web server} adalah untuk mengetahui komponen Controller dan \textit{method} mana yang harus dipanggil oleh \textit{web server} untuk dapat menghasilkan halaman web yang diinginkan. berikut adalah modul \texttt{RouteConfig} yang penulis sediakan untuk membantu para pengguna \textit{framework} dalam memetakan URL dengan Controller yang dibuat.
+Pendekatan yang penulis lakukan untuk dapat menyediakan fitur konfigurasi pemetaan URL tersebut adalah dengan membuat sebuah modul ABS khusus yang bernama \texttt{RouteConfig}. Modul ini berisikan daftar URL beserta nama komponen Controller dan \textit{method} yang akan dicocokan dengan menggunakan mekanisme \textit{pattern matching}. Modul ini nantinya akan dipanggil secara otomatis oleh \textit{web server} pada saat menerima \textit{request} dari \textit{web browser}. Tujuan dari pemanggilan modul ini oleh \textit{web server} adalah untuk mengetahui komponen Controller dan \textit{method} mana yang harus dipanggil oleh \textit{web server} untuk dapat menghasilkan halaman web yang diinginkan. Berikut adalah modul \texttt{RouteConfig} yang penulis sediakan untuk membantu para pengguna \textit{framework} dalam memetakan URL dengan Controller yang dibuat.
 
 \begin{lstlisting}[
 caption=Modul \texttt{RouteConfig} untuk pemetaan URL,
@@ -325,7 +318,7 @@ else if(requestMethod.equals("GET"))
 ...
 \end{lstlisting}
 
-Seperti yang terlihat pada Kode \ref{lst:javaParseHTTPData} baris diatas, pada saat penulis menguraikan data pada protokol HTTP POST dan GET, penulis mengumpulkan data-data tersebut kedalam sebuah \texttt{HashMap<String, String>}. Tujuan dari pembuatan \texttt{HashMap} tersebut adalah untuk mengumpulkan seluruh data yang dikirimkan oleh \textit{web browser} untuk kemudian diberikan kepada \textit{framework} MVC ABS. Mekanisme yang digunakan dalam mengirimkan HTTP POST dan GET data tersebut adalah dengan membuat sebuah modul baru pada \textit{framework} MVC ABS yang bernama \texttt{HTTPRequest}. berikut adalah modul ABS \texttt{HTTPRequest} telah penulis buat dalam mengimplementasikan hal tersebut.
+Seperti yang terlihat pada Kode \ref{lst:javaParseHTTPData} baris diatas, pada saat penulis menguraikan data pada protokol HTTP POST dan GET, penulis mengumpulkan data-data tersebut kedalam sebuah \texttt{HashMap<String, String>}. Tujuan dari pembuatan \texttt{HashMap} tersebut adalah untuk mengumpulkan seluruh data yang dikirimkan oleh \textit{web browser} untuk kemudian diberikan kepada \textit{framework} MVC ABS. Mekanisme yang digunakan dalam mengirimkan HTTP POST dan GET data tersebut adalah dengan membuat sebuah modul baru pada \textit{framework} MVC ABS yang bernama \texttt{HTTPRequest}. Berikut adalah modul ABS \texttt{HTTPRequest} telah penulis buat dalam mengimplementasikan hal tersebut.
 
 \begin{lstlisting}[
 caption=Modul \texttt{ABSHttpRequest},
@@ -346,7 +339,7 @@ class ABSHttpRequestImpl(Map<String, String> requestInput) implements ABSHttpReq
 }
 \end{lstlisting}
 
-Dengan adanya tambahan modul \texttt{ABSHttpRequest}, para pengguna \textit{framework} MVC ABS dapat dengan mudah untuk menerima dan memproses setiap \textit{input} yang diberikan oleh pengguna aplikasi. Untuk dapat memproses \textit{input} yang diberikan, diperlukan adanya sedikit perubahan terkait cara mendefinisikan sebuah \textit{method} pada komponen Controller yang dibuat. Perubahhan yang harus dilakukan adalah menyertakan modul \texttt{ABSHttpRequest} tersebut sebagai parameter dalam setiap \textit{method} yang dibuat. Berikut adalah contoh \textit{method} pada komponen Controller yang sudah mengimplementasikan modul \texttt{ABSHttpRequest}.
+Dengan adanya tambahan modul \texttt{ABSHttpRequest}, para pengguna \textit{framework} MVC ABS dapat dengan mudah untuk menerima dan memproses setiap \textit{input} yang diberikan oleh pengguna aplikasi. Untuk dapat memproses \textit{input} yang diberikan, diperlukan adanya sedikit perubahan terkait cara mendefinisikan sebuah \textit{method} pada komponen Controller yang dibuat. Perubahan yang harus dilakukan adalah menyertakan modul \texttt{ABSHttpRequest} tersebut sebagai parameter dalam setiap \textit{method} yang dibuat. Berikut adalah contoh \textit{method} pada komponen Controller yang sudah mengimplementasikan modul \texttt{ABSHttpRequest}.
 
 \begin{lstlisting}[
 firstnumber=24,
@@ -455,12 +448,12 @@ ABS Server merupakan sebuah \textit{web server} sederhana dibuat dengan tujuan u
     \item Melakukan konversi tipe data \texttt{ABS.StdLib.List} kedalam JAVA \texttt{ArrayList}.
 \end{itemize}
 
-Berikut ini adalah penjelas dari masing-masing \textit{source code} yang ada di dalam ABS Server:
+Berikut ini adalah penjelasan dari masing-masing \textit{source code} yang ada di dalam ABS Server:
 
 \begin{itemize}
     \item \texttt{HttpRequest.java}: Class JAVA ini merupakan Class pembantu yang digunakan untuk menyimpan seluruh informasi \textit{request} dari \textit{web browser} termasuk HTTP POST dan GET data untuk kemudian diberikan kepada ABS Framework.
     \item \texttt{HttpServer.java}: Class JAVA ini merupakan Class utama pada ABS Server. Melalui Class inilah aplikasi ABS Server berjalan.
-    \item \texttt{RequestHandler.java}: Class JAVA ini berfungsi untuk memproses setiap \textit{request} yang diberikan oleh \textit{web browser} dan menyampaikannya kedapa ABS MVC Framework untuk dapat menghasilkan sebuah halaman web.
+    \item \texttt{RequestHandler.java}: Class JAVA ini berfungsi untuk memproses setiap \textit{request} yang diberikan oleh \textit{web browser} dan menyampaikannya kepada ABS MVC Framework untuk dapat menghasilkan sebuah halaman web.
     \item \texttt{ResourceResolver.java}: Class JAVA ini berfungsi untuk mengambil berkas HTML sesuai dengan lokasi berkas yang diberikan oleh modul \texttt{RouteConfig} dan mengubahnya menjadi JAVA \texttt{InputStream} untuk kemudian diproses oleh Thymeleaf.
     \item \texttt{DataTransformer.java}: Class JAVA ini berfungsi untuk melakukan konversi tipe data ABS kedalam tipe data JAVA. Untuk saat ini, tipe data yang sudah dikonversi adalah \texttt{ABSString} dan \texttt{ABS.StdLib.List}
 \end{itemize}
