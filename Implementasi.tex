@@ -83,12 +83,11 @@ Seperti yang terlihat pada kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjav
 
 Berdasarkan hasil percobaan tersebut penulis mengetahui bahwa sintaks ABS yang terdapat pada kode \ref{lst:absSederhana} baris \ref{lst:absCreateObject} adalah \textit{equivalent} dengan sintaks JAVA yang terdapat pada kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjavaCreateObject}. Dengan demikian, penulis dapat menyimpulkan bahwa ketika penulis ingin mencoba untuk memanggil class JAVA hasil kompilasi ABS dari class JAVA yang \textit{native} maka penulis harus melakukan pemanggilan fungsi seperti yang terlihat pada kode kode \ref{lst:absjavaMainBlock} baris \ref{lst:absjavaCreateObject} tersebut.\\
 
-%Selain terdapat perbedaan dalam cara membuat \textit{instance} dari sebuah class, terdapat pula perbedaan pada tipe data yang digunakan oleh JAVA hasil kompilasi dari ABS dengan JAVA yang \textit{native}. Jika kita melihat kode \ref{lst:absSederhana} baris \ref{lst:absString} dan \ref{lst:absString2} penulis menggunakan sebuah tipe data \texttt{String} seperti layaknya tipe data \texttt{String} pada JAVA. Akan tetapi ketika kode ABS tersebut di\textit{compile} kedalam bahasa JAVA, ternyata tipe data \texttt{String} tersebut diubah menjadi \texttt{ABSString} seperti yang terlihat pada kode \ref{lst:absjavaGetUsername} baris \ref{lst:absjavaString}. Berdasarkan hasil percobaan tersebut penulis berkesimpulan bahwa ketika penulis ingin mengintegrasikan ABS dengan JAVA, penulis perlu melakukan konversi tipe data dari tipe data milik JAVA ABS menjadi tipe data standar JAVA.\\
-
 Kesimpulan yang penulis dapatkan setelah melakukan percobaan ini adalah: (1) bahwa untuk dapat membuat sebuah \textit{instance} dari class JAVA hasil kompilasi ABS tidak dapat dilakukan dengan menggunakan kata kunci \texttt{new} seperti pada JAVA yang \textit{native} dan (2) terdapat perbedaan tipe data antara \textit{native} JAVA dengan JAVA hasil kompilasi ABS sehingga perlu adanya penyesuaian lebih lanjut agar penulis dapat mengintegrasikan ABS dengan \textit{native} JAVA.
 
 \section{Pembuatan Halaman Web Sederhana Menggunakan ABS}
-Setelah penulis melakukan percobaan sederhana untuk mengetahui cara mengintegrasikan ABS dengan JAVA, selanjutnya penulis melakukan percobaan untuk dapat membuat halaman web sederhana dengan menggunakan ABS. Seperti yang telah kita ketahui bersama, untuk dapat menampilkan sebuah halaman web pada web browser, dibutuhkan adanya sebuah web server yang nantinya akan dapat melayani permintaan dari web browser. Dalam percobaan ini penulis membuat sebuah web server sederhana dengan menggunakan \texttt{ServerSocket} pada JAVA untuk membuka \textit{port} dan menerima \textit{request} dari \textit{web browser} yang nantinya akan memanggil class JAVA hasil kompilasi ABS untuk mendapatkan halaman web yang diinginkan (lihat gambar \ref{fig:howAbsGenerateHTML}).
+
+Setelah penulis melakukan percobaan sederhana untuk mengetahui cara mengintegrasikan ABS dengan JAVA, selanjutnya penulis melakukan percobaan untuk dapat membuat halaman web sederhana dengan menggunakan ABS. Seperti yang telah kita ketahui bersama, untuk dapat menampilkan sebuah halaman web pada web browser, dibutuhkan adanya sebuah web server yang nantinya akan dapat melayani permintaan dari web browser. Dalam percobaan ini penulis membuat sebuah web server sederhana dengan menggunakan \texttt{ServerSocket} pada JAVA untuk membuka \textit{port} dan menerima \textit{request} dari \textit{web browser} yang nantinya akan memanggil class JAVA hasil kompilasi ABS untuk mendapatkan halaman web yang diinginkan (lihat Gambar \ref{fig:howAbsGenerateHTML}).
 
 \begin{figure}
     \centering
@@ -99,7 +98,7 @@ Setelah penulis melakukan percobaan sederhana untuk mengetahui cara mengintegras
     \label{fig:howAbsGenerateHTML}
 \end{figure}
 
-Untuk dapat mensimulasikan proses seperti yang telah digambarkan pada gambar \ref{fig:howAbsGenerateHTML} di atas, pertama-tama penulis membuat sebuah ABS Module yang fungsinya adalah untuk dapat menghasilkan sebuah halaman sederhana dan memberikannya kepada \textit{web server}. berikut adalah kode ABS yang penulis buat untuk menghasilkan sebuah halaman web:
+Untuk dapat mensimulasikan proses seperti yang telah digambarkan pada Gambar \ref{fig:howAbsGenerateHTML} di atas, pertama-tama penulis membuat sebuah ABS Module yang fungsinya adalah untuk dapat menghasilkan sebuah halaman sederhana dan memberikannya kepada \textit{web server}. Berikut adalah kode ABS yang penulis buat untuk menghasilkan sebuah halaman web:
 
 \begin{lstlisting}[
 caption=Kode ABS untuk menghasilkan halaman HTML,
@@ -131,7 +130,7 @@ class WelcomeViewImpl implements WelcomeView
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absWelcomeView} di atas, penulis menggunakan \texttt{String} berisikan kode HTML yang disambung-sambung (\textit{concatted String}) untuk menghasilkan sebuah halaman web. Rencananya adalah string yang sudah dihasilkan oleh halaman ABS Module ini nantinya akan diberikan ke \textit{web server} untuk kemudian diberikan ke \textit{web browser} dan ditampilkan ke \textit{user}. Sebagai awalan, penulis membuat sebuah class JAVA yang ditujukan untuk memanggil class JAVA hasil kompilasi ABS tersbut untuk kemudian ditampilkan di \textit{console} dengan menggunakan \texttt{System.out.println()}. Berikut adalah kode JAVA yang dibuat oleh penulis beserta hasil pemanggilan class ABS-nya.
+Seperti yang terlihat pada Kode \ref{lst:absWelcomeView} di atas, penulis menggunakan \texttt{String} berisikan kode HTML yang disambung-sambung (\textit{concatted String}) untuk menghasilkan sebuah halaman web. Rencananya adalah string yang sudah dihasilkan oleh halaman ABS Module ini nantinya akan diberikan ke \textit{web server} untuk kemudian diberikan ke \textit{web browser} dan ditampilkan ke \textit{user}. Sebagai awalan, penulis membuat sebuah class JAVA yang ditujukan untuk memanggil class JAVA hasil kompilasi ABS tersbut untuk kemudian ditampilkan di \textit{console} dengan menggunakan \texttt{System.out.println()}. Berikut adalah kode JAVA yang dibuat oleh penulis beserta hasil pemanggilan class ABS-nya.
 
 \begin{lstlisting}[
 caption=Kode JAVA untuk memanggil ABS,
@@ -167,7 +166,7 @@ public class ABSMain extends ABSObject
     \label{fig:javaABSCallResult}
 \end{figure}
 
-Terlihat pada kode \ref{lst:javaCallABS} baris \ref{lst:javaCreateABSObject} dan \ref{lst:javaCallABSMethod} di atas, penulis membuat sebuah \textit{instance} dari class \texttt{WelcomView} serta melakukan pemanggilan fungsi \texttt{generateView()} untuk mendapatkan \texttt{String} HTML yang telah dibuat. Hasil dari pemanggilan fungsi \texttt{generateView()} pada class \texttt{WelcomeView} tersebut adalah sebuah \texttt{String} panjang berisikan kode HTML seperti yang terlihat pada gambar \ref{fig:javaABSCallResult}.\\
+Terlihat pada Kode \ref{lst:javaCallABS} baris \ref{lst:javaCreateABSObject} dan \ref{lst:javaCallABSMethod} di atas, penulis membuat sebuah \textit{instance} dari class \texttt{WelcomView} serta melakukan pemanggilan fungsi \texttt{generateView()} untuk mendapatkan \texttt{String} HTML yang telah dibuat. Hasil dari pemanggilan fungsi \texttt{generateView()} pada class \texttt{WelcomeView} tersebut adalah sebuah \texttt{String} panjang berisikan kode HTML seperti yang terlihat pada Gambar \ref{fig:javaABSCallResult}.\\
 
 Setelah penulis berhasil memanggil class JAVA hasil kompilasi ABS untuk mendapatkan HTML String, langkah selanjutnya adalah memberikan HTML String tersebut kepada web browser. Untuk dapat melakukan hal tersebut, penulis akan membuat sebuah web server sederhana dengan menggunakan class \texttt{ServerSocket} pada JAVA. Berikut adalah kode JAVA yang penulis buat untuk dapat menerima request dari \textit{web browser} dan memberikan halaman web yang diinginkan kepada \textit{web browser}.
 
@@ -213,7 +212,7 @@ public class ABSHttpServer extends ABSObject {
 }
 \end{lstlisting}
 
-Pada kode \ref{lst:javaSimpleWebServer} baris \ref{lst:javaCreateSocket} dan \ref{lst:javaCreateSocket2} di atas, terlihat bahwa penulis melakukan pembuatan \texttt{ServerSocket} dan membuka \textit{port} 8080 untuk menerima \textit{request} dari \textit{web browser}. Setelah \textit{web server} menerima \textit{request} dari \textit{web browser}, berikutnya \textit{web server} akan mencocokan URL yang diberikan oleh \textit{web browser} seperti yang terlihat pada gambar \ref{fig:webBrowserRequest}. Apabila URL yang diminta cocok dengan salah satu kondisi yang ada di \textit{web server}, berikutnya \textit{web server} akan melakukan pemanggilan class ABS seperti yang terlihat pada kode \ref{lst:javaSimpleWebServer} baris \ref{lst:serverStartCallABS} - \ref{lst:serverEndCallABS}. Setelah HTML String berhasil diterima oleh \textit{web server} berikutnya akan diberikan ke \textit{web browser} melalui \texttt{OutputStream} pada \texttt{ServerSocket} untuk kemudian ditampilkan di \textit{web browser} seperti yang terlihat pada gambar di bawah ini.
+Pada Kode \ref{lst:javaSimpleWebServer} baris \ref{lst:javaCreateSocket} dan \ref{lst:javaCreateSocket2} di atas, terlihat bahwa penulis melakukan pembuatan \texttt{ServerSocket} dan membuka \textit{port} 8080 untuk menerima \textit{request} dari \textit{web browser}. Setelah \textit{web server} menerima \textit{request} dari \textit{web browser}, berikutnya \textit{web server} akan mencocokan URL yang diberikan oleh \textit{web browser} seperti yang terlihat pada Gambar \ref{fig:webBrowserRequest}. Apabila URL yang diminta cocok dengan salah satu kondisi yang ada di \textit{web server}, berikutnya \textit{web server} akan melakukan pemanggilan class ABS seperti yang terlihat pada Kode \ref{lst:javaSimpleWebServer} baris \ref{lst:serverStartCallABS} - \ref{lst:serverEndCallABS}. Setelah HTML String berhasil diterima oleh \textit{web server} berikutnya akan diberikan ke \textit{web browser} melalui \texttt{OutputStream} pada \texttt{ServerSocket} untuk kemudian ditampilkan di \textit{web browser} seperti yang terlihat pada Gambar di bawah ini.
 
 \begin{figure}
     \centering
@@ -271,7 +270,7 @@ class MahasiswaImpl(
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absModuleMahasiswa} di atas, penulis membuat sebuah module ABS yang hanya berisikan atribut npm, nama dan alamat beserta method accessor-nya (\texttt{getNpm()}, \texttt{getNama()} dan \texttt{getAlamat()}). Module ini dibuat hanya mengandung atribut dan \textit{accessor} adalah karena untuk dapat merepresentasikan data Mahasiswa, module ini harus menyimpan atribut-atribut yang berhubungan dengan Mahasiswa beserta dengan \textit{method} pembantu untuk melakukan manipulasi data sesuai dengan \textit{input} yang diberikan \textit{user}.\\
+Seperti yang terlihat pada Kode \ref{lst:absModuleMahasiswa} di atas, penulis membuat sebuah module ABS yang hanya berisikan atribut npm, nama dan alamat beserta method accessor-nya (\texttt{getNpm()}, \texttt{getNama()} dan \texttt{getAlamat()}). Module ini dibuat hanya mengandung atribut dan \textit{accessor} adalah karena untuk dapat merepresentasikan data Mahasiswa, module ini harus menyimpan atribut-atribut yang berhubungan dengan Mahasiswa beserta dengan \textit{method} pembantu untuk melakukan manipulasi data sesuai dengan \textit{input} yang diberikan \textit{user}.\\
 
 Setelah berhasil membuat komponen Model \texttt{Mahasiswa}, berikutnya adalah membuat komponen View yang akan menampilkan data mahasiswa dalam bentuk tabel. Berikut adalah kode ABS yang dibuat oleh penulis dalam membuat komponen View tersebut:
 
@@ -334,9 +333,9 @@ class MahasiswaListViewImpl
 }
 \end{lstlisting}
 
-Kode \ref{lst:absModuleMhsView} di atas merupakan module ABS yang dibuat berdasarkan kriteria komponen View pada MVC yang sudah penulis bahas sebelumnya. Dikarenakan komponen View hanya berfungsi untuk menampilkan data yang diberikan, maka module ABS ini hanya berisi sebuah \textit{method} untuk menghasilkan sebuah halaman HTML yang akan menampilkan daftar mahasiswa.\\
+Kode \ref{lst:absModuleMhsView} di atas merupakan modul ABS yang dibuat berdasarkan kriteria komponen View pada MVC yang sudah penulis bahas sebelumnya. Dikarenakan komponen View hanya berfungsi untuk menampilkan data yang diberikan, maka module ABS ini hanya berisi sebuah \textit{method} untuk menghasilkan sebuah halaman HTML yang akan menampilkan daftar mahasiswa. Seperti yang terlihat pada Kode \ref{lst:absModuleMhsView} diatas, penulis membuat kode HTML dengan cara menyambung-nyambung \texttt{String} yang berisikan tag HTML. Hal ini tentunya sangat tidak efektif terlebih lagi ketika penulis ingin membuat \textit{layout} halaman web yang lebih kompleks. Oleh karena itu, pada pembahasan selanjutnya menulis akan mengubah metode pembuatan komponen View saat ini dengan menggunakan \textit{template engine} agar penulis dapat membuat komponen tersebut dengan menggunakan sintaks HTML secara langsung.
 
-Sampai tahap ini penulis sudah membuat module ABS yang merepresentasikan data Mahasiswa (kode \ref{lst:absModuleMahasiswa}), selain itu penulis juga sudah membuat sebuah module ABS yang dapat menghasilkan sebuah halaman HTML untuk menampilkan data-data mahasiswa dalam bentuk tabel (kode \ref{lst:absModuleMhsView}). Selanjutnya, penulis akan membuat satu buah module lagi yang tersisa yaitu module ABS yang bertugas untuk mengintegrasikan kedua buah module yang sudah dibuat sebelumnya. Berikut adalah kode ABS yang penulis buat untuk merealisasikan hal tersebut:
+Sampai tahap ini penulis sudah membuat module ABS yang merepresentasikan data Mahasiswa (Kode \ref{lst:absModuleMahasiswa}), selain itu penulis juga sudah membuat sebuah module ABS yang dapat menghasilkan sebuah halaman HTML untuk menampilkan data-data mahasiswa dalam bentuk tabel (Kode \ref{lst:absModuleMhsView}). Selanjutnya, penulis akan membuat satu buah module lagi yang tersisa yaitu module ABS yang bertugas untuk mengintegrasikan kedua buah module yang sudah dibuat sebelumnya. Berikut adalah kode ABS yang penulis buat untuk merealisasikan hal tersebut:
 
 \begin{lstlisting}[
 caption=Module ABS untuk mengintegrasikan antara data dan presentasi,
@@ -381,21 +380,23 @@ class MahasiswaControllerImpl
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absModuleMhsController} di atas, module tersebut berperan dalam mengintegrasikan modul \texttt{Mahasiswa} dengan modul \texttt{MahasiswaListView} untuk menghasilkan sebuah halaman web yang berisi daftar mahasiswa dalam bentuk tabel. Pada kode \ref{lst:absModuleMhsController} baris \ref{lst:absStartCreateMhsList} - \ref{lst:absEndCreateMhsList} penulis membuat tiga buah objek \texttt{Mahasiswa} yang kemudian penulis masukan kedalam sebuah \texttt{List} yang merupakan representasi dari data-data Mahasiswa. Selanjutnya penulis memberikan data tersebut ke dalam objek \texttt{MahasiswaListView} untuk kemudian ditampilkan dalam bentuk HTML seperti yang tertera pada kode \ref{lst:absModuleMhsController} baris \ref{lst:absGenerateMhsView} dan \ref{lst:absGenerateMhsView2}.\\
+Seperti yang terlihat pada Kode \ref{lst:absModuleMhsController} di atas, module tersebut berperan dalam mengintegrasikan modul \texttt{Mahasiswa} dengan modul \texttt{MahasiswaListView} untuk menghasilkan sebuah halaman web yang berisi daftar mahasiswa dalam bentuk tabel. Pada Kode \ref{lst:absModuleMhsController} baris \ref{lst:absStartCreateMhsList} - \ref{lst:absEndCreateMhsList} penulis membuat tiga buah objek \texttt{Mahasiswa} yang kemudian penulis masukan kedalam sebuah \texttt{List} yang merupakan representasi dari data-data Mahasiswa. Selanjutnya penulis memberikan data tersebut ke dalam objek \texttt{MahasiswaListView} untuk kemudian ditampilkan dalam bentuk HTML seperti yang tertera pada Kode \ref{lst:absModuleMhsController} baris \ref{lst:absGenerateMhsView} dan \ref{lst:absGenerateMhsView2}.\\
 
-Setelah berhasil membuat tiga buah modul yang dibutuhkan, berikutnya penulis akan memanggil modul \texttt{MahasiswaController} untuk melihat hasil dari halaman web yang dibuat. Oleh karena itu penulis menambahkan sedikit kode pada web server yang penulis buat (lihat kode \ref{lst:javaSimpleWebServer}) untuk memanggil module \texttt{MahasiswaController} tersebut. berikut adalah tambahan kode yang telah penulis buat beserta halaman web yang telah berhasil dibuat dengan menggunakan ABS.
+Setelah berhasil membuat tiga buah modul yang dibutuhkan, berikutnya penulis akan memanggil modul \texttt{MahasiswaController} untuk melihat hasil dari halaman web yang dibuat. Oleh karena itu penulis menambahkan sedikit kode pada web server yang penulis buat (lihat Kode \ref{lst:javaSimpleWebServer}) untuk memanggil module \texttt{MahasiswaController} tersebut. berikut adalah tambahan kode yang telah penulis buat beserta halaman web yang telah berhasil dibuat dengan menggunakan ABS.
 
-\begin{lstlisting}[
-caption=Tambahan kode pada web server untuk memanggil modul \texttt{MahasiswaController},
-label={lst:javaCallMahasiswaController}
-]
-else if(protocols[1].equals("/listMahasiswa"))
-{
-    MahasiswaController_i controller = MahasiswaControllerImpl_c.__ABS_createNewObject(this);
-    html = ABSRuntime.checkForNull(controller).showMahasiswaList().getString();
-    out.println(html);
-}
-\end{lstlisting}
+\begin{minipage}{\linewidth}
+    \begin{lstlisting}[
+    caption=Tambahan kode pada web server untuk memanggil modul \texttt{MahasiswaController},
+    label={lst:javaCallMahasiswaController}
+    ]
+    else if(protocols[1].equals("/listMahasiswa"))
+    {
+        MahasiswaController_i controller = MahasiswaControllerImpl_c.__ABS_createNewObject(this);
+        html = ABSRuntime.checkForNull(controller).showMahasiswaList().getString();
+        out.println(html);
+    }
+    \end{lstlisting}
+\end{minipage}
 
 \begin{figure}
     \centering
@@ -406,7 +407,7 @@ else if(protocols[1].equals("/listMahasiswa"))
     \label{fig:htmlDaftarMhs}
 \end{figure}
 
-Sampai pada tahap ini, penulis telah berhasil memetakan modul-modul ABS yang dibuat kedalam komponen MVC untuk menghasilkan sebuah halaman web. Namun penulis masih menemukan banyak kekurangan dalam pembuatan komponen MVC ini yang salah satu diantaranya adalah ketika kita membuat komponen view (modul \texttt{MahasiswaListView}). Jika melihat kode \ref{lst:absModuleMhsView} di atas, kode HTML yang dibuat oleh penulis masih berupa \texttt{String} yang disambung-sambung. Hal ini tentunya sangat tidak efektif terlebih lagi jika penulis ingin membuat sebuah halaman web yang lebih kompleks. Oleh karena itu, dibutuhkan adanya solusi lain untuk dapat membuat komponen view ini menjadi lebih mudah dibuat dan dikelola.
+Sampai pada tahap ini, penulis telah berhasil memetakan modul-modul ABS yang dibuat kedalam komponen MVC untuk menghasilkan sebuah halaman web. Namun penulis masih menemukan banyak kekurangan dalam pembuatan komponen MVC ini yang salah satu diantaranya adalah ketika kita membuat komponen view (modul \texttt{MahasiswaListView}).
 
 \section{Perbaikan Komponen View Menggunakan HTML Template Engine}
 
@@ -422,40 +423,42 @@ Salah satu pendekatan yang dapat dilakukan utuk mengintegrasikan ABS dengan HTML
     \label{fig:integrasiThymeleaf}
 \end{figure}
 
-Seperti yang terlihat pada gambar \ref{fig:integrasiThymeleaf}, dalam kasus ini penulis tidak langsung memanggil komponen View melalui Controller seperti yang penulis lakukan pada kode \ref{lst:absModuleMhsController}. Hal ini dilakukan karena komponen View yang dibuat dengan menggunakan thymeleaf murni menggunakan sintaks HTML sehingga tidak dapat dibuat objeknya. Penggunaan HTML dalam membuat komponen View tentunya akan mempermudah para pengembang perangkat lunak dalam membuat komponen View serta memubuat komponen view menjadi lebih rapih dan mudah dibaca. berikut perubahan pada komponen view yang penulis buat dengan menggunakan thymeleaf:
+Seperti yang terlihat pada Gambar \ref{fig:integrasiThymeleaf}, dalam kasus ini penulis tidak langsung memanggil komponen View melalui Controller seperti yang penulis lakukan pada Kode \ref{lst:absModuleMhsController}. Hal ini dilakukan karena komponen View yang dibuat dengan menggunakan thymeleaf murni menggunakan sintaks HTML sehingga tidak dapat dibuat objeknya. Penggunaan HTML dalam membuat komponen View tentunya akan mempermudah para pengembang perangkat lunak dalam membuat komponen View serta memubuat komponen view menjadi lebih rapih dan mudah dibaca (lihat Gambar \ref{fig:perbandinganKodeView}). berikut perubahan pada komponen view yang penulis buat dengan menggunakan thymeleaf:
 
-\begin{lstlisting}[
-caption=Komponen View menggunakan HTML dan Thymeleaf,
-label={lst:viewMhsListHTML},
-escapeinside={@}{@}
-]
-<!DOCTYPE html>
-<html>
-<body>
-	<h1>Daftar Mahasiswa</h1>
-	<table>
-		<thead>
-			<tr>
-				<td>No.</td>
-				<td>NPM</td>
-				<td>Nama</td>
-				<td>Alamat</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="mahasiswa: ${mahasiswaList}"> @\label{lst:thymeStartLoop}@
-				<td th:text="${#ids.seq('')}"></td>
-				<td th:text="${mahasiswa.npm}"></td>
-				<td th:text="${mahasiswa.nama}"></td>
-				<td th:text="${mahasiswa.alamat}"></td>
-			</tr> @\label{lst:thymeEndLoop}@
-		</tbody>
-	</table>
-</body>
-</html>
-\end{lstlisting}
+\begin{minipage}{\linewidth}
+    \begin{lstlisting}[
+    caption=Komponen View menggunakan HTML dan Thymeleaf,
+    label={lst:viewMhsListHTML},
+    escapeinside={@}{@}
+    ]
+    <!DOCTYPE html>
+    <html>
+    <body>
+    	<h1>Daftar Mahasiswa</h1>
+    	<table>
+    		<thead>
+    			<tr>
+    				<td>No.</td>
+    				<td>NPM</td>
+    				<td>Nama</td>
+    				<td>Alamat</td>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr th:each="mahasiswa: ${mahasiswaList}"> @\label{lst:thymeStartLoop}@
+    				<td th:text="${#ids.seq('')}"></td>
+    				<td th:text="${mahasiswa.npm}"></td>
+    				<td th:text="${mahasiswa.nama}"></td>
+    				<td th:text="${mahasiswa.alamat}"></td>
+    			</tr> @\label{lst:thymeEndLoop}@
+    		</tbody>
+    	</table>
+    </body>
+    </html>
+    \end{lstlisting}
+\end{minipage}
 
-Seperti yang terlihat pada kode \ref{lst:viewMhsListHTML} di atas, penulis membuat sebuah halaman web yang equivalent dengan kode \ref{lst:absModuleMhsView} hanya saja kode ini dibuat dengan menggunakan sintaks HTML dan thymeleaf. Jika kita lihat kode \ref{lst:viewMhsListHTML} baris \ref{lst:thymeStartLoop} - \ref{lst:thymeEndLoop} terdapat sebuah sintaks yang bukan standar HTML, sintaks tersebut merupakan sintaks dari thymeleaf (bisanya dintadi dengan \texttt{th:}). Tujuan dari penggunaan sintaks tersebut adalah untuk melakukan iterasi pada sebuah \texttt{List} untuk kemudian menampilkan seluruh atribut dari objek yang berada di dalam \texttt{List} tersebut.\\
+Seperti yang terlihat pada Kode \ref{lst:viewMhsListHTML} di atas, penulis membuat sebuah halaman web yang equivalent dengan Kode \ref{lst:absModuleMhsView} hanya saja kode ini dibuat dengan menggunakan sintaks HTML dan thymeleaf. Jika kita lihat Kode \ref{lst:viewMhsListHTML} baris \ref{lst:thymeStartLoop} - \ref{lst:thymeEndLoop} terdapat sebuah sintaks yang bukan standar HTML, sintaks tersebut merupakan sintaks dari thymeleaf (bisanya dintadi dengan \texttt{th:}). Tujuan dari penggunaan sintaks tersebut adalah untuk melakukan iterasi pada sebuah \texttt{List} untuk kemudian menampilkan seluruh atribut dari objek yang berada di dalam \texttt{List} tersebut.\\
 
 Sampai pada tahap ini penulis telah berhasil memperbaiki komponen view dari yang sebelumnya menggunakan ABS menjadi HTML dan thymeleaf sehingga membuat komponen ini menjadi lebih mudah untuk didefinisikan dan lebih sesuai dengan kebiasaan para pengembang. Akan tetapi perubahan ini belum dapat diintegrasikan secara langsung dengan komponen-komponen lainnya karena masih banyak penyesuaian yang harus dilakukan baik di tingkat \textit{web server} maupun di komponen MVC lainnya. Oleh karena itu, langkah selanjutnya yang dilakukan oleh penulis adalah mengubah \textit{web server} dan komponen MVC lainnya agar sesuai dengan implementasi komponen View yang terbaru.
 
@@ -496,7 +499,7 @@ class MahasiswaControllerImpl implements MahasiswaController
 }
 \end{lstlisting}
 
-Terlihat pada kode \ref{lst:absMhsControllerNew} baris \ref{lst:absReturnViewAndModel}, penulis tidak lagi membuat \textit{instance} dari \texttt{MahasiswaListView} melainkan hanya mengembalikan lokasi berkas HTML yang menjadi komponen View-nya berserta dengan data Mahasiswa yang akan ditampilkan kedalam halaman web. Selain itu, pada baris \ref{lst:absReturnType} dan \ref{lst:absReturnType2} juga terdapat perubahan kode yaitu dari yang sebelumya \textit{method} \texttt{showMahasiswaList} hanya mengembalikan nilai \texttt{String} berubah menjadi \texttt{Pair(String, List<Mahasiswa>)}.
+Terlihat pada Kode \ref{lst:absMhsControllerNew} baris \ref{lst:absReturnViewAndModel}, penulis tidak lagi membuat \textit{instance} dari \texttt{MahasiswaListView} melainkan hanya mengembalikan lokasi berkas HTML yang menjadi komponen View-nya berserta dengan data Mahasiswa yang akan ditampilkan kedalam halaman web. Selain itu, pada baris \ref{lst:absReturnType} dan \ref{lst:absReturnType2} juga terdapat perubahan kode yaitu dari yang sebelumya \textit{method} \texttt{showMahasiswaList} hanya mengembalikan nilai \texttt{String} berubah menjadi \texttt{Pair(String, List<Mahasiswa>)}.
 
 Setelah melakukan perubahan pada komponen Controller, berikutnya adalah melakukan perubahan pada \textit{web server}. Berikut adalah perubahan-perubahan pada web server yang penulis lakukan untuk mengintegrasikan thymeleaf dengan ABS:
 
@@ -543,9 +546,9 @@ else if(protocols[1].equals("/listMahasiswa")) {
 ...
 \end{lstlisting}
 
-Jika kita membandingkan kode \ref{lst:javaNewWebServer} di atas dengan kode \ref{lst:javaCallMahasiswaController} yang telah dibuat sebelumnya, terdapat banyak perubahan pada cara web server membuat sebuah halaman web. Pada kode \ref{lst:javaCallMahasiswaController} \textit{web server} langsung mendapatkan halaman web pada saat melakukan pemanggilan \texttt{MahasiswaController} Sedangkan pada kode \ref{lst:javaNewWebServer} proses pembuatan halaman web dilakukan \textit{web server}. Seperti yang terlihat pada kode \ref{lst:javaNewWebServer} baris \ref{lst:javaStartConvertABSList} sampai \ref{lst:javaEndConvertABSList}, \textit{web server} melakukan proses konversi data dari \texttt{ABSList} menjadi \texttt{List}. Hal ini dilakukan karena Thymeleaf hanya mengenali \textit{JAVA Collection} bawaan dari JAVA API sedangkan \texttt{ABSList} bukan merupakan bawaan dari JAVA API.\\
+Jika kita membandingkan Kode \ref{lst:javaNewWebServer} di atas dengan Kode \ref{lst:javaCallMahasiswaController} yang telah dibuat sebelumnya, terdapat banyak perubahan pada cara web server membuat sebuah halaman web. Pada Kode \ref{lst:javaCallMahasiswaController} \textit{web server} langsung mendapatkan halaman web pada saat melakukan pemanggilan \texttt{MahasiswaController} Sedangkan pada Kode \ref{lst:javaNewWebServer} proses pembuatan halaman web dilakukan \textit{web server}. Seperti yang terlihat pada Kode \ref{lst:javaNewWebServer} baris \ref{lst:javaStartConvertABSList} sampai \ref{lst:javaEndConvertABSList}, \textit{web server} melakukan proses konversi data dari \texttt{ABSList} menjadi \texttt{List}. Hal ini dilakukan karena Thymeleaf hanya mengenali \textit{JAVA Collection} bawaan dari JAVA API sedangkan \texttt{ABSList} bukan merupakan bawaan dari JAVA API.\\
 
-Setelah \textit{web server} selesai melakukan konversi data, berikutnya adalah memasukan data tersebut ke dalam komponen View yang sudah dibuat. Proses ini dilakukan dengan cara me-\textit{load} berkas HTML yang dilakukan oleh sebuah Class khusus yang bernama \texttt{ResourceResolver} (lihat kode \ref{lst:javaResourceResolver}) dan menggabungkan berkas tersebut dengan data yang ada kedalam sebuah \texttt{Context} untuk kemudian diproses menjadi sebuah halaman web (lihat kode \ref{lst:javaNewWebServer} baris \ref{lst:javaCreateContext} sampai \ref{lst:javaThymeProcess}).
+Setelah \textit{web server} selesai melakukan konversi data, berikutnya adalah memasukan data tersebut ke dalam komponen View yang sudah dibuat. Proses ini dilakukan dengan cara me-\textit{load} berkas HTML yang dilakukan oleh sebuah Class khusus yang bernama \texttt{ResourceResolver} (lihat Kode \ref{lst:javaResourceResolver}) dan menggabungkan berkas tersebut dengan data yang ada kedalam sebuah \texttt{Context} untuk kemudian diproses menjadi sebuah halaman web (lihat Kode \ref{lst:javaNewWebServer} baris \ref{lst:javaCreateContext} sampai \ref{lst:javaThymeProcess}).
 
 \begin{lstlisting}[
 caption=Class \texttt{ResourceResolver} sebagai tambahan pada \textit{web server},
@@ -573,4 +576,4 @@ public class ResourceResolver implements IResourceResolver
     \label{fig:listMhsThymeleaf}
 \end{figure}
 
-Sampai pada tahap ini, penulis telah berhasil mengintegrasikan komponen View yang menggunakan HTML dengan komponen Controller dan Model yang dibuat dengan menggunakan ABS (lihat hasilnya pada gambar \ref{fig:listMhsThymeleaf} di atas). langkah selanjutnya adalah menggabungkan seluruh hasil eksperimen yang sudah dilakukan menjadi sebuah \textit{framework} MVC ABS.
+Sampai pada tahap ini, penulis telah berhasil mengintegrasikan komponen View yang menggunakan HTML dengan komponen Controller dan Model yang dibuat dengan menggunakan ABS (lihat hasilnya pada Gambar \ref{fig:listMhsThymeleaf} di atas). langkah selanjutnya adalah menggabungkan seluruh hasil eksperimen yang sudah dilakukan menjadi sebuah \textit{framework} MVC ABS.

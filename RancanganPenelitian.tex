@@ -5,42 +5,36 @@ Berdasarkan rumusan masalah, ruang lingkup penelitian, serta batasan penelitian 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]
-        {img/alur-penelitian.png}
+        {img/metodologi-penelitian.png}
     \caption{Rencana Penelitian}
+    \label{fig:metodologiPenelitian}
 \end{figure}
 
-\noindent
-Di awal penelitian, penulis akan melakukan fiksasi studi kasus yang akan digunakan dalam penelitian ini. Setelah proses fiksasi studi kasus, berikutnya penulis akan melakukan analisis studi kasus tersebut serta memodelkan solusi yang akan dibuat. Hasil dari proses analisi ini adalah berupa diagram \textit{feature modelling}, \textit{delta modelling} dan daftar komponen-komponen MVC yang akan dibuat. Langkah selanjutnya adalah mengimplementasikan model yang sudah dibuat agar nantinya dapat diperoleh sebuah \textit{framework} ABS MVC yang utuh sesuai dengan hasil analisa dan pemodelan dari studi kasus pada tahap sebelumnya. langkah terakhir adalah melakukan uji kelayakan dari \textit{framework} yang selesai dibuat. Apabila \textit{framework} yang dihasilkan belum memenuhi syarat kelayakan, maka penulis akan melakukan proses analisa dan pemodelan kembali untuk dapat memperbaiki framework yang ada.
+Seperti yang terlihat pada Gambar \ref{fig:metodologiPenelitian} diatas, pada awal penelitian penulis melakukan studi literatur untuk mendapatkan pengetahuan terkait teori-teori pendukung yang penulis gunakan dalam melakukan penelitian. Setelah selesai melakukan studi literatur, berikutnya penulis melakukan proses analisa dan pemetaan terhadap bahasa pemodelan ABS untuk kemudian dilakukan pemetaan kedalam komponen-komponen MVC. Seteah proses pemetaan selesai, penulis membuat rancangan ABS MVC Framework sesuai dengan hasil analisa dan pemetaan yang telah dilakukan dan setelah itu penulis melakukan proses implementasi untuk merealisasikan desain yang telah dibuat. Langkah berikutnya adalah melakukan proses penerapan ABS MVC Framework untuk melihat apakah \textit{framework} yang dibuat dapat digunakan untuk membuat sebuah aplikasi berbasis web dan melakukan evaluasi terhadap \textit{framework} tersebut untuk menentukan apakah harus dilakukan perombakan atau sudah layak sebagai sebuah MVC Framework. Berikut ini adalah detail dari setiap tahapan penelitian yang penulis lakukan:
 
-%---------------------------------------------------------
-\section{Fiksasi Studi Kasus}
-%---------------------------------------------------------
-Pada tahap ini penulis akan menentukan studi kasus seperti apa yang akan digunakan dalam penelitian ini. Studi kasus yang digunakan pada tahap ini bukanlah sebuah studi kasus yang komperhensif melainkan hanya digunakan untuk mensimulasikan strategi pengembangan SPL berbasis web dengan menggunakan framework yang telah dibuat. Dalam penelitian ini penulis akan membuat sebuah aplikasi keuangan berbasis web yang ditujukan untuk mengelola dana donasi sebuah lembaga kemanusiaan. Adapun fitur-fitur yang akan dibuat dalam studi kasus kali ini antara lain adalah:
+\section{Studi Literatur}
 
-\begin{enumerate}
-    \item \textit{Create, Retrieve, Update} dan \textit{Delete} (CRUD) data dotanur lembaga.
-    \item CRUD data program sosial lembaga.
-    \item Laporan pengeluaran dana donasi.
-    \item Laporan pemasukan dana donasi.
-\end{enumerate} 
+Pada tahap ini penulis melakukan studi literatur dari berbagai sumber seperti buku, artikel ilmian dan web untuk mendapatkan informasi dan pengetahuan terkait teori pendukung yang penulis butuhkan dalam melakukan penelitian ini. Adapun pengetahuan-pengetahuan pendukung yang penulis butuhkan antara lain adalah pengetahuan tentang Hypertext Transfer Protocol (HTTP), pola Model-View-Controller (MVC) dalam pengembangan perangkat lunak, pengetahuan tentang bahasa pemodelan ABS dan pengetahuan tentang \textit{Software Product Line Engineering} (SPLE).
 
-%---------------------------------------------------------
-\section{Melakukan Analisa dan Pemodelan}
-%---------------------------------------------------------
-Pada tahap ini penulis akan mencoba menganalisa studi kasus yang dipilih terkait dengan fitur-fitur apa saja yang harus dibuat, variasi fungsi seperti apakah yang dapat dibuat dari studi kasus tersebut, serta skema partisi yang akan digunakan dalam tahap pengembangannya. Setelah selesai melakukan analisa, berikutnya adalah memodelkan studi kasus tersebut berdasarkan hasil analisa yang diperoleh sehingga nantinya akan dihasilkan sebuah \textit{feature model}, \textit{delta model}, dan daftar komponen MVC yang harus dibuat untuk studi kasus tersebut.
+\section{Pemetaan ABS kedalam MVC}
 
-%---------------------------------------------------------
+Pada tahap ini penulis melakukan analisa terhadap bahasa pemodelan ABS sesuai dengan pengetahuan yang penulis dapatkan dalam proses studi literatur yang sudah penulis lakukan sebelumnya. Tujuan dari proses analisa yang penulis lakukan ini adalah untuk memetakan bahasa pemodelan ABS kedalam komponen-komponen ABS.
+
+\section{Merancang ABS MVC Framework}
+
+Pada tahap ini penulis membuat rancangan ABS MVC Framework berdasarkan hasil analisa dan pemetaan ABS yang dibuat sebelumnya. Adapun rancangan yang dibuat adalah mengenai bagaimana penyusunan direktori dari \textit{framework} tersebut, bagaiamana karakteristik dari setiap komponen MVC yang dibuat dengan menggunakan ABS serta bagaimana caranya agar komponen MVC yang dibuat dapat menghasilkan sebuah halaman web.
+
 \section{Implementasi}
-%---------------------------------------------------------
-Pada tahap ini penulis mulai mengimplementasikan model-model yang sudah dibuat pada tahap sebelumnya. Proses implementasi yang dimaksud adalah mulai membuat kode-kode ABS yang dibutuhkan sesuai dengan model yang telah dibuat serta membuat \textit{web server} sederhana yang nantinya akan digunakan untuk menguji coba SPL berbasis web yang dihasilkan.
 
-%---------------------------------------------------------
+Pada tahap ini penulis merealisasikan rancangan ABS MVC Framework yang telah penulis buat sebelumnya. Adapun poin-poin implementasi yang dilakukan antara lain adalah mengintegrasikan \textit{framework} ABS yang dibuat dengan JAVA dan \textit{web server} agar \textit{framework} tersebut dapat menghasilkan sebuah halaman web yang utuh.
+
+\section{Penerapan ABS MVC Framework}
+
+Pada tahap ini penulis membuat sebuah aplikasi web dengan menggunakan ABS MVC Framework yang dibuat sekaligus mencoba untuk menerapkan \textit{delta modelling} dan SPLE terhadap \textit{framework} tersebut.
+
 \section{Evaluasi}
-%---------------------------------------------------------
-Pada tahap ini penulis akan melakukan evaluasi terhadap SPL berbasis web yang telah berhasil dibuat pada tahap implementasi. Salah satu faktor yang dinilai pada tahap evaluasi ini adalah terkait kesesuaian aplikasi dengan model atau rancangan yang sudah ditentukan pada tahap analisa dan pemodelan. Apabila hasil evaluasi dari aplikasi yang dibuat belum memuaskan, maka harus ada proses analisa dan pemodelan kembali untuk melihat apakah ada bagian yang harus direvisi atau tidak. Jika hasil evaluasi aplikasi sudah memuaskan maka selanjutnya adalah menuliskan laporan penelitian. \\
 
-\noindent
-Berikut ini adalaha syarat kelayakan yang akan dijadikan parameter dalam tahap evaluasi ini:
+Pada tahap ini penulis mengevaluasi hasil penerapan yang dilakukan untuk melihat apakah pelu adanya revisi dan perancangan ulang atau \textit{framework} tersebut sudah sesuai dengan tujuan dari penelitian ini. Apabila hasil evaluasi dari \textit{framework} yang dibuat belum memuaskan, makan akan dilakukan proses revisi rancangan untuk lebih menyempurnakan lagi \textit{framework} yang dibuat. Namun, apabila hasil evaluasi sudah memuaskan maka langkah selanjutnya adalah mendokumentasikan hasil penelitian yang diperoleh kadalam laporan penelitian. Adapun syarat-syarat kelayakan yang penulis tetapkan sebagai parameter keberhasilan dalam proses evaluasi ini antara lain adalah:
 
 \begin{enumerate}
     \item Apakah \textit{framework} yang dihasilkan sudah sesuai dengan kaidah MVC yang berlaku? (sesuai dengan yang ada pada studi literatur)
@@ -48,7 +42,6 @@ Berikut ini adalaha syarat kelayakan yang akan dijadikan parameter dalam tahap e
     \item Apakah \textit{framework} yang dihasilkan sudah dapat mengasilkan sebuah \textit{complete product} SPL berbasis web? (dapat dijalankan)
 \end{enumerate}
 
-%---------------------------------------------------------
 \section{Penulisan Laporan}
-%---------------------------------------------------------
+
 Pada tahap ini penulis akan menuliskan laporan penelitian dan menarik kesimpulan yang diambil dari penelitian yang sudah dilakukan serta memaparkan temuan-temuan yang diperoleh selama melakukan penelitian.

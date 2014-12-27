@@ -309,7 +309,7 @@ label={lst:htmlUpdateProduct}
     \label{fig:htmlUpdate}
 \end{figure}
 
-Seperti yang terlihat pada kode \ref{lst:htmlUpdateProduct} di atas, penulis menambahkan sintaks Thymeleaf pada halaman ini agar halaman HTML ini dapat menampilkan data produk yang diberikan. Pada halaman ini, penulis menggunakan dua jenis sintaks Thymeleaf yaitu \texttt{th:text} dan \texttt{th:value}. sintaks \texttt{th:text} digunakan untuk menampilkan data dalam bentuk teks, sedangkan \texttt{th:value} adalah untuk menampilkan data kedalam bentuk atribut \texttt{value=""} di dalam tag \texttt{<input>}. Dengan menggunakan dua buah sintaks tersebut penulis sudah dapat menampilkan data produk pada halaman \texttt{update.html}.
+Seperti yang terlihat pada Kode \ref{lst:htmlUpdateProduct} di atas, penulis menambahkan sintaks Thymeleaf pada halaman ini agar halaman HTML ini dapat menampilkan data produk yang diberikan. Pada halaman ini, penulis menggunakan dua jenis sintaks Thymeleaf yaitu \texttt{th:text} dan \texttt{th:value}. sintaks \texttt{th:text} digunakan untuk menampilkan data dalam bentuk teks, sedangkan \texttt{th:value} adalah untuk menampilkan data kedalam bentuk atribut \texttt{value=""} di dalam tag \texttt{<input>}. Dengan menggunakan dua buah sintaks tersebut penulis sudah dapat menampilkan data produk pada halaman \texttt{update.html}.
 
 \subsection{Komponen View \texttt{list.html}}
 
@@ -366,7 +366,7 @@ escapeinside={+}{+}
     \label{fig:htmlList}
 \end{figure}
 
-Seperti yang terlihat pada kode \ref{lst:htmlListProduct} diatas, penulis juga menambahkan sintaks Thymeleaf untuk dapat menampilkan data produk kedalam halaman web. Berbeda dengan kode \ref{lst:htmlUpdateProduct} (halaman \texttt{update.html}) yang telah dibuat sebelumnya, pada halaman ini penulis menggunakan dua buah sintaks Thymeleaf yang lain yaitu \texttt{\$\{\#ids.seq()\}} (baris \ref{lst:thymeSequence}) dan \texttt{@\{url(param)\}} (baris \ref{lst:thymeUrl} dan \ref{lst:thymeUrl2}). Sintaks \texttt{\$\{\#ids.seq()\}} digunakan untuk menampilkan \textit{sequence id} seperti 1,2,3 dan seterusnya. Sedangkan sintaks \texttt{@\{url(param)\}} digunakan untuk menghasilkan URL dengan parameter seperti misalnya \texttt{http://localhost:8080/product/update.abs?sku=WH001}.
+Seperti yang terlihat pada Kode \ref{lst:htmlListProduct} diatas, penulis juga menambahkan sintaks Thymeleaf untuk dapat menampilkan data produk kedalam halaman web. Berbeda dengan Kode \ref{lst:htmlUpdateProduct} (halaman \texttt{update.html}) yang telah dibuat sebelumnya, pada halaman ini penulis menggunakan dua buah sintaks Thymeleaf yang lain yaitu \texttt{\$\{\#ids.seq()\}} (baris \ref{lst:thymeSequence}) dan \texttt{@\{url(param)\}} (baris \ref{lst:thymeUrl} dan \ref{lst:thymeUrl2}). Sintaks \texttt{\$\{\#ids.seq()\}} digunakan untuk menampilkan \textit{sequence id} seperti 1,2,3 dan seterusnya. Sedangkan sintaks \texttt{@\{url(param)\}} digunakan untuk menghasilkan URL dengan parameter seperti misalnya \texttt{http://localhost:8080/product/update.abs?sku=WH001}.
 
 \section{Pembuatan Komponen Controller}
 
@@ -400,7 +400,7 @@ class ProductControllerImpl implements ProductController
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:layoutProductController} diatas, terdapat tujuan buah operasi / \textit{method} yang akan didefinisikan di dalam modul ini. Secara umum, ketujuh buah \textit{method} tersebut merupakan \textit{method} yang akan digunakan dalam proses \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete} produk pada aplikasi web yang dibuat. Berikut ini ada detail dari setiap \textit{method} yang ada di dalam modul \texttt{ProductController}:
+Seperti yang terlihat pada Kode \ref{lst:layoutProductController} diatas, terdapat tujuan buah operasi / \textit{method} yang akan didefinisikan di dalam modul ini. Secara umum, ketujuh buah \textit{method} tersebut merupakan \textit{method} yang akan digunakan dalam proses \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete} produk pada aplikasi web yang dibuat. Berikut ini ada detail dari setiap \textit{method} yang ada di dalam modul \texttt{ProductController}:
 
 \subsection{Method \texttt{index}}
 Method ini digunakan untuk menampilkan halaman utama yang berisikan informasi singkat tentang aplikasi. Berikut ini adalah detail kode yang harus dibuat di dalam modul \texttt{ProductController}:
@@ -416,7 +416,7 @@ Pair<String, List<Product>> index(ABSHttpRequest request)
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absProductIndex} diatas, detail \textit{method} yang dibuat sangatlah sederhana yaitu hanya mengembalikan lokasi berkas HTML yang digunakan dengan tanpa adanya data yang  diberikan. Hal ini dilakukan karena karena halaman ini hanya merupakan halaman statis yang tidak membutuhkan data dari komponen Model untuk ditampilkan.
+Seperti yang terlihat pada Kode \ref{lst:absProductIndex} diatas, detail \textit{method} yang dibuat sangatlah sederhana yaitu hanya mengembalikan lokasi berkas HTML yang digunakan dengan tanpa adanya data yang  diberikan. Hal ini dilakukan karena karena halaman ini hanya merupakan halaman statis yang tidak membutuhkan data dari komponen Model untuk ditampilkan.
 
 \subsection{Method \texttt{addProduct}}
 Method ini digunakan untuk menampilkan halaman \texttt{form.html} berisikan \texttt{HTML Form} yang digunakan untuk mengirim data produk baru kepada aplikasi web. berikut ini adalah detail kode yang harus dibuat di dalam modul \texttt{ProductController}:
@@ -432,7 +432,7 @@ Pair<String, List<Product>> addProduct(ABSHttpRequest request)
 }
 \end{lstlisting}
 
-Kode \ref{lst:absAddProduct} diatas secara umum mirip dengan \textit{method} \texttt{index} seperti yang tertera pada kode \ref{lst:absProductIndex} sebelumnya. Method ini hanya mengembalikan lokasi berkas HTML yang digunakan dengan tanpa adanya data yang diberikan. 
+Kode \ref{lst:absAddProduct} diatas secara umum mirip dengan \textit{method} \texttt{index} seperti yang tertera pada Kode \ref{lst:absProductIndex} sebelumnya. Method ini hanya mengembalikan lokasi berkas HTML yang digunakan dengan tanpa adanya data yang diberikan. 
 
 \subsection{Method \texttt{saveDataProduct}}
 Method ini digunakan untuk menerima dan menyimpan data produk yang dikirimkan oleh pengguna melalui halaman \texttt{form.html} dan kemudian menyimpannya kedalam \texttt{ProductDB} untuk kemudian ditampilkan kembali kedalam bentuk tabel. Berikut ini adalah detail kode ABS yang harus dibuat di dalam modul \texttt{ProductController}:
@@ -461,9 +461,9 @@ Pair<String, List<Product>> saveDataProduct(ABSHttpRequest request)
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absSaveDataProduct} diatas, penulis membuat objek \texttt{ProductDB} yang sudah dibuat sebelumnya pada tahap pembuatan komponen Model. objek ini berfungsi sebagai tempat penyimpanan data produk sementara untuk mensimulasikan proses \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete}. Setelah membuat objek dari \texttt{ProductDB}, berikutnya penulisan melakukan proses inisialisasi data dengan memanggil \textit{method} \texttt{init} (lihat kode \ref{lst:absInitDB}). Tujuan dari pemanggilan ini adalah untuk mengisi \texttt{ProductDB} dengan data \textit{dummy} sebagai data awalan yang dimiliki oleh aplikasi.\\
+Seperti yang terlihat pada Kode \ref{lst:absSaveDataProduct} diatas, penulis membuat objek \texttt{ProductDB} yang sudah dibuat sebelumnya pada tahap pembuatan komponen Model. objek ini berfungsi sebagai tempat penyimpanan data produk sementara untuk mensimulasikan proses \textit{create}, \textit{retrieve}, \textit{update} dan \textit{delete}. Setelah membuat objek dari \texttt{ProductDB}, berikutnya penulisan melakukan proses inisialisasi data dengan memanggil \textit{method} \texttt{init} (lihat Kode \ref{lst:absInitDB}). Tujuan dari pemanggilan ini adalah untuk mengisi \texttt{ProductDB} dengan data \textit{dummy} sebagai data awalan yang dimiliki oleh aplikasi.\\
 
-Setelah proses initialisasi \texttt{ProductDB} selesai, berikutnya adalah menangkap input yang diberikan oleh pengguna melalui objek \texttt{ABSHttpRequest}. Untuk dapat mengakses HTTP POST atau GET data yang diberikan oleh \textit{web server} penulis menggunakan \textit{method} \texttt{getInput} yang dimiliki oleh objek \texttt{ABSHttpRequest} seperti yang terlihat pada kode \ref{lst:absGetInput} sampai \ref{lst:absGetInput2}). Setelah berhasil mengambil \textit{input} dari \textit{web server} selanjutnya penulis membuat sebuah objek \texttt{Product} baru yang kemudian disimpan kedalam objek \texttt{ProductDB}. Sampai pada tahap ini, data produk baru yang dibuat sudah masuk kedalam objek \texttt{ProductDB} dan untuk membuktikannya penulis menampilkan seluruh data produk yang disimpan kedalam halaman web \texttt{list.html}
+Setelah proses initialisasi \texttt{ProductDB} selesai, berikutnya adalah menangkap input yang diberikan oleh pengguna melalui objek \texttt{ABSHttpRequest}. Untuk dapat mengakses HTTP POST atau GET data yang diberikan oleh \textit{web server} penulis menggunakan \textit{method} \texttt{getInput} yang dimiliki oleh objek \texttt{ABSHttpRequest} seperti yang terlihat pada Kode \ref{lst:absGetInput} sampai \ref{lst:absGetInput2}). Setelah berhasil mengambil \textit{input} dari \textit{web server} selanjutnya penulis membuat sebuah objek \texttt{Product} baru yang kemudian disimpan kedalam objek \texttt{ProductDB}. Sampai pada tahap ini, data produk baru yang dibuat sudah masuk kedalam objek \texttt{ProductDB} dan untuk membuktikannya penulis menampilkan seluruh data produk yang disimpan kedalam halaman web \texttt{list.html}
 
 \subsection{Method \texttt{deleteProduct}}
 Method ini digunakan untuk menghapus data produk yang ada di dalam \texttt{ProductDB} berdasarkan nomor sku yang diberikan. Berikut ini adalah detail kode ABS yang harus dibuat di dalam modul \texttt{ProductController}:
@@ -488,7 +488,7 @@ Pair<String, List<Product>> deleteProduct(ABSHttpRequest request)
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absDeleteProduct} bais \ref{lst:absGetInputSKU}, penulis mengambil \textit{input} dari pengguna berupa nomor sku dari produk yang dipilih. Dengan menggunakan nomor sku yang diberikan, penulis mencoba untuk mendapatkan object \texttt{Product} yang tersimpan di dalam \texttt{ProductDB} (lihat kode \ref{lst:absFindBySKU}). Setelah objek \texttt{Product} yang diinginkan telah berhasil diperoleh, berikunya penulis menghapus produk tersebut dari dalam \texttt{ProductDB} (lihat kode \ref{lst:absCallDelete}). Dengan menggunakan cara ini, penulis telah mensimulasikan proses penghapusan data yang tersimpan di dalam aplikasi berdasarkan \textit{input} yang diberikan oleh pengguna.
+Seperti yang terlihat pada Kode \ref{lst:absDeleteProduct} bais \ref{lst:absGetInputSKU}, penulis mengambil \textit{input} dari pengguna berupa nomor sku dari produk yang dipilih. Dengan menggunakan nomor sku yang diberikan, penulis mencoba untuk mendapatkan object \texttt{Product} yang tersimpan di dalam \texttt{ProductDB} (lihat Kode \ref{lst:absFindBySKU}). Setelah objek \texttt{Product} yang diinginkan telah berhasil diperoleh, berikunya penulis menghapus produk tersebut dari dalam \texttt{ProductDB} (lihat Kode \ref{lst:absCallDelete}). Dengan menggunakan cara ini, penulis telah mensimulasikan proses penghapusan data yang tersimpan di dalam aplikasi berdasarkan \textit{input} yang diberikan oleh pengguna.
  
 \subsection{Method \texttt{updateProduct}}
 
@@ -515,7 +515,7 @@ Pair<String, List<Product>> updateProduct(ABSHttpRequest request)
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absUpdateProduct} diatas, penulis mencoba mengambil \textit{input} berupa nomor sku yang dikirimkan oleh \textit{web browser}. Setelah mendapatkan nomor sku yang diberikan, selanjutnya penulis melakukan pencarian data produk dengan memanggil \textit{method} \texttt{findBySku} milik \texttt{ProductDB}. Setelah berhasil mendapatkan data yang diinginkan, selanjutnya adalah memberikan data tersebut kepada \textit{web server} untuk kemudian ditampilkan pada halaman \texttt{update.html}.
+Seperti yang terlihat pada Kode \ref{lst:absUpdateProduct} diatas, penulis mencoba mengambil \textit{input} berupa nomor sku yang dikirimkan oleh \textit{web browser}. Setelah mendapatkan nomor sku yang diberikan, selanjutnya penulis melakukan pencarian data produk dengan memanggil \textit{method} \texttt{findBySku} milik \texttt{ProductDB}. Setelah berhasil mendapatkan data yang diinginkan, selanjutnya adalah memberikan data tersebut kepada \textit{web server} untuk kemudian ditampilkan pada halaman \texttt{update.html}.
 
 \subsection{Method \texttt{saveUpdateProduct}}
 
@@ -548,7 +548,7 @@ Pair<String, List<Product>> saveUpdateProduct(ABSHttpRequest request)
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absSaveUpdateProduct} baris \ref{lst:updateDataProduct} sampai \ref{lst:updateDataProduct2}, penulis melakukan pencarian data produk di dalam \texttt{ProductDB} sesuai dengan nomor sku yang diberikan. Setelah data produk yang diminta berhasil ditemukan, selanjutnya adalah mengubah data-data pada produk tersebut sesuai dengan \textit{input} yang diberikan oleh pengguna dan menyimpannya kembali kedalam \texttt{ProductDB}. Untuk membuktikan perubahan yang dilakukan penulis menampilkan seluruh data yang ada di dalam modul \texttt{ProductDB} kedalam halaman \texttt{list.html}.
+Seperti yang terlihat pada Kode \ref{lst:absSaveUpdateProduct} baris \ref{lst:updateDataProduct} sampai \ref{lst:updateDataProduct2}, penulis melakukan pencarian data produk di dalam \texttt{ProductDB} sesuai dengan nomor sku yang diberikan. Setelah data produk yang diminta berhasil ditemukan, selanjutnya adalah mengubah data-data pada produk tersebut sesuai dengan \textit{input} yang diberikan oleh pengguna dan menyimpannya kembali kedalam \texttt{ProductDB}. Untuk membuktikan perubahan yang dilakukan penulis menampilkan seluruh data yang ada di dalam modul \texttt{ProductDB} kedalam halaman \texttt{list.html}.
 
 \subsection{Method \texttt{productList}}
 Method ini digunakan untuk menampilkan seluruh data yang tersimpan di dalam \texttt{ProductDB} kedalam halaman \texttt{list.html}. Berikut ini adalah detail kode ABS yang harus dibuat di dalam modul \texttt{ProductController}:

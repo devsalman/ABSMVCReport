@@ -28,7 +28,7 @@ Struktur direkretori dalam sebuah framework MVC berperan dalam membantu para pen
     \label{fig:strukturDirektori}
 \end{figure}
 
-Berdasarkan susunan direktori seperti yang terlihat pada gambar \ref{fig:strukturDirektori} di atas, seluruh komponen MVC yang dibuat (misal: modul MMahasiswa, MMahasiswaController dan berkas HTML) akan diletakkan di dalam direktori \texttt{src/abs/(model, view, controller)}. Setelah seluruh komponen MVC diletakkan di dalam direktorinya masing-masing, nantinya framework MVC ini akan meng\textit{compile} seluruh kode ABS yang ada serta membungkusnya kedalam berkas JAVA \textit{archive} (jar) dan meletakannya di dalam direktori \texttt{dist}.\\
+Berdasarkan susunan direktori seperti yang terlihat pada Gambar \ref{fig:strukturDirektori} di atas, seluruh komponen MVC yang dibuat (misal: modul MMahasiswa, MMahasiswaController dan berkas HTML) akan diletakkan di dalam direktori \texttt{src/abs/(model, view, controller)}. Setelah seluruh komponen MVC diletakkan di dalam direktorinya masing-masing, nantinya framework MVC ini akan meng\textit{compile} seluruh kode ABS yang ada serta membungkusnya kedalam berkas JAVA \textit{archive} (jar) dan meletakannya di dalam direktori \texttt{dist}.\\
 
 Sampai sejauh ini penulis telah berhasil melakukan penyusunan direktori untuk \textit{framework} MVC ABS. Hal berikutnya yang penulis lakukan adalah membuat sebuah \textit{script} yang akan digunakan untuk melakukan proses kompilasi dan \textit{deployment} secara otomatis.
 
@@ -123,7 +123,7 @@ escapeinside={@}{@}
 </project>
 \end{lstlisting}
 
-Pada dasarnya \textit{build script} yang penulis buat merupakan kumpulan perintah-perintah yang mendefinisikan alur dari proses kompilasi sampai \textit{deployment} seperti yang terlihat pada kode \ref{lst:antBuildScript} baris \ref{lst:targetClean}, \ref{lst:targetPrepare}, \ref{lst:targetTypeCheck}, \ref{lst:targetABSGenerateJava}, \ref{lst:targetABSCompileJava}, \ref{lst:targetABSBuildJar} dan \ref{lst:targetABSDeploy}. Berdasarkan kode-kode tersebut, terlihat bahwa ada 7 (tujuh) buah perintah yang masing-masing saling memiliki ketergantungan sehingga membentuk sebuah rangkaian alur seperti yang terlihat pada gambar \ref{fig:buildScriptFlow}. Berikut adalah rangkaian alur yang penulis definisikan pada \textit{build script} tersebut:
+Pada dasarnya \textit{build script} yang penulis buat merupakan kumpulan perintah-perintah yang mendefinisikan alur dari proses kompilasi sampai \textit{deployment} seperti yang terlihat pada Kode \ref{lst:antBuildScript} baris \ref{lst:targetClean}, \ref{lst:targetPrepare}, \ref{lst:targetTypeCheck}, \ref{lst:targetABSGenerateJava}, \ref{lst:targetABSCompileJava}, \ref{lst:targetABSBuildJar} dan \ref{lst:targetABSDeploy}. Berdasarkan kode-kode tersebut, terlihat bahwa ada 7 (tujuh) buah perintah yang masing-masing saling memiliki ketergantungan sehingga membentuk sebuah rangkaian alur seperti yang terlihat pada Gambar \ref{fig:buildScriptFlow}. Berikut adalah rangkaian alur yang penulis definisikan pada \textit{build script} tersebut:
 
 \begin{enumerate}
     \item \textbf{clean:} Perintah ini digunakan untuk membersihkan seluruh berkas-berkas hasil \textit{auto-generated}.
@@ -142,7 +142,7 @@ Pada dasarnya \textit{build script} yang penulis buat merupakan kumpulan perinta
     \label{fig:buildScriptFlow}
 \end{figure}
 
-Dengan menggunakan \textit{build script} yang sudah dibuat, para pengguna \textit{framework} hanya perlu mengetikkan perintah \texttt{ant abs.deploy} dari dalam direktori framework untuk menjalankan keseluruhan proses kompilasi dan \textit{deployment} seperti yang terlihat pada gambar \ref{fig:antABSDeploy}di bawah ini.
+Dengan menggunakan \textit{build script} yang sudah dibuat, para pengguna \textit{framework} hanya perlu mengetikkan perintah \texttt{ant abs.deploy} dari dalam direktori framework untuk menjalankan keseluruhan proses kompilasi dan \textit{deployment} seperti yang terlihat pada Gambar \ref{fig:antABSDeploy}di bawah ini.
 
 \begin{figure}
     \centering
@@ -155,7 +155,7 @@ Sampai pada tahap ini penulis telah berhasil menyusun direktori dan membuat \tex
 
 \section{Penambahan Mekanisme Konfigurasi Pemetaan URL}
 
-Jika kita melihat kembali kode \ref{lst:javaNewWebServer} \textit{web server} di atas, dapat terlihat bahwa penulis masih menggunakan \texttt{if - else - elseif} dalam melakukan pemetaan antara URL dengan komponen Controller yang akan dipanggil. Tentunya hal ini sangat tidak efektif karena ketika terjadi penambahan komponen Controller, tentunya penulis harus menambahkan kembali blok \texttt{elsif} di dalam kode \textit{web server} untuk menambahkan pemetaan baru terhadap komponen Controller tersebut. Untuk membuat \textit{framework} ABS MVC lebih fleksibel terhadap perubahan, maka penulis membuat sebuah mekanisme di dalam \textit{framework} agar pengguna \textit{framework} MVC ABS dapat mendefinisikan pemetaannya sendiri langsung dari \textit{framework}.\\
+Jika kita melihat kembali Kode \ref{lst:javaNewWebServer} \textit{web server} di atas, dapat terlihat bahwa penulis masih menggunakan \texttt{if - else - elseif} dalam melakukan pemetaan antara URL dengan komponen Controller yang akan dipanggil. Tentunya hal ini sangat tidak efektif karena ketika terjadi penambahan komponen Controller, tentunya penulis harus menambahkan kembali blok \texttt{elsif} di dalam kode \textit{web server} untuk menambahkan pemetaan baru terhadap komponen Controller tersebut. Untuk membuat \textit{framework} ABS MVC lebih fleksibel terhadap perubahan, maka penulis membuat sebuah mekanisme di dalam \textit{framework} agar pengguna \textit{framework} MVC ABS dapat mendefinisikan pemetaannya sendiri langsung dari \textit{framework}.\\
 
 Pendekatan yang penulis lakukan untuk dapat menyediakan fitur konfigurasi pemetaan URL tersebut adalah dengan membuat sebuah modul ABS khusus yang bernama \texttt{RouteConfig}. modul ini berisikan daftar URL beserta nama komponen Controller dan \textit{method} yang akan dicocokan dengan menggunakan mekanisme \textit{pattern matching}. Modul ini nantinya akan dipanggil secara otomatis oleh \textit{web server} pada saat menerima \textit{request} dari \textit{web browser}. Tujuan dari pemanggilan modul ini oleh \textit{web server} adalah untuk mengetahui komponen Controller dan \textit{method} mana yang harus dipanggil oleh \textit{web server} untuk dapat menghasilkan halaman web yang diinginkan. berikut adalah modul \texttt{RouteConfig} yang penulis sediakan untuk membantu para pengguna \textit{framework} dalam memetakan URL dengan Controller yang dibuat.
 
@@ -189,7 +189,7 @@ class RouteConfigImpl implements RouteConfig
 }
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absRouteConfig} baris \ref{lst:startPatternMatching} sampai \ref{lst:endPatternMatching} di atas, penulis mendefinisikan 4 (empat) buah pemetaan URL dengan komponen Controller dan \textit{method}nya. Konvensi yang digunakan dalam mendefinisikan pemetaan URL tersebut adalah \texttt{[nama modul].[nama class]@[nama method]}. Sebagai contoh, pada kode \ref{lst:absRouteConfig} baris \ref{lst:contohRouteConfig} di atas terlihat penulis memetakan sebuah URL \texttt{/product/add.abs} dengan sebuah komponen Controller bernama \texttt{ProductControllerImpl} yang berada di dalam modul \texttt{Controller.Product} dan memanggil \textit{method} \texttt{addProduct}. Dengan menggunakan mekanisme seperti ini, pengguna framework dapat langsung memetakan URL dengan komponen Controller yang dibuat tanpa harus mengubah kode sumber dari \textit{web server}.\\
+Seperti yang terlihat pada Kode \ref{lst:absRouteConfig} baris \ref{lst:startPatternMatching} sampai \ref{lst:endPatternMatching} di atas, penulis mendefinisikan 4 (empat) buah pemetaan URL dengan komponen Controller dan \textit{method}nya. Konvensi yang digunakan dalam mendefinisikan pemetaan URL tersebut adalah \texttt{[nama modul].[nama class]@[nama method]}. Sebagai contoh, pada Kode \ref{lst:absRouteConfig} baris \ref{lst:contohRouteConfig} di atas terlihat penulis memetakan sebuah URL \texttt{/product/add.abs} dengan sebuah komponen Controller bernama \texttt{ProductControllerImpl} yang berada di dalam modul \texttt{Controller.Product} dan memanggil \textit{method} \texttt{addProduct}. Dengan menggunakan mekanisme seperti ini, pengguna framework dapat langsung memetakan URL dengan komponen Controller yang dibuat tanpa harus mengubah kode sumber dari \textit{web server}.\\
 
 Berikut ini adalah diagram alur pemanggilan modul \texttt{RouteConfig} oleh \textit{web server} dalam menghasilkan sebuah halaman web beserta penjelasannya.
 
@@ -222,7 +222,7 @@ Menangani HTTP POST dan GET data merupakan salah satu fitur yang sangat penting 
 Berikut ini adalah langkah-langkah yang penulis lakukan dalam memberikan HTTP POST dan GET data yang diterima dari \textit{web browser} kepada \textit{framework} MVC ABS:
 
 \begin{enumerate}
-    \item \textit{Web browser} memberikan data kepada \textit{web server} dengan menggunakan protokol HTTP GET atau POST (seperti yang terlihat pada kode \ref{lst:httpGETInput} dan \ref{lst:httpPOSTInput}).
+    \item \textit{Web browser} memberikan data kepada \textit{web server} dengan menggunakan protokol HTTP GET atau POST (seperti yang terlihat pada Kode \ref{lst:httpGETInput} dan \ref{lst:httpPOSTInput}).
     \item \textit{Web server} mengurai protokol HTTP tersebut untuk mendapatkan data-data yang diberikan dan membungkusnya kedalam sebuah objek.
     \item \textit{Web server} memberikan objek yang berisi data-data tersebut kepada \textit{framework} MVC ABS bersamaan dengan pemanggilan komponen Controller.
     \item Komponen Controller menerima data yang diberikan dan memproses POST atau GET data tersebut untuk menghasilkan data model yang dibutuhkan.
@@ -266,7 +266,7 @@ Accept-Language: en-US,en;q=0.8,id;q=0.6
 product_sku=00188&product_name=FMSE+Dining+Set&description=Beautiful+and+Cute+Dining+Set&price=250000 @\label{lst:httpPOSTData}@
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:httpGETInput} dan \ref{lst:httpPOSTInput} di atas, terdapat sedikit perbedaan pada protokol HTTP GET dan POST dalam memberikan data. Pada protokol HTTP GET data langsung diberikan pada URL seperti yang terlihat pada kode \ref{lst:httpGETInput} baris \ref{lst:httpGETData} sedangkan protokol HTTP POST data diberikan secara terpisah dari bagian HTTP \textit{header} dengan memberikan tambahan informasi \texttt{Content-Length} untuk mengetahui panjang data yang diberikan dalam bentuk \texttt{byte} (lihat kode \ref{lst:httpPOSTInput} baris \ref{lst:contentLength} dan \ref{lst:httpPOSTData}). Dikarenakan letak data pada kedua protokol tersebut berbeda, dibutuhkan adanya dua buah implementasi kode pada \textit{web server} seperti yang ditunjukan pada kode \ref{lst:javaParseHTTPData} di bawah ini:
+Seperti yang terlihat pada Kode \ref{lst:httpGETInput} dan \ref{lst:httpPOSTInput} di atas, terdapat sedikit perbedaan pada protokol HTTP GET dan POST dalam memberikan data. Pada protokol HTTP GET data langsung diberikan pada URL seperti yang terlihat pada Kode \ref{lst:httpGETInput} baris \ref{lst:httpGETData} sedangkan protokol HTTP POST data diberikan secara terpisah dari bagian HTTP \textit{header} dengan memberikan tambahan informasi \texttt{Content-Length} untuk mengetahui panjang data yang diberikan dalam bentuk \texttt{byte} (lihat Kode \ref{lst:httpPOSTInput} baris \ref{lst:contentLength} dan \ref{lst:httpPOSTData}). Dikarenakan letak data pada kedua protokol tersebut berbeda, dibutuhkan adanya dua buah implementasi kode pada \textit{web server} seperti yang ditunjukan pada Kode \ref{lst:javaParseHTTPData} di bawah ini:
 
 \begin{lstlisting}[
 firstnumber=81,
@@ -325,7 +325,7 @@ else if(requestMethod.equals("GET"))
 ...
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:javaParseHTTPData} baris diatas, pada saat penulis menguraikan data pada protokol HTTP POST dan GET, penulis mengumpulkan data-data tersebut kedalam sebuah \texttt{HashMap<String, String>}. Tujuan dari pembuatan \texttt{HashMap} tersebut adalah untuk mengumpulkan seluruh data yang dikirimkan oleh \textit{web browser} untuk kemudian diberikan kepada \textit{framework} MVC ABS. Mekanisme yang digunakan dalam mengirimkan HTTP POST dan GET data tersebut adalah dengan membuat sebuah modul baru pada \textit{framework} MVC ABS yang bernama \texttt{HTTPRequest}. berikut adalah modul ABS \texttt{HTTPRequest} telah penulis buat dalam mengimplementasikan hal tersebut.
+Seperti yang terlihat pada Kode \ref{lst:javaParseHTTPData} baris diatas, pada saat penulis menguraikan data pada protokol HTTP POST dan GET, penulis mengumpulkan data-data tersebut kedalam sebuah \texttt{HashMap<String, String>}. Tujuan dari pembuatan \texttt{HashMap} tersebut adalah untuk mengumpulkan seluruh data yang dikirimkan oleh \textit{web browser} untuk kemudian diberikan kepada \textit{framework} MVC ABS. Mekanisme yang digunakan dalam mengirimkan HTTP POST dan GET data tersebut adalah dengan membuat sebuah modul baru pada \textit{framework} MVC ABS yang bernama \texttt{HTTPRequest}. berikut adalah modul ABS \texttt{HTTPRequest} telah penulis buat dalam mengimplementasikan hal tersebut.
 
 \begin{lstlisting}[
 caption=Modul \texttt{ABSHttpRequest},
@@ -373,7 +373,7 @@ Pair<String, List<Product>> productDetails(ABSHttpRequest request)
 ...
 \end{lstlisting}
 
-Seperti yang terlihat pada kode \ref{lst:absGetHTTPInput} baris \ref{lst:absGetInputParam} sampai \ref{lst:absGetInputParam2}, penulis dapat mengambil \textit{input} data yang diberikan oleh pengguna dengan cara memanggil \textit{method} \texttt{getInput(namaParameter)} yang sudah disediakan oleh modul \texttt{ABSHttpRequest}. Adapun nama parameter yang menjadi kunci dalam mengambil \textit{input} data yang diinginkan adalah dari atribute \texttt{name} pada tag \texttt{<input>} yang disediakan oleh HTML (lihat kode \ref{lst:viewWithForm} dan \ref{lst:absGetHTTPInput}). Berikut ini adalah contoh halaman HTML yang ditujukan untuk mengirimkan HTTP POST data untuk kemudian di proses oleh Controller pada kode \ref{lst:absGetHTTPInput} diatas.
+Seperti yang terlihat pada Kode \ref{lst:absGetHTTPInput} baris \ref{lst:absGetInputParam} sampai \ref{lst:absGetInputParam2}, penulis dapat mengambil \textit{input} data yang diberikan oleh pengguna dengan cara memanggil \textit{method} \texttt{getInput(namaParameter)} yang sudah disediakan oleh modul \texttt{ABSHttpRequest}. Adapun nama parameter yang menjadi kunci dalam mengambil \textit{input} data yang diinginkan adalah dari atribute \texttt{name} pada tag \texttt{<input>} yang disediakan oleh HTML (lihat Kode \ref{lst:viewWithForm} dan \ref{lst:absGetHTTPInput}). Berikut ini adalah contoh halaman HTML yang ditujukan untuk mengirimkan HTTP POST data untuk kemudian di proses oleh Controller pada Kode \ref{lst:absGetHTTPInput} diatas.
 
 \begin{lstlisting}[
 caption=Contoh halaman HTML yang mengandung \texttt{<form>},

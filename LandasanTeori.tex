@@ -1,4 +1,51 @@
-\chapter{Hasil Studi Literatur}
+\chapter{Studi Literatur}
+
+
+%---------------------------------------------------------
+\section{Hypertext Transfer Protocol (HTTP)}
+%---------------------------------------------------------
+HTTP merupakan sebuah protokol yang digunakan oleh aplikasi berbasis web dalam melakukan komunikasi antara \textit{client} / \textit{web browser} dan \textit{server} / \textit{web server} \citep{kurose2013computer}. Protokol ini merupakan protokol standar yang didefinisikan dalam RFC1945 dan RFC2616 oleh Internet Engineering Task Force (IETF) dalam mengatur mekanisme \textit{request} dan \textit{response} antara \textit{web browser} dengan \textit{web server}. Secara sederhana, protokol ini mengatur tentang bagaimana \textit{web browser} meminta sebuah halaman web kepada \textit{web server} untuk kemudian ditampilkan kepada pengguna.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/http-behaviour.png}
+    \caption{HTTP \textit{request} dan \textit{response}}
+    \label{fig:httpBehaviour}
+\end{figure}
+\vspace{-0.8cm}
+\begin{center}
+{\small Sumber gambar: \citep{kurose2013computer}}
+\end{center}
+
+Seperti yang terlihat pada Gambar \ref{fig:httpBehaviour} diatas, komunikasi antara \textit{web browser} dengan \textit{web server} terjadi secara dua arah yaitu HTTP \textit{request} dan HTTP \textit{response}. HTTP \textit{request} adalah sebuah protokol yang digunakan oleh \textit{web browser} dalam meminta halaman web kepada \textit{web server} sedangkan HTTP \textit{response} adalah protokol yang digunakan oleh \textit{web server} dalam mengirimkan halaman web kepada \textit{web browser}. Dengan menggunkan mekanisme ini, pada saat pengguna aplikasi mengetikkan alamat \texttt{http://www.cs.ui.ac.id/index.php} pada \textit{web browser} yang digunakan, selanjutnya \textit{web browser} tersebut akan mengirimkan sebuah HTTP \textit{request} kepada \textit{web server} yang beralamat di \texttt{www.cs.ui.ac.id} untuk meminta sebuah halaman web bernama \texttt{index.php}. Setelah \textit{web server} menerima HTTP \textit{request} tersebut dan mencarikan halaman web yang diinginkan, selanjutnya \textit{web server} akan mengirimkan halaman web itu dengan menggunakan HTTP \textit{response} untuk kemudian ditampilkan kepada pengguna melalui \textit{web browser} yang digunakan.\\
+
+Berikut ini adalah format dari HTTP \textit{message} sesuai dengan standar RFC2616 (HTTP/1.1) yang dibuat oleh \cite{webrfc2616}:
+
+\begin{lstlisting}[
+language=TeX,
+caption=Format HTTP \textit{message} pada RFC2616,
+label={lst:httpFormat}
+]
+HTTP-message      = Request | Response     ; HTTP/1.1 messages
+generic-message   = start-line
+                    *(message-header CRLF)
+                    CRLF
+                    [ message-body ]
+start-line        = Request-Line | Status-Line
+
+message-header    = field-name ":" [ field-value ]
+field-name        = token
+field-value       = *( field-content | LWS )
+field-content     = <the OCTETs making up the field-value
+                    and consisting of either *TEXT or combinations
+                    of token, separators, and quoted-string>
+                    
+message-body      = entity-body
+                    | <entity-body encoded as per Transfer-Encoding>
+
+\end{lstlisting}
+
+Seperti yang terlihat pada Kode \ref{lst:httpFormat} diatas, setiap pesan HTTP baik \textit{request} ataupun \textit{response} memiliki format yang sama yaitu terdiri dari \texttt{start-line}, \texttt{message-header} dan \texttt{message-body}. \texttt{Start-line} merupakan baris pembukan pada setiap pesan HTTP yang menandakan bahwa pesan tersebut merupakan pesan HTTP seperti misalnya \texttt{POST /product/details.abs HTTP/1.1} sedangkan \textit{message-header} merupakan kepala pesan yang berisi informasi terkait pesan tersebut seperti misalnya \texttt{Host}, \texttt{Connection}, \texttt{Content - Length}, \texttt{User - Agent} dan \texttt{Content - Type}. Terakhir adalah \texttt{message-body} yang merupakan isi dari pesan HTTP yang dikirimkan seperti misalnya data yang diberikan oleh pengguna web melalui \textit{form} HTML seperti misalnya \texttt{product\_sku=00188\&product\_name=FMSE+Dining+Set}.
 
 %---------------------------------------------------------
 \section{Model View Controller}
