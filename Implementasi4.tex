@@ -1,9 +1,9 @@
 \chapter{Penerapan Delta Modelling Pada ABS MVC Framework}
 
-Bab ini memaparkan tentang bagaimana menerapkan proses \textit{delta modelling} pada ABS MVC Framework. Dalam pemaparannya, penulis mengkaitkan proses penerapan \textit{delta modelling} tersebut dengan aplikasi web katalog produk yang telah dibuat sebelumnya. Adapun poin-poin yang akan dibahas pada bab ini antara lain adalah Perubahan \textit{requirement} pada aplikasi, Implementasi perubahan menggunakan \textit{delta code} dan Kompilasi dan \textit{deployment} varian produk.
+Bab ini memaparkan tentang bagaimana menerapkan proses \textit{delta modeling} pada ABS MVC Framework. Dalam pemaparannya, penulis mengkaitkan proses penerapan \textit{delta modeling} tersebut dengan aplikasi web katalog produk yang telah dibuat sebelumnya. Adapun poin-poin yang akan dibahas pada bab ini antara lain adalah Perubahan \textit{requirement} pada aplikasi, Implementasi perubahan menggunakan \textit{delta code} dan Kompilasi dan \textit{deployment} varian produk.
 
 \section{Perubahan \textit{requirement} pada aplikasi}
-Pada dasarnya, fitur \textit{delta modelling} yang dimiliki oleh ABS dapat digunakan sebagai salah satu metode dalam menangani perubahan \textit{requirement} pada perangkat lunak. Untuk dapat memberikan gambaran terkait penerapan \textit{delta modelling} pada ABS MVC Framwork, penulis membuat sebuah perubahan \textit{requirement} pada aplikasi katalog produk yang telah dibuat sebelumnya. Adapun perubahan \textit{requirement} tersebut meliputi:
+Pada dasarnya, fitur \textit{delta modeling} yang dimiliki oleh ABS dapat digunakan sebagai salah satu metode dalam menangani perubahan \textit{requirement} pada perangkat lunak. Untuk dapat memberikan gambaran terkait penerapan \textit{delta modeling} pada ABS MVC Framwork, penulis membuat sebuah perubahan \textit{requirement} pada aplikasi katalog produk yang telah dibuat sebelumnya. Adapun perubahan \textit{requirement} tersebut meliputi:
 
 \begin{enumerate}
     \item Penambahan atribut kategori pada komponen model produk.
@@ -12,13 +12,13 @@ Pada dasarnya, fitur \textit{delta modelling} yang dimiliki oleh ABS dapat digun
 \end{enumerate}
 
 \section{Implementasi perubahan menggunakan \textit{delta code}}
-Setelah mendefinisikan perubahan \textit{requirement} pada aplikasi katalog produk, berikutnya adalah menerapkan perubahan tersebut dengan menggunakan pendekatan \textit{delta modelling} pada ABS MVC Framework. Dalam konteks ABS MVC Framework, penerapan \textit{delta modelling} tersebut dapat dilakukan pada komponen Model dan Controller yang dibuat dengan menggunakan ABS sedangkan pada komponen View harus dilakukan dengan cara membuat komponen baru sesuai dengan \textit{requirement} yang baru. Berikut ini adalah detail dari penerapan \textit{delta modelling} pada ABS MVC Framework.
+Setelah mendefinisikan perubahan \textit{requirement} pada aplikasi katalog produk, berikutnya adalah menerapkan perubahan tersebut dengan menggunakan pendekatan \textit{delta modeling} pada ABS MVC Framework. Dalam konteks ABS MVC Framework, penerapan \textit{delta modeling} tersebut dapat dilakukan pada komponen Model dan Controller yang dibuat dengan menggunakan ABS sedangkan pada komponen View harus dilakukan dengan cara membuat komponen baru sesuai dengan \textit{requirement} yang baru. Berikut ini adalah detail dari penerapan \textit{delta modeling} pada ABS MVC Framework.
 
 \subsection{Pembuatan \textit{delta code} untuk komponen Model}
 
 Seperti yang sudah disebutkan pada bagian perubahan \textit{requirement} pada aplikasi, perubahan aplikasi meliputi penembahan atribut kategori pada produk .Komponen model \texttt{Product} yang ada saat ini hanya memiliki atribut \texttt{sku}, \texttt{name}, \texttt{description} dan \texttt{price}. Agar komponen model yang ada sesuai dengan \textit{requirement} yang diinginkan, maka penulis perlu menambahkan satu buah atribut tambahan yang bernama \texttt{category} pada modul \texttt{Product} tersebut.\\
 
-Untuk dapat melakukan perubahan yang diinginkan dengan menggunakan metode \textit{delta modelling}, penulis membuat sebuah modul ABS baru bernama \texttt{DProductModel} yang disimpan kedalam direktori \texttt{src/abs/delta} dengan nama \texttt{DProductModel.abs}. Berikut ini adalah kode ABS yang penulis buat untuk modul tersebut.
+Untuk dapat melakukan perubahan yang diinginkan dengan menggunakan metode \textit{delta modeling}, penulis membuat sebuah modul ABS baru bernama \texttt{DProductModel} yang disimpan kedalam direktori \texttt{src/abs/delta} dengan nama \texttt{DProductModel.abs}. Berikut ini adalah kode ABS yang penulis buat untuk modul tersebut.
 
 \begin{lstlisting}[
 caption=Kode ABS Delta untuk komponen \texttt{ProductModel},
@@ -426,4 +426,4 @@ Setelah melakukan proses kompilasi dan \textit{deployment}, berikutnya penulis t
     \label{fig:deleteProductWithCategory}
 \end{figure}
 
-Sampai pada tahap ini, penulis telah berhasil menerapkan \textit{delta modelling} di dalam ABS MVC Framework yang dapat digunakan untuk menangani perubahan \textit{requirement} pada aplikasi.
+Sampai pada tahap ini, penulis telah berhasil menerapkan \textit{delta modeling} di dalam ABS MVC Framework yang dapat digunakan untuk menangani perubahan \textit{requirement} pada aplikasi.
