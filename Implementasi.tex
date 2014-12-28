@@ -460,6 +460,17 @@ Seperti yang terlihat pada Gambar \ref{fig:integrasiThymeleaf}, dalam kasus ini 
 
 Seperti yang terlihat pada Kode \ref{lst:viewMhsListHTML} di atas, penulis membuat sebuah halaman web yang equivalent dengan Kode \ref{lst:absModuleMhsView} hanya saja kode ini dibuat dengan menggunakan sintaks HTML dan thymeleaf. Jika kita lihat Kode \ref{lst:viewMhsListHTML} baris \ref{lst:thymeStartLoop} - \ref{lst:thymeEndLoop} terdapat sebuah sintaks yang bukan standar HTML, sintaks tersebut merupakan sintaks dari thymeleaf (bisanya dintadi dengan \texttt{th:}). Tujuan dari penggunaan sintaks tersebut adalah untuk melakukan iterasi pada sebuah \texttt{List} untuk kemudian menampilkan seluruh atribut dari objek yang berada di dalam \texttt{List} tersebut.\\
 
+\begin{landscape}
+\begin{minipage}{\linewidth}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{img/perbandingan-kode-view.png}
+    \caption{Perbandingan komponen view antara Thymeleaf (kiri) dengan ABS (kanan)}
+    \label{fig:perbandinganKodeView}
+\end{figure}
+\end{minipage}
+\end{landscape}
+
 Sampai pada tahap ini penulis telah berhasil memperbaiki komponen view dari yang sebelumnya menggunakan ABS menjadi HTML dan thymeleaf sehingga membuat komponen ini menjadi lebih mudah untuk didefinisikan dan lebih sesuai dengan kebiasaan para pengembang. Akan tetapi perubahan ini belum dapat diintegrasikan secara langsung dengan komponen-komponen lainnya karena masih banyak penyesuaian yang harus dilakukan baik di tingkat \textit{web server} maupun di komponen MVC lainnya. Oleh karena itu, langkah selanjutnya yang dilakukan oleh penulis adalah mengubah \textit{web server} dan komponen MVC lainnya agar sesuai dengan implementasi komponen View yang terbaru.
 
 \section{Integrasi Thymeleaf dengan Web Server dan ABS}

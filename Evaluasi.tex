@@ -136,6 +136,7 @@ Berdasarkan hasil evaluasi diatas, penulis menyimpulkan bahwa untuk komponen Vie
 
 Secara umum fungsi dari komponen Controller adalah mengintegrasikan komponen Model dan View agar dapat dihasilkan sebuah halaman web yang dapat ditampilkan ke pengguna aplikasi. Dalam implementasinya, komponen Controller berisi bisnis proses aplikasi yang didalamnya melakukan pemrosesan \textit{input} yang diberikan oleh pengguna aplikasi. Dalam konteks ABS MVC Framework, kedua hal tersebut sudah dapat dilakukan walaupun dengan mekanisme yang sedikit berbeda dengan komponen Controller yang dibuat dengan menggunakan Play Framework. Berikut ini adalah cuplikan \textit{method} \texttt{saveUpdateProduct} yang ada di dalam Controller ABS MVC Framework dan Play Framework:
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[
 caption=Method \texttt{saveUpdateProduct} menggunakan ABS MVC Framework,
 label={lst:saveUpdateABS}
@@ -162,6 +163,7 @@ Pair<String, List<Product>> saveUpdateProduct(ABSHttpRequest request)
 }
 ...
 \end{lstlisting}
+\end{minipage}
 
 \begin{lstlisting}[
 caption=Method \texttt{saveUpdateProduct} menggunakan Play Framework,

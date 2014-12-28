@@ -152,6 +152,7 @@ Jika kita melihat kembali Kode \ref{lst:javaNewWebServer} \textit{web server} di
 
 Pendekatan yang penulis lakukan untuk dapat menyediakan fitur konfigurasi pemetaan URL tersebut adalah dengan membuat sebuah modul ABS khusus yang bernama \texttt{RouteConfig}. Modul ini berisikan daftar URL beserta nama komponen Controller dan \textit{method} yang akan dicocokan dengan menggunakan mekanisme \textit{pattern matching}. Modul ini nantinya akan dipanggil secara otomatis oleh \textit{web server} pada saat menerima \textit{request} dari \textit{web browser}. Tujuan dari pemanggilan modul ini oleh \textit{web server} adalah untuk mengetahui komponen Controller dan \textit{method} mana yang harus dipanggil oleh \textit{web server} untuk dapat menghasilkan halaman web yang diinginkan. Berikut adalah modul \texttt{RouteConfig} yang penulis sediakan untuk membantu para pengguna \textit{framework} dalam memetakan URL dengan Controller yang dibuat.
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[
 caption=Modul \texttt{RouteConfig} untuk pemetaan URL,
 label={lst:absRouteConfig},
@@ -181,6 +182,7 @@ class RouteConfigImpl implements RouteConfig
 	}
 }
 \end{lstlisting}
+\end{minipage}
 
 Seperti yang terlihat pada Kode \ref{lst:absRouteConfig} baris \ref{lst:startPatternMatching} sampai \ref{lst:endPatternMatching} di atas, penulis mendefinisikan 4 (empat) buah pemetaan URL dengan komponen Controller dan \textit{method}nya. Konvensi yang digunakan dalam mendefinisikan pemetaan URL tersebut adalah \texttt{[nama modul].[nama class]@[nama method]}. Sebagai contoh, pada Kode \ref{lst:absRouteConfig} baris \ref{lst:contohRouteConfig} di atas terlihat penulis memetakan sebuah URL \texttt{/product/add.abs} dengan sebuah komponen Controller bernama \texttt{ProductControllerImpl} yang berada di dalam modul \texttt{Controller.Product} dan memanggil \textit{method} \texttt{addProduct}. Dengan menggunakan mekanisme seperti ini, pengguna framework dapat langsung memetakan URL dengan komponen Controller yang dibuat tanpa harus mengubah kode sumber dari \textit{web server}.\\
 
