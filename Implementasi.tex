@@ -550,24 +550,26 @@ Jika kita membandingkan Kode \ref{lst:javaNewWebServer} di atas dengan Kode \ref
 
 Setelah \textit{web server} selesai melakukan konversi data, berikutnya adalah memasukan data tersebut ke dalam komponen View yang sudah dibuat. Proses ini dilakukan dengan cara me-\textit{load} berkas HTML yang dilakukan oleh sebuah Class khusus yang bernama \texttt{ResourceResolver} (lihat Kode \ref{lst:javaResourceResolver}) dan menggabungkan berkas tersebut dengan data yang ada kedalam sebuah \texttt{Context} untuk kemudian diproses menjadi sebuah halaman web (lihat Kode \ref{lst:javaNewWebServer} baris \ref{lst:javaCreateContext} sampai \ref{lst:javaThymeProcess}).
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[
 caption=Class \texttt{ResourceResolver} sebagai tambahan pada \textit{web server},
 label={lst:javaResourceResolver}
 ]
 public class ResourceResolver implements IResourceResolver
 {
-	...
-	
-	public InputStream getResourceAsStream(TemplateProcessingParameters templateProcessingParameter,
-			String resourceName) 
-	{
-		
-		Validate.notNull(resourceName, "Resource name cannot be null");
-		return ResourceResolver.class.getResourceAsStream("/" + resourceName);
-	}
+   	...
+   	
+   	public InputStream getResourceAsStream(TemplateProcessingParameters templateProcessingParameter,
+   			String resourceName) 
+   	{
+   		
+   		Validate.notNull(resourceName, "Resource name cannot be null");
+   		return ResourceResolver.class.getResourceAsStream("/" + resourceName);
+   	}
 
 }
 \end{lstlisting}
+\end{minipage}
 
 \begin{figure}
     \centering

@@ -22,7 +22,7 @@ Struktur direkretori dalam sebuah framework MVC berperan dalam membantu para pen
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]
+    \includegraphics[width=0.4\textwidth]
         {img/struktur-direktori.png}
     \caption{Struktur Direktori ABS MVC Framework}
     \label{fig:strukturDirektori}
@@ -341,30 +341,32 @@ class ABSHttpRequestImpl(Map<String, String> requestInput) implements ABSHttpReq
 
 Dengan adanya tambahan modul \texttt{ABSHttpRequest}, para pengguna \textit{framework} MVC ABS dapat dengan mudah untuk menerima dan memproses setiap \textit{input} yang diberikan oleh pengguna aplikasi. Untuk dapat memproses \textit{input} yang diberikan, diperlukan adanya sedikit perubahan terkait cara mendefinisikan sebuah \textit{method} pada komponen Controller yang dibuat. Perubahan yang harus dilakukan adalah menyertakan modul \texttt{ABSHttpRequest} tersebut sebagai parameter dalam setiap \textit{method} yang dibuat. Berikut adalah contoh \textit{method} pada komponen Controller yang sudah mengimplementasikan modul \texttt{ABSHttpRequest}.
 
-\begin{lstlisting}[
-firstnumber=24,
-caption=Contoh \textit{method} yang sudah mengimplementasikan \texttt{ABSHttpRequest},
-label={lst:absGetHTTPInput},
-escapeinside={@}{@}
-]
-...
-
-Pair<String, List<Product>> productDetails(ABSHttpRequest request)
-{
-	String sku = request.getInput("product_sku"); @\label{lst:absGetInputParam}@
-	String name = request.getInput("product_name");
-	String description = request.getInput("description");
-	String price = request.getInput("price"); @\label{lst:absGetInputParam2}@
-	
-	Product myProduct = new local ProductImpl(sku, name, description, price);
-	List<Product> dataList = Nil;
-	dataList = appendright(dataList, myProduct);
-	
-	return Pair("product/details", dataList);
-}
-
-...
-\end{lstlisting}
+\begin{minipage}{\linewidth}
+    \begin{lstlisting}[
+    firstnumber=24,
+    caption=Contoh \textit{method} yang sudah mengimplementasikan \texttt{ABSHttpRequest},
+    label={lst:absGetHTTPInput},
+    escapeinside={@}{@}
+    ]
+    ...
+    
+    Pair<String, List<Product>> productDetails(ABSHttpRequest request)
+    {
+    	String sku = request.getInput("product_sku"); @\label{lst:absGetInputParam}@
+    	String name = request.getInput("product_name");
+    	String description = request.getInput("description");
+    	String price = request.getInput("price"); @\label{lst:absGetInputParam2}@
+    	
+    	Product myProduct = new local ProductImpl(sku, name, description, price);
+    	List<Product> dataList = Nil;
+    	dataList = appendright(dataList, myProduct);
+    	
+    	return Pair("product/details", dataList);
+    }
+    
+    ...
+    \end{lstlisting}
+\end{minipage}
 
 Seperti yang terlihat pada Kode \ref{lst:absGetHTTPInput} baris \ref{lst:absGetInputParam} sampai \ref{lst:absGetInputParam2}, penulis dapat mengambil \textit{input} data yang diberikan oleh pengguna dengan cara memanggil \textit{method} \texttt{getInput(namaParameter)} yang sudah disediakan oleh modul \texttt{ABSHttpRequest}. Adapun nama parameter yang menjadi kunci dalam mengambil \textit{input} data yang diinginkan adalah dari atribute \texttt{name} pada tag \texttt{<input>} yang disediakan oleh HTML (lihat Kode \ref{lst:viewWithForm} dan \ref{lst:absGetHTTPInput}). Berikut ini adalah contoh halaman HTML yang ditujukan untuk mengirimkan HTTP POST data untuk kemudian di proses oleh Controller pada Kode \ref{lst:absGetHTTPInput} diatas.
 
