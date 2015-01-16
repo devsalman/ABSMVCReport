@@ -1,13 +1,25 @@
 \chapter{Kesimpulan dan Penelitian Lebih Lanjut}
 
 \section{Kesimpulan}
-Berdasarkan hasil evaluasi yang penulis lakukan terhadap ABS MVC Framework, penulis membuat beberapa kesimpulan dari hasil penelitian ini yang diantaranya adalah:
+Berdasarkan hasil evaluasi yang penulis lakukan terhadap ABS MVC Framework, penulis membuat beberapa kesimpulan yang menjawab rumusan masalah pada penulitian ini. Berikut ini adalah kesumpulan-kesimpulan yang penulis buat berdasarkan penelitian yang telah penulis lakukan:
 
+\subsection{Bagaimana strategi yang dilakukan untuk dapat memetakan bahasa pemodelan ABS kedalam pola MVC?}
+
+Pola pengembangan Model-View-Controller dapat diterapkan pada bahasa pemodelan ABS dengan menjadikan ABS sebagai komponen Model dan Controller-nya sedangkan HTML sebagai komponen View-nya. Mengapa komponen View tidak dibuat dengan menggunakan ABS melainkan HTML? hal ini dilakukan untuk meningkatkan fleksibilitas dan kemudahan para pengguna framework dalam membuat sebuah \textit{layout} halaman web site mengingat bahwa standar bahasa yang digunakan adalah HTML. Walaupun pada dasarnya HTML tidak memiliki sintaks yang dapat digunakan untuk mengakses data ataupun melakukan \textit{control statement} yang dapat diguanakan untuk melakukan manipulasi terhadap tampilan halaman web agar terlihat lebih dinamis, akan tetapi kekurangan ini dapat ditutup dengan mengimplementasikan sebuah \textit{template engine} yang dapat membantu pengguna framework dalam mengakses data dan menambahkan \textit{control statement} pada halaman web yang dibuat.\\
+
+Walaupun \textit{framework} ABS yang dibuat sudah dapat digunakan untuk pengembangan aplikasi web berbasis ABS, akan tetapi masih terdapat beberapa keterbatasan yang dimiliki oleh \textit{framework} ini yang diantaranya adalah:
 \begin{enumerate}
-    \item Pola pengembangan Model-View-Controller dapat diterapkan pada bahasa pemodelan ABS dengan menjadikan ABS sebagai komponen Model dan Controller-nya sedangkan HTML sebagai komponen View-nya. Dalam implementasinya, dibutuhkan adanya bantuan dari \textit{template engine} untuk mengintegrasikan komponen Model dengan komponen View yang dibuat.
-    \item Fitur \textit{delta modeling} dapat diterapkan pada ABS MVC Framework dan digunakan untuk memodifikasi atau menambahkan komponen Model dan Controller pada \textit{framework} tersebut. Fitur \textit{delta modeling} tidak dapat diguanakan pada komponen View dikarenakan pada ABS MVC Framework komponen View tidak dibuat dengan menggunakan ABS melainkan HTML.
-    \item Proses pengembangan SPL berbasis web dapat diterapkan dengan menggunakan ABS MVC Framework dengan cara menerapkan konsep \textit{delta modeling} pada aplikasi yang dibuat. Dalam konteks ABS MVC Framework, para pengembang perangkat lunak dapat membuat sebuah aplikasi web sebagai \textit{core product} dengan menggunakan ABS dan kemudian mebuat kode-kode delta serta konfigurasi produk yang nantinya akan diterapkan pada \textit{core product} yang dibuat untuk menghasilkan variasi produk yang diinginkan.
+    \item ABS MVC Framework belum memiliki mekanisme yang dapat digunakan untuk memberikan banyak model kedalam komponen View. Sebagai contoh, apabila ada kebutuhan dimana sebuah halaman web harus menampilkan data produk, penjualan dan \textit{user} sekaligus dimana data tersebut diperoleh dari model \texttt{Product}, \texttt{Sales} dan \texttt{User} maka hal ini masih belum dapat dilakukan.
+    \item ABS MVC Framework hanya dapat memproses data yang diberikan oleh \textit{user} melalui mekanisme HTTP POST dan GET data dalam bentuk string dan tidak dapat melakukan konversi data kedalam bentuk lain (misal: \texttt{Integer}). Sebagai contoh, apabila terdapat HTTP GET data bernama \texttt{age} dengan nilai 24, maka data tersebut hanya akan dapat diperlakukan sebagai \texttt{String} tidak sebagai \texttt{Integer} sehingga data tersebut tidak dapat diperlakukan selayaknya data \texttt{Integer} (misal: digunakan untuk operasi aritmatik). Hal ini terjadi dikarenakan adanya keterbatasan pada bahasa pemodelan ABS yang tidak dapat melakukan proses \textit{casting} tipe data seperti bahasa pemrograman JAVA yang dapat mengubah data \texttt{String} ke \texttt{Integer} dan sebaliknya.
 \end{enumerate}
+
+\subsection{Bagaimana strategi yang dapat digunakan untuk menerapkan \textit{delta modeling} dengan menggunakan \textit{framework} yang dibuat?}
+
+Fitur \textit{delta modeling} dapat diterapkan pada ABS MVC Framework dan digunakan untuk memodifikasi atau menambahkan komponen Model dan Controller pada \textit{framework} tersebut. Fitur \textit{delta modeling} tidak dapat diguanakan pada komponen View dikarenakan pada ABS MVC Framework komponen View tidak dibuat dengan menggunakan ABS melainkan HTML.\\
+
+\subsection{Apakah \textit{framework} yang dibuat dapat mendukung pengembangan SPL berbasis web?}
+
+Proses pengembangan SPL berbasis web dapat diterapkan dengan menggunakan ABS MVC Framework dengan cara menerapkan konsep \textit{delta modeling} pada aplikasi yang dibuat. Dalam konteks ABS MVC Framework, para pengembang perangkat lunak dapat membuat sebuah aplikasi web sebagai \textit{core product} dengan menggunakan ABS dan kemudian mebuat kode-kode delta serta konfigurasi produk yang nantinya akan diterapkan pada \textit{core product} yang dibuat untuk menghasilkan variasi produk yang diinginkan.\\
 
 \section{Penelitian Lebih Lanjut}
 Berikut ini adalah beberapa topik penelitian yang dapat dilakukan untuk melnjutkan penelitian ini ketahap selanjutnya:
